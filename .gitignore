@@ -1,0 +1,8 @@
+node_modules/
+ext_modules/
+dist/
+out/
+package-lock.json
+
+.eslintcache
+*.tsbuildinfo
