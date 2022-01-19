@@ -3,9 +3,9 @@
   "productName": "my-new-app",
   "version": "1.0.0",
   "description": "My Electron application description.",
-  "main": "dist/main.js",
+  "main": "dist/main/main.js",
   "scripts": {
-    "dist": "( if exist .\\dist\\ rd .\\dist\\ /s /q ) && tsc && sass src\\:dist\\ --style=compressed",
+    "dist": "( if exist .\\dist\\ rd .\\dist\\ /s /q ) && tsc && tsc --project .\\src\\main\\tsc.cjs.json && sass src\\:dist\\ --style=compressed",
     "start": "npm run dist && .\\node_modules\\electron\\dist\\electron.exe .",
     "build": "npm run dist && ( if exist .\\out\\ rd .\\out\\ /s /q ) && electron-builder build --win"
   },
@@ -39,10 +39,11 @@
       "!src/**/*.css",
       "!src/**/*.scss",
       "!types/",
-      "!tsconfig.json",
-      "!.eslintrc.json",
-      "!.gitignore",
-      "!.editorconfig"
+      "!**/tsconfig.json",
+      "!**/tsc.*.json",
+      "!**/.eslintrc.json",
+      "!**/.gitignore",
+      "!**/.editorconfig"
     ]
   },
   "devDependencies": {

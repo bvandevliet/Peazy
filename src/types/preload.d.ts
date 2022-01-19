@@ -1,4 +1,4 @@
-import { API } from '../src/preload';
+import { API } from '../main/preload';
 
 /**
  * Provides types and intellisense for the ContextBridge APIs.

@@ -102,7 +102,7 @@ const createWindow = () =>
     autoHideMenuBar: true,
     minWidth: 1024,
     minHeight: 768,
-    icon: path.join(__dirname, '../src/assets/img/favicon.ico'),
+    icon: path.join(__dirname, '../../src/assets/img/favicon.ico'),
     webPreferences: {
       spellcheck: false,
       devTools: true,
@@ -138,7 +138,7 @@ const createWindow = () =>
     });
 
   // Then render the page.
-  mainWindow.loadFile(path.join(__dirname, '../src/index.html'));
+  mainWindow.loadFile(path.join(__dirname, '../../src/index.html'));
 };
 
 /**
@@ -152,7 +152,7 @@ app.whenReady().then(() =>
   Menu.setApplicationMenu(applicationMenu);
 
   // Create the tray icon.
-  tray = new Tray(path.join(__dirname, '../src/assets/img/favicon.ico'));
+  tray = new Tray(path.join(__dirname, '../../src/assets/img/favicon.ico'));
 
   // Set the tray menu.
   tray.setContextMenu(contextMenu);
@@ -173,7 +173,7 @@ ipcMain.on('ondragstart', (e, filePath) =>
 {
   e.sender.startDrag({
     file: path.join(__dirname, filePath),
-    icon: path.join(__dirname, '../src/assets/img/empty.ico'),
+    icon: path.join(__dirname, '../../src/assets/img/empty.ico'),
   });
 });
 
