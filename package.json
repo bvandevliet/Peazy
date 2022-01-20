@@ -5,7 +5,7 @@
   "description": "My Electron application description.",
   "main": "dist/main/main.js",
   "scripts": {
-    "dist": "( if exist .\\dist\\ rd .\\dist\\ /s /q ) && tsc && tsc --project .\\src\\main\\tsc.cjs.json && sass src\\:dist\\ --style=compressed",
+    "dist": "( if exist .\\dist\\ rd .\\dist\\ /s /q ) && tsc && tsc --project .\\src\\main\\tsc.cjs.json && ejs -p [ -c ] -w .\\src\\index.ejs -o .\\dist\\index.html && sass src\\:dist\\ --style=compressed",
     "start": "npm run dist && .\\node_modules\\electron\\dist\\electron.exe .",
     "build": "npm run dist && ( if exist .\\out\\ rd .\\out\\ /s /q ) && electron-builder build --win"
   },
@@ -33,6 +33,7 @@
       "createStartMenuShortcut": false
     },
     "files": [
+      "!**/*.ejs",
       "!dist/**/*.js.map",
       "!dist/**/*.css.map",
       "!src/**/*.ts",
@@ -49,6 +50,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
+    "ejs": "^3.1.6",
     "electron": "^16.0.7",
     "electron-builder": "^22.14.5",
     "eslint": "^8.7.0",

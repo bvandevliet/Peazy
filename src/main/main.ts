@@ -138,7 +138,7 @@ const createWindow = () =>
     });
 
   // Then render the page.
-  mainWindow.loadFile(path.join(__dirname, '../../src/index.html'));
+  mainWindow.loadFile(path.join(__dirname, '../../dist/index.html'));
 };
 
 /**

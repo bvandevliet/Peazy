@@ -18,14 +18,19 @@
 </head>
 
 <body>
-  <h1>Hello World!</h1>
-  We are using Node.js <span id="node-version"></span>,
-  Chromium <span id="chrome-version"></span>,
-  and Electron <span id="electron-version"></span>.
+  [%- include('./src/templates/header.ejs') %]
+  [%- include('./src/templates/navigation.ejs') %]
 
-  <p>Drag the boxes below to somewhere in your OS (Finder/Explorer, Desktop, etc.) to copy an example markdown file.</p>
-  <div style="border:2px solid black;border-radius:3px;padding:5px;display:inline-block" draggable="true" id="drag1">Drag me - File 1</div>
-  <div style="border:2px solid black;border-radius:3px;padding:5px;display:inline-block" draggable="true" id="drag2">Drag me - File 2</div>
+  <div id="page" class="site container">
+    <div id="sidebar" class="sidebar">
+      [%- include('./src/templates/sidebar.ejs') %]
+    </div>
+    <main id="primary" class="site-content">
+      [%- include('./src/templates/main.ejs') %]
+    </main>
+  </div>
+
+  [%- include('./src/templates/footer.ejs') %]
 </body>
 
 </html>
