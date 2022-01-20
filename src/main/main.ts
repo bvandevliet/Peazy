@@ -1,5 +1,6 @@
 import * as path from 'path';
-// import * as fs from 'fs';
+import * as fs from 'fs';
+import { exec } from 'child_process';
 import
 {
   app, BrowserWindow, ipcMain,
@@ -139,6 +140,18 @@ const createWindow = () =>
 
   // Then render the page.
   mainWindow.loadFile(path.join(__dirname, '../../dist/index.html'));
+
+  // Watch for file changes in development mode for live reload.
+  if (process.argv[2] === '--dev')
+  {
+    let reloading = false;
+    fs.watch(path.join(app.getAppPath(), './src/'), { recursive: true, persistent: true }, () =>
+    {
+      if (reloading) return;
+      reloading = true;
+      exec('npm run dist', err => { reloading = false; if (err) return; mainWindow.webContents.reloadIgnoringCache(); });
+    });
+  }
 };
 
 /**
