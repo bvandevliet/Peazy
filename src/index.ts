@@ -1,8 +1,4 @@
-/**
- * Import ESNext module example.
- */
-import hello from './inc/functions.js';
-hello();
+import * as fn from './inc/functions.js';
 
 /**
  * Native File Drag & Drop example code.
@@ -19,3 +15,9 @@ document.getElementById('drag2').ondragstart = e =>
   e.preventDefault();
   window.api.startDrag('non-existing-file-2.md');
 };
+
+/**
+ * A filter example.
+ */
+fn.addFilter('test', value => { return `${value}+filter`; });
+console.log(fn.applyFilters('test', 'apply'));
