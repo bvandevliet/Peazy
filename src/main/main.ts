@@ -103,7 +103,7 @@ const createWindow = () =>
     autoHideMenuBar: true,
     minWidth: 1024,
     minHeight: 768,
-    icon: path.join(__dirname, '../../src/assets/img/favicon.ico'),
+    icon: path.join(__dirname, '../../src/renderer/assets/img/favicon.ico'),
     webPreferences: {
       spellcheck: false,
       devTools: true,
@@ -139,13 +139,13 @@ const createWindow = () =>
     });
 
   // Then render the page.
-  mainWindow.loadFile(path.join(__dirname, '../../dist/index.html'));
+  mainWindow.loadFile(path.join(__dirname, '../../dist/renderer/index.html'));
 
   // Watch for file changes in development mode for live reload.
   if (process.argv[2] === '--dev')
   {
     let reloading = false;
-    fs.watch(path.join(app.getAppPath(), './src/'), { recursive: true, persistent: true }, () =>
+    fs.watch(path.join(app.getAppPath(), './src/renderer/'), { recursive: true, persistent: true }, () =>
     {
       if (reloading) return;
       reloading = true;
@@ -165,7 +165,7 @@ app.whenReady().then(() =>
   Menu.setApplicationMenu(applicationMenu);
 
   // Create the tray icon.
-  tray = new Tray(path.join(__dirname, '../../src/assets/img/favicon.ico'));
+  tray = new Tray(path.join(__dirname, '../../src/renderer/assets/img/favicon.ico'));
 
   // Set the tray menu.
   tray.setContextMenu(contextMenu);
@@ -186,7 +186,7 @@ ipcMain.on('ondragstart', (e, filePath) =>
 {
   e.sender.startDrag({
     file: path.join(__dirname, filePath),
-    icon: path.join(__dirname, '../../src/assets/img/empty.ico'),
+    icon: path.join(__dirname, '../../src/renderer/assets/img/empty.ico'),
   });
 });
 

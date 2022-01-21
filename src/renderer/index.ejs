@@ -11,26 +11,26 @@
 
   <title>Hello World!</title>
 
-  <link rel="stylesheet" href="../dist/assets/css/normalize.css" type="text/css" media="all">
-  <link rel="stylesheet" href="../dist/assets/css/style.css" type="text/css" media="all">
+  <link rel="stylesheet" href="./assets/css/normalize.css" type="text/css" media="all">
+  <link rel="stylesheet" href="./assets/css/style.css" type="text/css" media="all">
 
-  <script src="../dist/index.js" type="module" defer></script>
+  <script src="./index.js" type="module" defer></script>
 </head>
 
 <body>
-  [%- include('./src/templates/header.ejs') %]
-  [%- include('./src/templates/navigation.ejs') %]
+  [%- include('./src/renderer/templates/header.ejs') %]
+  [%- include('./src/renderer/templates/navigation.ejs') %]
 
   <div id="page" class="site container">
     <div id="sidebar" class="sidebar">
-      [%- include('./src/templates/sidebar.ejs') %]
+      [%- include('./src/renderer/templates/sidebar.ejs') %]
     </div>
     <main id="primary" class="site-content">
-      [%- include('./src/templates/main.ejs') %]
+      [%- include('./src/renderer/templates/main.ejs') %]
     </main>
   </div>
 
-  [%- include('./src/templates/footer.ejs') %]
+  [%- include('./src/renderer/templates/footer.ejs') %]
 </body>
 
 </html>

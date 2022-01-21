@@ -5,7 +5,7 @@
   "description": "My Electron application description.",
   "main": "dist/main/main.js",
   "scripts": {
-    "dist": "( if exist .\\dist\\ rd .\\dist\\ /s /q ) && tsc && tsc --project .\\src\\main\\tsc.cjs.json && ejs -p [ -c ] -w .\\src\\index.ejs -o .\\dist\\index.html && sass src\\:dist\\ --style=compressed",
+    "dist": "( if exist .\\dist\\ rd .\\dist\\ /s /q ) && tsc && tsc --project .\\src\\main\\tsc.cjs.json && ejs -p [ -c ] -w .\\src\\renderer\\index.ejs -o .\\dist\\renderer\\index.html && sass src\\:dist\\ --style=compressed",
     "start": "npm run dist && .\\node_modules\\electron\\dist\\electron.exe . --dev",
     "build": "npm run dist && ( if exist .\\out\\ rd .\\out\\ /s /q ) && electron-builder build --win"
   },
