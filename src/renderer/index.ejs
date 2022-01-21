@@ -17,19 +17,23 @@
 </head>
 
 <body>
-  [%- include('./src/renderer/templates/header.ejs') %]
-  [%- include('./src/renderer/templates/navigation.ejs') %]
+  <div id="page" class="columns">
+    <div id="sidebar">
+      <div id="sidebar-categories" class="tabs">
+        <ul>
+          <li class="is-active"><a>Projects</a></li>
+          <li><a>Orders</a></li>
+          <li><a>Articles</a></li>
+        </ul>
+      </div>
+      <div id="sidebar-content">
 
-  <div id="page" class="site container">
-    <div id="sidebar" class="sidebar">
-      [%- include('./src/renderer/templates/sidebar.ejs') %]
+      </div>
     </div>
-    <main id="primary" class="site-content">
-      [%- include('./src/renderer/templates/main.ejs') %]
+    <main id="primary" class="column">
+
     </main>
   </div>
-
-  [%- include('./src/renderer/templates/footer.ejs') %]
 </body>
 
 </html>

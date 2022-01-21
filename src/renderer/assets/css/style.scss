@@ -8,3 +8,22 @@
 @import '../../../../node_modules/bulma/sass/grid/_all.sass';
 @import '../../../../node_modules/bulma/sass/helpers/_all.sass';
 @import '../../../../node_modules/bulma/sass/layout/_all.sass';
+
+html {
+  overflow: auto;
+}
+
+.columns {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#sidebar {
+  flex: none;
+  width: 320px;
+}
+
+#sidebar-cat {
+  flex: none;
+  width: 20px;
+}
