@@ -7,8 +7,8 @@ export class Hook
    * Hook callbacks.
    */
   private _callbacks: {
-    filters: Array<(...args: any) => any>[],
-    actions: Array<(...args: any) => any>[],
+    filters: Array<(...args: any) => unknown>[],
+    actions: Array<(...args: any) => unknown>[],
   } = {
       filters: [],
       actions: [],
@@ -23,7 +23,7 @@ export class Hook
    *                 and functions with the same priority are executed in the order
    *                 in which they were added to the filter.
    */
-  public addFilter (callback: (...args: any) => any, priority: number)
+  public addFilter (callback: (...args: any) => unknown, priority: number)
   {
     undefined === this._callbacks.filters[priority]
       ? this._callbacks.filters[priority] = [callback]
@@ -38,7 +38,7 @@ export class Hook
    *
    * @return     The filtered value.
    */
-  public applyFilters (...args: any): any
+  public applyFilters (...args: any): unknown
   {
     this._callbacks.filters.forEach(priority =>
       priority.forEach(cb => args[0] = cb(...args)));
