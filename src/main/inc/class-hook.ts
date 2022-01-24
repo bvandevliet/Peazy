@@ -1,18 +1,17 @@
 /**
  * Core class used to implement action and filter hook functionality.
  */
-export class Hook
+export default class Hook
 {
   /**
-   * Hook callbacks.
+   * Filter callbacks.
    */
-  private _callbacks: {
-    filters: Array<(...args: any) => unknown>[],
-    actions: Array<(...args: any) => unknown>[],
-  } = {
-      filters: [],
-      actions: [],
-    };
+  public filters: Array<(...args: any) => unknown>[] = [];
+
+  /**
+   * Action callbacks.
+   */
+  // public actions: Array<(...args: any) => unknown>[] = [];
 
   /**
    * Adds a callback function to a filter hook.
@@ -25,9 +24,9 @@ export class Hook
    */
   public addFilter (callback: (...args: any) => unknown, priority: number)
   {
-    undefined === this._callbacks.filters[priority]
-      ? this._callbacks.filters[priority] = [callback]
-      : this._callbacks.filters[priority].push(callback);
+    undefined === this.filters[priority]
+      ? this.filters[priority] = [callback]
+      : this.filters[priority].push(callback);
   }
 
   /**
@@ -40,7 +39,7 @@ export class Hook
    */
   public applyFilters (...args: any): unknown
   {
-    this._callbacks.filters.forEach(priority =>
+    this.filters.forEach(priority =>
       priority.forEach(cb => args[0] = cb(...args)));
 
     return args[0];

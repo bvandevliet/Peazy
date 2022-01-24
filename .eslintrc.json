@@ -101,7 +101,6 @@
     "no-new-object": "error",
     "no-new-wrappers": "error",
     "no-extra-label": "error",
-    "no-extra-parens": "error",
     "no-mixed-operators": "error",
     "no-octal-escape": "error",
     "require-await": "error",
@@ -122,6 +121,7 @@
         "allowTernary": true
       }
     ],
+    "@typescript-eslint/no-explicit-any": "off",
     "operator-assignment": "error",
     "prefer-exponentiation-operator": "error",
     "yoda": [

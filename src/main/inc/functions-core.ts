@@ -1,4 +1,28 @@
-import { Hook } from './class-hook.js';
+import Hook from './class-hook';
+
+const filters: Record<string, Hook> = {};
+const actions: Record<string, Hook> = {};
+
+/**
+ * Test if a variable has an empty-ish value.
+ *
+ * @param input Arguments to merge with default values.
+ */
+export const isEmpty = (input: unknown) =>
+  !input || input === null || (typeof input === 'string' && input.trim() === '');
+
+/**
+ * Merge user defined values with defaults.
+ *
+ * @param input    Arguments to merge with default values.
+ * @param defaults Object that serves as the defaults.
+ */
+export const parseArgs = (input: Record<any, unknown>, defaults: Record<any, unknown> = {}) =>
+{
+  Object.keys(input).forEach(key => defaults[key] = input[key]);
+
+  return defaults;
+};
 
 /**
  * Adds a callback function to a filter hook.
@@ -13,16 +37,12 @@ import { Hook } from './class-hook.js';
  */
 export const addFilter = (hookName: string, callback: (...args: any) => any, priority = 10) =>
 {
-  if (undefined === window.filters)
+  if (undefined === filters[hookName])
   {
-    window.filters = {};
-  }
-  if (undefined === window.filters[hookName])
-  {
-    window.filters[hookName] = new Hook();
+    filters[hookName] = new Hook();
   }
 
-  window.filters[hookName].addFilter(callback, priority);
+  filters[hookName].addFilter(callback, priority);
 };
 
 /**
@@ -36,9 +56,9 @@ export const addFilter = (hookName: string, callback: (...args: any) => any, pri
  */
 export const applyFilters = (hookName: string, ...args: any): any =>
 {
-  if (undefined !== window.filters && window.filters[hookName] instanceof Hook)
+  if (filters[hookName] instanceof Hook)
   {
-    args[0] = window.filters[hookName].applyFilters(...args);
+    args[0] = filters[hookName].applyFilters(...args);
   }
 
   return args[0];
