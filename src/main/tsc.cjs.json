@@ -4,6 +4,5 @@
     "module": "commonjs",
     "outDir": "../../dist/main/"
   },
-  "include": ["./**/*"],
-  "exclude": []
+  "include": ["./**/*"]
 }
