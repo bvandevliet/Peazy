@@ -60,7 +60,6 @@
       }
     ],
     "spaced-comment": "error",
-    "lines-between-class-members": "error",
     "comma-style": "error",
     "camelcase": "error",
     "eqeqeq": [
