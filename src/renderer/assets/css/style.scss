@@ -9,21 +9,63 @@
 @import '../../../../node_modules/bulma/sass/helpers/_all.sass';
 @import '../../../../node_modules/bulma/sass/layout/_all.sass';
 
+@import './extensions/sticky-table.scss';
+
 html {
-  overflow: auto;
+  overflow: hidden;
+}
+
+body {
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  >* {
+    height: 100%;
+  }
+}
+
+div {
+  @extend .m-0;
+  @extend .p-0;
+}
+
+main {
+  @extend div;
 }
 
 .columns {
   margin: 0 !important;
   padding: 0 !important;
+
+  &.entry-wrapper {
+    @extend .is-flex-direction-column;
+    height: 100%;
+    overflow: hidden;
+
+    >.column {
+      flex-grow: unset;
+      flex-shrink: unset;
+
+      &.entry-content {
+        flex-grow: 1;
+        overflow: auto;
+      }
+    }
+  }
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
+}
+
+.no-wrap {
+  white-space: pre;
 }
 
 #sidebar {
   flex: none;
   width: 320px;
-}
-
-#sidebar-cat {
-  flex: none;
-  width: 20px;
 }

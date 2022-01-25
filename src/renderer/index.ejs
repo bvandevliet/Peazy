@@ -18,22 +18,74 @@
 </head>
 
 <body>
-  <div id="page" class="columns">
-    <div id="sidebar">
-      <div id="sidebar-categories" class="tabs">
-        <ul>
-          <li class="is-active"><a>Projects</a></li>
-          <li><a>Orders</a></li>
-          <li><a>Articles</a></li>
-        </ul>
-      </div>
-      <div id="sidebar-content">
+  <div class="columns">
+
+    <div id="sidebar" class="column">
+      <div class="columns entry-wrapper">
+
+        <div id="sidebar-categories" class="column">
+          <div class="tabs">
+            <ul>
+              <li class="is-active"><a title="Projects">&#9851;</a></li>
+              <li><a title="Orders">&#9823;</a></li>
+              <li><a title="Articles">&#9935;</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="table-projects" class="column entry-content table-container">
+          <table class="table is-hoverable is-narrow is-fullwidth no-wrap has-sticky-header has-sticky-footer has-sticky-column">
+            <thead>
+              <tr>
+                <th><abbr title="Install Number">#</abbr></th>
+                <th class="is-sticky-column"><abbr title="Project Number">#</abbr></th>
+                <th>Description</th>
+                <th>Customer</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th><abbr title="Install Number">#</abbr></th>
+                <th class="is-sticky-column"><abbr title="Project Number">#</abbr></th>
+                <th>Description</th>
+                <th>Customer</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              [% for (let i = 1; i < 999; i++) { %] <tr class="[% if (i === 4) { %]is-selected[% } %]">
+                <td><a href="#" title="Description  •  Customer">[%= i.toString().padStart(7, 'A210000'); %]</a></td>
+                <th><a href="#" title="Description  •  Customer">[%= i.toString().padStart(7, 'MB21000'); %]</a></th>
+                <td>Description</td>
+                <td>Customer</td>
+                </tr>
+                [% } %]
+            </tbody>
+          </table>
+        </div>
 
       </div>
     </div>
-    <main id="primary" class="column">
 
+    <main id="main" class="column">
+      <div class="columns entry-wrapper">
+
+        <div id="main-tabs" class="column">
+          <div class="tabs">
+            <ul>
+              <li class="is-active"><a title="Projects">&#9851;</a></li>
+              <li><a title="Orders">&#9823;</a></li>
+              <li><a title="Articles">&#9935;</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="main-content" class="column entry-content">
+          <div></div>
+        </div>
+
+      </div>
     </main>
+
   </div>
 </body>
 
