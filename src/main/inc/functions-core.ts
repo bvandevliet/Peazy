@@ -25,6 +25,18 @@ export const parseArgs = (input: Record<any, unknown>, defaults: Record<any, unk
 };
 
 /**
+ * Returns an array of elements split into two groups,
+ * the first of which contains elements predicate returns truthy for,
+ * the second of which contains elements predicate returns falsey for.
+ *
+ * @param array     The array to split.
+ * @param predicate Called one time for each element in the array.
+ */
+export const partitionArr = <T>(array: T[], predicate: (value: T, index: number) => boolean): [T[], T[]] =>
+  // https://stackoverflow.com/a/64093016
+  array.reduce((prev, cur, index) => (prev[Number(!predicate(cur, index))].push(cur), prev), [[], []]);
+
+/**
  * Adds a callback function to a filter hook.
  *
  * @param hookName The name of the filter hook.
