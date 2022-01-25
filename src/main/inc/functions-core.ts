@@ -1,7 +1,7 @@
 import Hook from './class-hook';
 
 const filters: Record<string, Hook> = {};
-const actions: Record<string, Hook> = {};
+// const actions: Record<string, Hook> = {};
 
 /**
  * Test if a variable has an empty-ish value.
@@ -23,6 +23,18 @@ export const parseArgs = (input: Record<any, unknown>, defaults: Record<any, unk
 
   return defaults;
 };
+
+/**
+ * Returns an array of elements split into two groups,
+ * the first of which contains elements predicate returns truthy for,
+ * the second of which contains elements predicate returns falsey for.
+ *
+ * @param array     The array to split.
+ * @param predicate Called one time for each element in the array.
+ */
+export const partitionArr = <T>(array: T[], predicate: (value: T, index: number) => boolean): [T[], T[]] =>
+  // https://stackoverflow.com/a/64093016
+  array.reduce((prev, cur, index) => (prev[Number(!predicate(cur, index))].push(cur), prev), [[], []]);
 
 /**
  * Adds a callback function to a filter hook.
