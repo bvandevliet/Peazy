@@ -1,7 +1,7 @@
 import Hook from './class-hook';
 
 const filters: Record<string, Hook> = {};
-const actions: Record<string, Hook> = {};
+// const actions: Record<string, Hook> = {};
 
 /**
  * Test if a variable has an empty-ish value.
