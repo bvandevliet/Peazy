@@ -1,10 +1,5 @@
-import path from 'path';
+// import path from 'path';
 import fs from 'fs';
-import
-{
-  app,
-}
-  from 'electron';
 
 import * as core from './functions-core';
 
@@ -27,6 +22,7 @@ export default class ConfigFile
     }
     catch (err)
     {
+      console.error(err); // for debugging
       return defaults;
     }
   }
@@ -46,12 +42,12 @@ export default class ConfigFile
 
   /**
    *
-   * @param configName Name of the json config file.
-   * @param defaults   Object that serves as the defaults in case the file can't be found or parsed.
+   * @param filePath Path to the json config file.
+   * @param defaults Object that serves as the defaults.
    */
-  constructor (configName = 'config', defaults: Record<any, unknown> = {})
+  constructor (filePath: fs.PathLike, defaults: Record<any, unknown> = {})
   {
-    this._path = path.join(app.getPath('userData'), `${configName}.json`);
+    this._path = filePath;
     this._data = ConfigFile.parseConfigFile(this._path, defaults);
   }
 
