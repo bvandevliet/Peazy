@@ -48,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@types/jquery": "^3.5.13",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "bulma": "^0.9.3",
