@@ -130,7 +130,7 @@ export default class Search
       {
         const $elemParent = $(elemParent);
 
-        if ($elemParent.hasClass('ignore')) return;
+        if ($elemParent.hasClass('ignore-search')) return;
 
         const searchArr = this.searchIn(elemParent);
 
