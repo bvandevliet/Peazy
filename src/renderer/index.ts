@@ -1,4 +1,4 @@
-// import * as html from './inc/functions-html.js';
+import * as html from './inc/functions-html.js';
 
 /**
  * Make sure to always copy plain text without styling.
@@ -31,8 +31,13 @@ document.addEventListener('keyup', e =>
  */
 $('#sidebar').on('mouseup', function (e)
 {
+  const $targetStack = $(e.target).add($(e.target).parents());
+
+  // Ignore the event if not intended.
+  if ($targetStack.hasClass('ignore-click')) return;
+
   // Remove browsing state for links that open a main tab.
-  if ($(e.target).is('a.opens-main-tab'))
+  if ($targetStack.hasClass('opens-main-tab'))
   {
     $(document.body).removeClass('browsing');
   }
@@ -41,6 +46,26 @@ $('#sidebar').on('mouseup', function (e)
   {
     $(document.body).addClass('browsing');
   }
+});
+
+$('thead th.is-sortable, tfoot th.is-sortable').on('click', function ()
+{
+  const $th = $(this);
+
+  const i = $th.index();
+  const $table = $th.parents('table').first();
+
+  // Get the `th` elements in both table header and footer.
+  const $thSet = $table.find(`>thead>tr>th:nth-child(${i + 1}), >tfoot>tr>th:nth-child(${i + 1})`);
+
+  const order = $thSet.hasClass('is-sorted-asc') ? 'desc' : 'asc';
+
+  $thSet.add($thSet.siblings()).removeClass(['is-sorted-asc', 'is-sorted-desc']);
+  $thSet.addClass(`is-sorted-${order}`);
+
+  html.sortElement($table.find('>tbody>tr'),
+    elem => $(elem).find('th, td').eq(i).text(),
+    order === 'desc' ? html.Order.DESC : html.Order.ASC);
 });
 
 /**

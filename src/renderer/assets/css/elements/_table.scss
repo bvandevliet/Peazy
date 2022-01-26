@@ -8,4 +8,24 @@ table {
       border: none;
     }
   }
+
+  th {
+    &.is-sortable {
+      @extend .is-unselectable;
+      cursor: pointer;
+
+      &::after {
+        float: right;
+      }
+
+      &:hover::after,
+      &.is-sorted-asc::after {
+        content: ' \2227';
+      }
+
+      &.is-sorted-desc::after {
+        content: ' \2228';
+      }
+    }
+  }
 }
