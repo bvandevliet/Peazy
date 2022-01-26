@@ -48,6 +48,9 @@ $('#sidebar').on('mouseup', function (e)
   }
 });
 
+/**
+ * Handle sortable table columns.
+ */
 $('thead th.is-sortable, tfoot th.is-sortable').on('click', function ()
 {
   const $th = $(this);
