@@ -16,36 +16,25 @@ document.addEventListener('keyup', e =>
 {
   if (e.ctrlKey && e.shiftKey && e.key === 'F')
   {
-    $(document.body).addClass('browsing');
-    // setTimeout(() => { $project_search[0].focus(); });
+    $('#sidebar input[type=search]:visible').first().trigger('focus');
   }
   else if (e.key === 'Escape')
   {
     $(document.body).removeClass('browsing');
-    // setTimeout(() => { $project_search[0].blur(); });
+    $('#sidebar input[type=search]:focus').first().trigger('blur');
   }
 });
 
 /**
- * Toggle browsing state on sidebar mouse input.
+ * Activate browsing state on sidebar actions.
  */
-$('#sidebar').on('mouseup', function (e)
+$('#sidebar-categories').on('mouseup', () =>
 {
-  const $targetStack = $(e.target).add($(e.target).parents());
-
-  // Ignore the event if not intended.
-  if ($targetStack.hasClass('ignore-click')) return;
-
-  // Remove browsing state for links that open a main tab.
-  if ($targetStack.hasClass('opens-main-tab'))
-  {
-    $(document.body).removeClass('browsing');
-  }
-  // Taking care of scrollbar.
-  else if (e.clientX < this.clientWidth - 18)
-  {
-    $(document.body).addClass('browsing');
-  }
+  $(document.body).addClass('browsing');
+});
+$('#sidebar input[type=search]').on('focus', () =>
+{
+  $(document.body).addClass('browsing');
 });
 
 /**
