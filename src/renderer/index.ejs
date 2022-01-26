@@ -18,15 +18,23 @@
 </head>
 
 <body>
-  <div class="columns full-height">
+  <div class="columns entry-wrapper">
 
-    <div id="sidebar" class="column sidebar">
-      [%- include('./src/renderer/templates/project-browser.ejs') %]
+    <div class="column entry-content">
+      <div class="columns full-height">
+
+        <div id="sidebar" class="column sidebar">
+          [%- include('./src/renderer/templates/project-browser.ejs') %]
+        </div>
+
+        <main id="main" class="column main">
+          [%- include('./src/renderer/templates/project-window.ejs') %]
+        </main>
+
+      </div>
     </div>
 
-    <main id="main" class="column main">
-      [%- include('./src/renderer/templates/project-window.ejs') %]
-    </main>
+    <div id="status-bar" class="column status-bar"></div>
 
   </div>
 </body>
