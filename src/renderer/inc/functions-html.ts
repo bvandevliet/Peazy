@@ -27,7 +27,7 @@ export const sortElement =
     return textA.localeCompare(textB, undefined, { numeric: true, sensitivity: 'base' });
   };
 
-  $(elemSet).get()
+  $(elemSet).toArray()
     .sort((a, b) => orderBy === Order.DESC ? doSort(b, a) : doSort(a, b))
     .forEach(curElem => $(curElem).parent().append(curElem));
 };
