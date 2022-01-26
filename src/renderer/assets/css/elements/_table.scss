@@ -12,6 +12,8 @@ table {
   }
 
   th {
+    font-weight: $weight-semibold;
+
     &.is-sortable {
       @extend .is-unselectable;
       cursor: pointer;
