@@ -1,3 +1,5 @@
+@import '../extensions/sticky-table';
+
 table {
 
   &.is-hoverable,
@@ -15,16 +17,20 @@ table {
       cursor: pointer;
 
       &::after {
+        display: contents;
+        visibility: hidden;
         float: right;
-      }
-
-      &:hover::after,
-      &.is-sorted-asc::after {
         content: ' \25B4';
       }
 
       &.is-sorted-desc::after {
         content: ' \25BE';
+      }
+
+      &:hover::after,
+      &.is-sorted-asc::after,
+      &.is-sorted-desc::after {
+        visibility: visible;
       }
     }
   }
