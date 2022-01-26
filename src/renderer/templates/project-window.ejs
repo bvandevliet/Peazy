@@ -1,0 +1,58 @@
+<div class="columns entry-wrapper">
+  <div id="project-tabs" class="column">
+
+    <div class="tabs">
+      <ul>
+        <li class="is-active"><a title="">MB21004</a></li>
+        <li><a title="">MB21005</a></li>
+        <li><a title="">MB21006</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- .project-window snippets should be dynamically generated and referenced to by #project-tabs -->
+  <div class="project-window column entry-content">
+
+    <div class="columns entry-wrapper">
+      <div class="project-categories column">
+
+        <div class="tabs">
+          <ul>
+            <li class="is-active"><a title="Projects">&#9851;</a></li>
+            <li><a title="Orders">&#9823;</a></li>
+            <li><a title="Articles">&#9935;</a></li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="project-content column entry-content">
+
+        <div class="columns full-height">
+          <div class="column sidebar">
+
+            <table class="table is-hoverable is-fullwidth no-wrap has-sticky-header has-sticky-column">
+              <thead class="ignore-click">
+                <tr>
+                  <th class="min-width is-sortable is-sticky-column"><abbr title="Project Number">Project</abbr></th>
+                </tr>
+              </thead>
+              <tbody>
+                [% for (let i = 1; i < 9; i++) { %] <tr class="min-width [% if (i === 4) { %]is-selected[% } %]">
+                  <th><a class="opens-main-tab" href="#" title="Description  •  Customer">[%= i.toString().padStart(7, 'MB21000'); %]</a></th>
+                  </tr>
+                  [% } %]
+              </tbody>
+            </table>
+
+          </div>
+          <div class="column main">
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,7 +1,10 @@
-#sidebar {
+.sidebar {
   flex: none;
   max-width: 320px;
   transition: max-width .25s ease;
+
+  box-sizing: content-box;
+  border-right: 1px solid $border !important;
 }
 
 body {
