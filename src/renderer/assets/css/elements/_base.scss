@@ -22,6 +22,11 @@ body {
   -webkit-app-region: no-drag;
 }
 
+a,
+a * {
+  @extend .is-unselectable;
+}
+
 div {
   @extend .m-0;
   @extend .p-0;
@@ -30,8 +35,6 @@ div {
 main {
   @extend div;
 }
-
-a {}
 
 .columns {
   @extend .is-mobile;
