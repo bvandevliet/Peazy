@@ -20,11 +20,11 @@ table {
 
       &:hover::after,
       &.is-sorted-asc::after {
-        content: ' \2227';
+        content: ' \25B4';
       }
 
       &.is-sorted-desc::after {
-        content: ' \2228';
+        content: ' \25BE';
       }
     }
   }
