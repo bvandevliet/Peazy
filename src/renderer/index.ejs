@@ -33,30 +33,30 @@
           </div>
         </div>
 
-        <div id="table-projects" class="column entry-content table-container">
+        <div id="table-projects" class="column entry-content">
           <table class="table is-hoverable is-narrow is-fullwidth no-wrap has-sticky-header has-sticky-footer has-sticky-column">
             <thead>
               <tr>
-                <th><abbr title="Install Number">#</abbr></th>
-                <th class="is-sticky-column"><abbr title="Project Number">#</abbr></th>
+                <th class="min-width is-secondary"><abbr title="Installation Number">Install</abbr></th>
+                <th class="min-width is-sticky-column"><abbr title="Project Number">Project</abbr></th>
                 <th>Description</th>
                 <th>Customer</th>
               </tr>
             </thead>
             <tfoot>
               <tr>
-                <th><abbr title="Install Number">#</abbr></th>
-                <th class="is-sticky-column"><abbr title="Project Number">#</abbr></th>
+                <th class="min-width is-secondary"><abbr title="Install Number">#</abbr></th>
+                <th class="min-width is-sticky-column"><abbr title="Project Number">#</abbr></th>
                 <th>Description</th>
                 <th>Customer</th>
               </tr>
             </tfoot>
             <tbody>
-              [% for (let i = 1; i < 999; i++) { %] <tr class="[% if (i === 4) { %]is-selected[% } %]">
-                <td><a href="#" title="Description  •  Customer">[%= i.toString().padStart(7, 'A210000'); %]</a></td>
-                <th><a href="#" title="Description  •  Customer">[%= i.toString().padStart(7, 'MB21000'); %]</a></th>
-                <td>Description</td>
-                <td>Customer</td>
+              [% for (let i = 1; i < 999; i++) { %] <tr class="min-width [% if (i === 4) { %]is-selected[% } %]">
+                <td class="min-width is-secondary"><a class="opens-main-tab" href="#" title="Description  •  Customer">[%= i.toString().padStart(7, 'A210000'); %]</a></td>
+                <th><a class="opens-main-tab" href="#" title="Description  •  Customer">[%= i.toString().padStart(7, 'MB21000'); %]</a></th>
+                <td>Description of this project</td>
+                <td>Customer this project is for</td>
                 </tr>
                 [% } %]
             </tbody>

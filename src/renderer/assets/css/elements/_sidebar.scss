@@ -1,0 +1,30 @@
+#sidebar {
+  flex: none;
+  max-width: 320px;
+  transition: max-width .25s ease;
+}
+
+body {
+  &.browsing {
+
+    #sidebar {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    #sidebar .entry-content {
+      overflow-x: scroll;
+    }
+  }
+
+  &:not(.browsing) {
+
+    #sidebar .is-secondary {
+      @extend .is-hidden;
+    }
+
+    #sidebar .entry-content {
+      overflow-x: hidden;
+    }
+  }
+}

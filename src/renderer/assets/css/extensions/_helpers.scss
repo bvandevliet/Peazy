@@ -1,0 +1,15 @@
+.pre-wrap {
+  white-space: pre-wrap;
+}
+
+.no-wrap {
+  white-space: pre;
+}
+
+table.no-wrap {
+
+  th.min-width,
+  td.min-width {
+    width: 0;
+  }
+}
