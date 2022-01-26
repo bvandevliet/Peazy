@@ -13,3 +13,9 @@ table.no-wrap {
     width: 0;
   }
 }
+
+.is-sticky {
+  z-index: 9;
+  position: sticky;
+  top: 0;
+}
