@@ -19,13 +19,14 @@
       flex-grow: unset;
       flex-shrink: unset;
 
-      &.entry-content {
+      &.entry-content,
+      &.content {
         flex-grow: 1;
         overflow: hidden;
+      }
 
-        &:hover {
-          overflow: auto;
-        }
+      &.content:hover {
+        overflow: auto;
       }
     }
   }
