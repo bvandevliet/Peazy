@@ -1,7 +1,7 @@
 .sidebar {
   flex: none;
-  max-width: 320px;
-  transition: max-width .25s ease;
+  width: 320px;
+  transition: width .25s ease;
 
   box-sizing: content-box;
   border-right: 1px solid $border !important;
@@ -12,7 +12,6 @@ body {
 
     #sidebar {
       width: 100%;
-      max-width: 100%;
     }
 
     #sidebar .entry-content {
