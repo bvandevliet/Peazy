@@ -43,7 +43,7 @@ $('#sidebar input[type=search]').on('focus', () =>
 /**
  * Handle sortable table columns.
  */
-$('thead th.is-sortable, tfoot th.is-sortable').on('click', function ()
+const sortTable: JQuery.TypeEventHandler<HTMLTableCellElement, undefined, HTMLElement, HTMLElement, string> = function ()
 {
   const $th = $(this);
 
@@ -61,7 +61,12 @@ $('thead th.is-sortable, tfoot th.is-sortable').on('click', function ()
   html.sortElement($table.find('>tbody>tr'),
     elem => $(elem).find('th, td').eq(i).text(),
     order === 'desc' ? html.Order.DESC : html.Order.ASC);
-});
+};
+
+/**
+ * Initiate sorting on already available / non-dynamically generated html tables that support it.
+ */
+($('thead th.is-sortable, tfoot th.is-sortable') as JQuery<HTMLTableCellElement>).on('click', sortTable);
 
 /**
  * A filter example.
