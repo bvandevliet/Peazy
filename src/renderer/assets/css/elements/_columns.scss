@@ -9,7 +9,7 @@
     max-height: 100%;
   }
 
-  &.entry-wrapper {
+  &.wrapper {
     @extend .is-flex-direction-column;
 
     height: 100%;
@@ -19,13 +19,13 @@
       flex-grow: unset;
       flex-shrink: unset;
 
-      &.entry-content,
-      &.content {
+      &.wrapper-content,
+      &.entry-content {
         flex-grow: 1;
         overflow: hidden;
       }
 
-      &.content:hover {
+      &.entry-content:hover {
         overflow: auto;
       }
     }
