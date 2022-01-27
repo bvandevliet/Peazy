@@ -61,10 +61,10 @@
   }
 }
 
-.navbar.is-fixed-top~* .table.has-sticky-header thead th,
-.navbar.is-fixed-top~.table.has-sticky-header thead th {
-  top: $navbar-height;
-}
+// .navbar.is-fixed-top~* .table.has-sticky-header thead th,
+// .navbar.is-fixed-top~.table.has-sticky-header thead th {
+//   top: $navbar-height;
+// }
 
 /*
  * Sticky Footer
@@ -82,10 +82,10 @@
   }
 }
 
-.navbar.is-fixed-bottom~* .table.has-sticky-footer tfoot th,
-.navbar.is-fixed-bottom~.table.has-sticky-footer tfoot th {
-  bottom: $navbar-height;
-}
+// .navbar.is-fixed-bottom~* .table.has-sticky-footer tfoot th,
+// .navbar.is-fixed-bottom~.table.has-sticky-footer tfoot th {
+//   bottom: $navbar-height;
+// }
 
 /*
  * Sticky Column
