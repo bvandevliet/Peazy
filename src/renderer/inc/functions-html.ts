@@ -8,6 +8,16 @@ export const copyText = (text: string) =>
   navigator.clipboard.writeText(text);
 };
 
+/**
+ * Get a html template node by ID.
+ *
+ * @param id The ID of the template to get.
+ *
+ * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template
+ */
+export const getTemplate = (id: string) =>
+  (document.getElementById(id) as HTMLTemplateElement).content.firstElementChild.cloneNode(true);
+
 // eslint-disable-next-line no-shadow
 export enum Order
 {
