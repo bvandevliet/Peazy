@@ -4,6 +4,7 @@
     <div class="tabs">
       <ul>
         <li class="is-active"><a title="Projects">&#9851;</a></li>
+        <li><a title="Customers">&#9730;</a></li>
         <li><a title="Orders">&#9823;</a></li>
         <li><a title="Articles">&#9935;</a></li>
       </ul>
@@ -22,9 +23,11 @@
       </div>
       <div class="column entry-content">
 
-        <table id="table-projects" class="table is-hoverable is-fullwidth no-wrap has-sticky-header has-sticky-column">
-          <thead class="ignore-click">
+        <table id="projects-table" class="table projects-table is-hoverable is-fullwidth no-wrap has-sticky-header has-sticky-column">
+          <thead>
             <tr>
+              <th class="min-width is-sortable is-secondary">Date</th>
+              <th class="min-width is-sortable is-secondary">Status</th>
               <th class="min-width is-sortable is-secondary"><abbr title="Installation Number">Install</abbr></th>
               <th class="min-width is-sortable is-sticky-column"><abbr title="Project Number">Project</abbr></th>
               <th>Description</th>
@@ -32,15 +35,8 @@
             </tr>
           </thead>
 
-          <!-- tbody content should be dynamically generated from a database query result set -->
           <tbody>
-            [% for (let i = 1; i < 999; i++) { %] <tr class="min-width [% if (i === 4) { %]is-selected[% } %]">
-              <td class="min-width is-secondary"><a class="opens-main-tab" href="#" title="Description  •  Customer">[%= i.toString().padStart(7, 'A210000'); %]</a></td>
-              <th><a class="opens-main-tab" href="#" title="Description  •  Customer">[%= i.toString().padStart(7, 'MB21000'); %]</a></th>
-              <td>Description of this project</td>
-              <td>Customer this project is for</td>
-              </tr>
-              [% } %]
+            <!-- @see #tmpl-project-row -->
           </tbody>
         </table>
 
