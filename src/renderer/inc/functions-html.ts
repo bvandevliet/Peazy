@@ -1,3 +1,13 @@
+/**
+ * Copy a string to the clipboard.
+ *
+ * @param text The text to copy.
+ */
+export const copyText = (text: string) =>
+{
+  navigator.clipboard.writeText(text);
+};
+
 // eslint-disable-next-line no-shadow
 export enum Order
 {
@@ -30,14 +40,4 @@ export const sortElement =
   $(elemSet).toArray()
     .sort((a, b) => orderBy === Order.DESC ? doSort(b, a) : doSort(a, b))
     .forEach(curElem => $(curElem).parent().append(curElem));
-};
-
-/**
- * Copy a string to the clipboard.
- *
- * @param text The text to copy.
- */
-export const copyText = (text: string) =>
-{
-  navigator.clipboard.writeText(text);
 };
