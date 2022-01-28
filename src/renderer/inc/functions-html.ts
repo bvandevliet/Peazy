@@ -9,14 +9,26 @@ export const copyText = (text: string) =>
 };
 
 /**
+ * Html template reference cache.
+ */
+const templateReferences: Record<string, DocumentFragment> = {};
+
+/**
  * Get a html template node by ID.
  *
  * @param id The ID of the template to get.
  *
  * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template
  */
-export const getTemplate = (id: string) =>
-  (document.getElementById(id) as HTMLTemplateElement).content.firstElementChild.cloneNode(true);
+export const getTemplateClone = (id: string) =>
+{
+  if (undefined === templateReferences[id])
+  {
+    templateReferences[id] = (document.getElementById(id) as HTMLTemplateElement).content;
+  }
+
+  return (templateReferences[id]?.firstElementChild.cloneNode(true) as HTMLElement);
+};
 
 // eslint-disable-next-line no-shadow
 export enum Order
