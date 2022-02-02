@@ -1,7 +1,36 @@
+import path from 'path';
+import
+{
+  app,
+}
+  from 'electron';
+
 import Hook from './class-hook';
 
 const filters: Record<string, Hook> = {};
 // const actions: Record<string, Hook> = {};
+
+/**
+ * Natively load another script.
+ *
+ * @param           url           Url to the script, relative to the root directory.
+ * @param           callback      An optional callback to run when the script is loaded.
+ * @param {Object}  options       Additional options.
+ * @param {boolean} options.async By default, all requests are sent synchronously.
+ *
+ * @link https://stackoverflow.com/a/950146
+ */
+export const loadScript = (url: string, callback?: (this: GlobalEventHandlers, e: Event) => any, options = { async: false }) =>
+{
+  const script = document.createElement('script');
+
+  script.type = 'text/javascript';
+  script.src = path.join(app.getAppPath(), url);
+  script.async = options.async;
+
+  script.onload = callback ?? null;
+  document.head.appendChild(script);
+};
 
 /**
  * Test if a variable has an empty-ish value.
@@ -31,9 +60,10 @@ export const parseArgs = (input: Record<any, unknown>, defaults: Record<any, unk
  *
  * @param array     The array to split.
  * @param predicate Called one time for each element in the array.
+ *
+ * @link https://stackoverflow.com/a/64093016
  */
 export const partitionArr = <T>(array: T[], predicate: (value: T, index: number) => boolean): [T[], T[]] =>
-  // https://stackoverflow.com/a/64093016
   array.reduce((prev, cur, index) => (prev[Number(!predicate(cur, index))].push(cur), prev), [[], []]);
 
 /**

@@ -8,6 +8,9 @@ declare global
   // eslint-disable-next-line no-shadow
   interface Window
   {
+    /**
+     * The ContextBridge API.
+     */
     api: typeof API,
   }
 }
