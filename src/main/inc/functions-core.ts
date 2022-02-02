@@ -38,7 +38,7 @@ export const loadScript = (url: string, callback?: (this: GlobalEventHandlers, e
  * @param input Arguments to merge with default values.
  */
 export const isEmpty = (input: unknown) =>
-  !input || input === null || (typeof input === 'string' && input.trim() === '');
+  !input || input === undefined || input === null || (typeof input === 'string' && input.trim() === '');
 
 /**
  * Merge user defined values with defaults.
