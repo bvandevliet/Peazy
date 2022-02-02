@@ -6,3 +6,6 @@ package-lock.json
 
 .eslintcache
 *.tsbuildinfo
+
+src/user/*
+!src/user/config.d.ts
