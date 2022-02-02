@@ -61,7 +61,7 @@
     ],
     "spaced-comment": "error",
     "comma-style": "error",
-    "camelcase": "error",
+    "camelcase": "warn",
     "eqeqeq": [
       "error",
       "smart"
