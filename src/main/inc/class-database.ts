@@ -1,31 +1,4 @@
-// eslint-disable-next-line no-shadow
-import { ConnectionConfig, Connection, Request, ColumnValue } from 'tedious';
-
-export interface Project
-{
-  install_id?: any,
-  install_number?: string,
-  install_description?: string,
-  project_id: any,
-  project_number: string,
-  project_description: string,
-  customer_id: any,
-  customer_name: string,
-  customer_country_id?: any,
-  customer_country_name?: string,
-  status_id?: any,
-  status_name?: string,
-  price?: number,
-  date_created?: string|Date,
-  date_modified?: string|Date,
-  notes?: string,
-  sales_manager_id?: any,
-  sales_manager_name?: string,
-  project_manager_id?: any,
-  project_manager_name?: string,
-  project_engineer_id?: any,
-  project_engineer_name?: string,
-}
+import { ConnectionConfig, Connection, Request as dbRequest, ColumnValue } from 'tedious';
 
 /**
  * Core class used for default database interaction.
@@ -48,12 +21,12 @@ export default class Database
   {
     this._config = config;
 
-    // Force using column names, these must match with Project type.
+    // Force using column names.
     this._config.options.useColumnNames = true;
   }
 
   /**
-   * Get the Connection instance.
+   * Get the `Connection` instance.
    */
   private getInstance (): Promise<Connection>
   {
@@ -99,7 +72,7 @@ export default class Database
        *
        * Overload would look like: `on(event: 'row', listener: (columns: Record<string, ColumnValue>) => void): this;`
        */
-      const request = new Request(query, (err, rowCount) => err ? reject(err) : resolve(rowCount)).on('row', onRow as any);
+      const request = new dbRequest(query, (err, rowCount) => err ? reject(err) : resolve(rowCount)).on('row', onRow as any);
 
       connection.execSql(request);
     });
