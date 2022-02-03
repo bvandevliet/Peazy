@@ -35,9 +35,9 @@ export const loadScript = (url: string, callback?: (this: GlobalEventHandlers, e
 /**
  * Test if a variable has an empty-ish value.
  *
- * @param input Arguments to merge with default values.
+ * @param input A value to test.
  */
-export const isEmpty = (input: unknown) =>
+export const isEmpty = (input: any) =>
   !input || input === undefined || input === null || (typeof input === 'string' && input.trim() === '');
 
 /**
