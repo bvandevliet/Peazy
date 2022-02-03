@@ -16,7 +16,7 @@ export default class Search
   /**
    * The callback function to return a value to search in.
    */
-  public searchIn: (curElem: HTMLElement) => string|string[];
+  public searchIn: (curElem: HTMLElement) => string | string[];
 
   /**
    * Internal search timeout timer.
@@ -33,7 +33,7 @@ export default class Search
   (
     elemMaster: any,
     elemSelector: string,
-    searchIn: (curElem: HTMLElement) => string|string[],
+    searchIn: (curElem: HTMLElement) => string | string[],
   )
   {
     this.$elemMaster = $(elemMaster);
@@ -46,7 +46,7 @@ export default class Search
    *
    * @param input String or string array to split and flatten.
    */
-  static flatten (input: string|string[])
+  static flatten (input: string | string[])
   {
     return (!Array.isArray(input) ? [input] : input).flatMap(str => str.replace(/\s+/gu, ' ').trim().split(' '));
   }
@@ -73,7 +73,7 @@ export default class Search
    *                  These can contain negative queries starting with `!`
    *                  and (negative) regex queries starting with `(!)^`.
    */
-  static isMatch (searchIn: string|string[], searchFor: string|string[])
+  static isMatch (searchIn: string | string[], searchFor: string | string[])
   {
     searchIn = Search.flatten(searchIn);
     searchFor = Search.flatten(searchFor);
