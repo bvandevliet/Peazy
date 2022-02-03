@@ -35,22 +35,41 @@ export const loadScript = (url: string, callback?: (this: GlobalEventHandlers, e
 /**
  * Test if a variable has an empty-ish value.
  *
- * @param input Arguments to merge with default values.
+ * @param input A value to test.
  */
-export const isEmpty = (input: unknown) =>
-  !input || input === null || (typeof input === 'string' && input.trim() === '');
+export const isEmpty = (input: any) =>
+  !input || input === undefined || input === null || (typeof input === 'string' && input.trim() === '');
 
 /**
- * Merge user defined values with defaults.
+ * Like `Array.map()` but for object types.
  *
- * @param input    Arguments to merge with default values.
+ * @param input    The object to map.
+ * @param callback Called one time for each element in the object.
+ */
+export const mapObject = <T> (input: Record<any, T>, callback: (value: T) => any): Record<any, any> =>
+{
+  for (const [key, value] of Object.entries(input))
+  {
+    input[key] = callback(value);
+  }
+
+  return input;
+};
+
+/**
+ * Merge user defined default values with an object.
+ *
+ * @param input    The object to merge default values with.
  * @param defaults Object that serves as the defaults.
  */
-export const parseArgs = (input: Record<any, unknown>, defaults: Record<any, unknown> = {}) =>
+export const parseArgs = <T> (input: T, defaults: Record<any, any>): T =>
 {
-  Object.keys(input).forEach(key => defaults[key] = input[key]);
+  for (const [key, value] of Object.entries(defaults))
+  {
+    if (isEmpty((input as Record<any, unknown>)[key])) (input as Record<any, unknown>)[key] = value;
+  }
 
-  return defaults;
+  return input;
 };
 
 /**
@@ -63,7 +82,7 @@ export const parseArgs = (input: Record<any, unknown>, defaults: Record<any, unk
  *
  * @link https://stackoverflow.com/a/64093016
  */
-export const partitionArr = <T>(array: T[], predicate: (value: T, index: number) => boolean): [T[], T[]] =>
+export const partitionArr = <T> (array: T[], predicate: (value: T, index: number) => boolean): [T[], T[]] =>
   array.reduce((prev, cur, index) => (prev[Number(!predicate(cur, index))].push(cur), prev), [[], []]);
 
 /**
@@ -77,7 +96,7 @@ export const partitionArr = <T>(array: T[], predicate: (value: T, index: number)
  *                 and functions with the same priority are executed
  *                 in the order in which they were added to the filter. Default 10.
  */
-export const addFilter = (hookName: string, callback: (...args: any) => any, priority = 10) =>
+export const addFilter = (hookName: string, callback: (value?: any, ...args: any) => any, priority = 10) =>
 {
   if (undefined === filters[hookName])
   {
@@ -91,17 +110,17 @@ export const addFilter = (hookName: string, callback: (...args: any) => any, pri
  * Calls the callback functions that have been added to a filter hook.
  *
  * @param hookName The name of the filter hook.
- * @param args     Parameters to pass to the callback functions.
- *                 This array is expected to include the to be filtered value at index 0.
+ * @param value    The value being filtered.
+ * @param args     Optional arguments to pass with the callback functions.
  *
  * @returns        The filtered value.
  */
-export const applyFilters = (hookName: string, ...args: any): any =>
+export const applyFilters = <T> (hookName: string, value?: T, ...args: any): T =>
 {
   if (filters[hookName] instanceof Hook)
   {
-    args[0] = filters[hookName].applyFilters(...args);
+    value = filters[hookName].applyFilters(value, ...args);
   }
 
-  return args[0];
+  return value;
 };

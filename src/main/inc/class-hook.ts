@@ -6,12 +6,12 @@ export default class Hook
   /**
    * Filter callbacks.
    */
-  public filters: Array<(...args: any) => unknown>[] = [];
+  public filters: Array<<T> (value?: T, ...args: any) => T>[] = [];
 
   /**
    * Action callbacks.
    */
-  // public actions: Array<(...args: any) => unknown>[] = [];
+  // public actions: Array<<T> (value?: T, ...args: any) => T>[] = [];
 
   /**
    * Adds a callback function to a filter hook.
@@ -22,7 +22,7 @@ export default class Hook
    *                 and functions with the same priority are executed in the order
    *                 in which they were added to the filter.
    */
-  public addFilter (callback: (...args: any) => unknown, priority: number)
+  public addFilter (callback: (value?: any, ...args: any) => any, priority: number)
   {
     undefined === this.filters[priority]
       ? this.filters[priority] = [callback]
@@ -32,16 +32,16 @@ export default class Hook
   /**
    * Calls the callback functions that have been added to a filter hook.
    *
-   * @param args Additional parameters to pass to the callback functions.
-   *             This array is expected to include the to be filtered value at index 0.
+   * @param value The value being filtered.
+   * @param args  Optional arguments to pass with the callback functions.
    *
-   * @return     The filtered value.
+   * @return      The filtered value.
    */
-  public applyFilters (...args: any): unknown
+  public applyFilters <T> (value?: T, ...args: any): T
   {
     this.filters.forEach(priority =>
-      priority.forEach(cb => args[0] = cb(...args)));
+      priority.forEach(cb => value = cb(value, ...args)));
 
-    return args[0];
+    return value;
   }
 }

@@ -47,7 +47,7 @@ export enum Order
 export const sortElement =
 (
   elemSet: any,
-  sortBy: (curElem: HTMLElement) => string|number,
+  sortBy: (curElem: HTMLElement) => string | number,
   orderBy: Order = Order.ASC,
 ) =>
 {

@@ -12,7 +12,7 @@ export default class DateTime
    *
    * @param TimeStringOrStamp A specific date/time to create instance with.
    */
-  constructor (TimeStringOrStamp: string|number|Date = Date.now())
+  constructor (TimeStringOrStamp: string | number | Date = Date.now())
   {
     this.Date = new Date(TimeStringOrStamp);
   }

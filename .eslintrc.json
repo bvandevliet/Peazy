@@ -61,7 +61,7 @@
     ],
     "spaced-comment": "error",
     "comma-style": "error",
-    "camelcase": "error",
+    "camelcase": "warn",
     "eqeqeq": [
       "error",
       "smart"
@@ -217,7 +217,6 @@
     // "no-unused-vars": "warn",
     "no-unused-private-class-members": "warn",
     "no-useless-constructor": "warn",
-    "no-empty-function": "warn",
     "no-useless-return": "warn",
     "no-lonely-if": "warn",
     "no-floating-decimal": "off"
