@@ -4,6 +4,8 @@ import
 }
   from 'electron';
 
+// import { userConfig } from './_config/index.js';
+
 import * as core from './inc/functions-core';
 import * as fs from './inc/functions-fs';
 import * as sql from './inc/functions-sql';
