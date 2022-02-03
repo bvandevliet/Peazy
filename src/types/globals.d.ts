@@ -1,7 +1,7 @@
 // https://stackoverflow.com/a/48244432
 type AtLeastOne<T, U = {[K in keyof T]: Pick<T, K>}> = Partial<T> & U[keyof U];
 
-interface ProjectInfo
+interface Project
 {
   /* eslint-disable camelcase */
   install_id?: any;
@@ -27,6 +27,8 @@ interface ProjectInfo
   project_engineer_id?: any;
   project_engineer_name?: string;
 }
+
+type ProjectId = AtLeastOne<Pick<Project, 'project_id' | 'project_number'>>;
 
 interface AttachedDocument
 {

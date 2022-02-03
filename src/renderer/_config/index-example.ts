@@ -6,7 +6,7 @@
 /**
  * SQL query to fetch one project from the database.
  */
-window.api.core.addFilter('sql_get_project', (query: string, args: AtLeastOne<Pick<ProjectInfo, 'project_id' | 'project_number'>>) =>
+window.api.core.addFilter('sql_get_project', (query: string, args: ProjectId) =>
 {
   return query;
 });
@@ -22,7 +22,7 @@ window.api.core.addFilter('sql_get_projects', (query: string, args: Record<strin
 /**
  * SQL query to fetch documents that are attached to a project.
  */
-window.api.core.addFilter('sql_get_attached_documents', (query: string, projectInfo: ProjectInfo) =>
+window.api.core.addFilter('sql_get_attached_documents', (query: string, project: Project) =>
 {
   return query;
 });
@@ -30,7 +30,7 @@ window.api.core.addFilter('sql_get_attached_documents', (query: string, projectI
 /**
  * SQL query to fetch resource hours worked on a project.
  */
-window.api.core.addFilter('sql_get_work_hours', (query: string, projectInfo: ProjectInfo) =>
+window.api.core.addFilter('sql_get_work_hours', (query: string, project: Project) =>
 {
   return query;
 });
