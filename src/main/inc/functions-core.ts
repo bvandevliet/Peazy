@@ -41,16 +41,35 @@ export const isEmpty = (input: any) =>
   !input || input === undefined || input === null || (typeof input === 'string' && input.trim() === '');
 
 /**
- * Merge user defined values with defaults.
+ * Like `Array.map()` but for object types.
  *
- * @param input    Arguments to merge with default values.
+ * @param input    The object to map.
+ * @param callback Called one time for each element in the object.
+ */
+export const mapObject = <T> (input: Record<any, T>, callback: (value: T) => any): Record<any, any> =>
+{
+  for (const [key, value] of Object.entries(input))
+  {
+    input[key] = callback(value);
+  }
+
+  return input;
+};
+
+/**
+ * Merge user defined default values with an object.
+ *
+ * @param input    The object to merge default values with.
  * @param defaults Object that serves as the defaults.
  */
-export const parseArgs = (input: Record<any, unknown>, defaults: Record<any, unknown> = {}) =>
+export const parseArgs = <T> (input: T, defaults: Record<any, any>): T =>
 {
-  Object.keys(input).forEach(key => defaults[key] = input[key]);
+  for (const [key, value] of Object.entries(defaults))
+  {
+    if (isEmpty((input as Record<any, unknown>)[key])) (input as Record<any, unknown>)[key] = value;
+  }
 
-  return defaults;
+  return input;
 };
 
 /**
