@@ -42,13 +42,15 @@ export default class Database
         this._connection?.close(); // triggers 'end'
       }
 
-      this._connection = new Connection(this._config)
-        .on('error', err => (this._isOpen = false, console.error(err)))
-        .on('end', () => this._isOpen = false);
-
       return new Promise((resolve, reject) =>
       {
-        this._connection.once('connect', err => err ? reject(err) : (this._isOpen = true, resolve(this._connection)));
+        this._connection = new Connection(this._config)
+          .on('error', err => (this._isOpen = false, console.error(err)))
+          .on('end', () => this._isOpen = false)
+
+          .once('connect', err => err ? reject(err) : (this._isOpen = true, resolve(this._connection)));
+
+        this._connection.connect();
       });
     }
 
