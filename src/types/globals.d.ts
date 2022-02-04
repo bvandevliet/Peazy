@@ -28,7 +28,8 @@ interface Project
   project_engineer_name?: string;
 }
 
-type ProjectId = AtLeastOne<Pick<Project, 'project_id' | 'project_number'>>;
+// `Pick` didn't work as expected, but the below doesn't look like the best approach either !!
+type ProjectId = AtLeastOne<{project_id: Project['project_id'], project_number: Project['project_number']}>;
 
 interface AttachedDocument
 {
