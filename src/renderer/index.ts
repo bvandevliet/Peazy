@@ -62,7 +62,7 @@ const sortTable: JQuery.TypeEventHandler<HTMLTableCellElement, undefined, HTMLEl
 
   html.sortElement($table.find('>tbody>tr'),
     elem => $(elem).find('th, td').eq(i).text(),
-    order === 'desc' ? Order.DESC : Order.ASC);
+    order === 'desc' ? 'DESC' : 'ASC');
 };
 
 /**
@@ -79,7 +79,7 @@ const fetchProjectBrowser = () =>
   window.api.project.getProjects(
     {
       single: false,
-      orderBy: Order.DESC,
+      orderBy: 'DESC',
     },
     project =>
     {
