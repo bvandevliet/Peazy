@@ -1,10 +1,3 @@
-// eslint-disable-next-line no-shadow
-export enum Order
-{
-  ASC,
-  DESC,
-}
-
 /**
  * Sort elements alphabetically and numerically.
  *

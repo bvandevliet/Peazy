@@ -30,17 +30,17 @@ export const userConfig: userConfig =
 };
 
 /**
- * SQL query to fetch one project from the database.
+ * SQL query to fetch multiple projects from the database.
  */
-core.addFilter('sql_get_project', (query: string, args: ProjectId) =>
+core.addFilter('sql_get_projects', (query: string, args: getProjectArgs) =>
 {
   return query;
 });
 
 /**
- * SQL query to fetch multiple projects from the database.
+ * SQL query to fetch one project from the database.
  */
-core.addFilter('sql_get_projects', (query: string, args: Record<string, any>) =>
+core.addFilter('sql_get_project', (query: string, args: ProjectId) =>
 {
   return query;
 });
