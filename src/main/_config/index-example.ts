@@ -39,14 +39,6 @@ core.addFilter('sql_get_projects', (query: string, args: getProjectArgs) =>
 });
 
 /**
- * SQL query to fetch one project from the database.
- */
-core.addFilter('sql_get_project', (query: string, args: ProjectId) =>
-{
-  return query;
-});
-
-/**
  * SQL query to fetch documents that are attached to a project.
  */
 core.addFilter('sql_get_attached_documents', (query: string, project: Project) =>
