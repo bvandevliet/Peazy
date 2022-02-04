@@ -4,7 +4,7 @@
 export default class Search
 {
   /**
-   * The container element that is a close parent of the `elemSelect` selector.
+   * The container element that is a close parent of the `elemSelector` selector.
    */
   public $elemMaster: JQuery<HTMLElement>;
 
@@ -25,7 +25,7 @@ export default class Search
 
   /**
    *
-   * @param elemMaster   A container element that is a close parent of the `elemSelect` selector.
+   * @param elemMaster   A container element that is a close parent of the `elemSelector` selector.
    * @param elemSelector A selector string that refers to the elements to show/hide relative to `elemMaster`.
    * @param searchIn     A callback function to return a value to search in.
    */
@@ -104,7 +104,7 @@ export default class Search
       // Does every positive query item match at least one search item?
       // And does every negative query segment not match any search segment?
       return negative !== (searchIn as string[]).some(searchItem =>
-        queryRegex ? queryRegex.test(searchItem) : Search.includes(queryItem, searchItem));
+        queryRegex ? queryRegex.test(searchItem) : Search.includes(searchItem, queryItem));
     });
   }
 
@@ -130,7 +130,7 @@ export default class Search
       {
         const $elemParent = $(elemParent);
 
-        if ($elemParent.hasClass('ignore')) return;
+        if ($elemParent.hasClass('ignore-search')) return;
 
         const searchArr = this.searchIn(elemParent);
 
