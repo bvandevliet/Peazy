@@ -5,6 +5,8 @@ import { userConfig } from '../_config';
 import Database from './class-database';
 import * as core from './functions-core';
 
+/* eslint-disable camelcase */
+
 const database: Database = new Database(
   {
     server: userConfig.database.server,
@@ -32,10 +34,17 @@ const database: Database = new Database(
  */
 export const getProject = (args: ProjectId): Promise<Project> =>
 {
+  const getArgs: getProjectArgs =
+   {
+     single: true,
+     project_ids: !core.isEmpty(args.project_id) ? [args.project_id] : null,
+     project_numbers: !core.isEmpty(args.project_number) ? [args.project_number] : null,
+   };
+
   /**
    * Filters the SQL query string for this request.
    */
-  const query = core.applyFilters('sql_get_project', '' as string, args);
+  const query = core.applyFilters('sql_get_projects', '' as string, getArgs);
 
   return new Promise((resolve, reject) =>
   {
@@ -53,10 +62,10 @@ export const getProject = (args: ProjectId): Promise<Project> =>
 /**
  * Fetch multiple projects from the database.
  *
- * @param args  An object providing optional arguments, passed and handled by the query filter.
+ * @param args  An object providing arguments, passed and handled by the query filter.
  * @param onRow Called on each returned row.
  */
-export const getProjects = (args: Record<string, any>, onRow: (project: Project) => void): Promise<number> =>
+export const getProjects = (args: getProjectArgs, onRow: (project: Project) => void): Promise<number> =>
 {
   /**
    * Filters the SQL query string for this request.

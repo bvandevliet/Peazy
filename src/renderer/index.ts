@@ -60,7 +60,7 @@ const sortTable: JQuery.TypeEventHandler<HTMLTableCellElement, undefined, HTMLEl
 
   html.sortElement($table.find('>tbody>tr'),
     elem => $(elem).find('th, td').eq(i).text(),
-    order === 'desc' ? html.Order.DESC : html.Order.ASC);
+    order === 'desc' ? Order.DESC : Order.ASC);
 };
 
 /**

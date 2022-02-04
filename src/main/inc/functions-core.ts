@@ -38,7 +38,7 @@ export const loadScript = (url: string, callback?: (this: GlobalEventHandlers, e
  * @param input A value to test.
  */
 export const isEmpty = (input: any) =>
-  !input || input === undefined || input === null || (typeof input === 'string' && input.trim() === '');
+  input === undefined || input === null || (typeof input === 'string' && input.trim() === '');
 
 /**
  * Like `Array.map()` but for object types.

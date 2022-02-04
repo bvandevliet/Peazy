@@ -30,13 +30,6 @@ export const getTemplateClone = (id: string) =>
   return (templateReferences[id]?.firstElementChild.cloneNode(true) as HTMLElement);
 };
 
-// eslint-disable-next-line no-shadow
-export enum Order
-{
-  ASC,
-  DESC,
-}
-
 /**
  * Sort elements alphabetically and numerically.
  *
