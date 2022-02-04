@@ -7,6 +7,7 @@
  */
 
 import * as core from '../inc/functions-core';
+import * as sql from '../inc/functions-sql';
 
 /**
  * Application-wide configuration.
