@@ -56,3 +56,31 @@ export const sortElement =
     .sort((a, b) => orderBy === 'DESC' ? doSort(b, a) : doSort(a, b))
     .forEach(curElem => $(curElem).parent().append(curElem));
 };
+
+/**
+ * Set event handlers to sortable table header and footer columns.
+ *
+ * @param table The table element to process.
+ */
+export const makeTableSortable = (table: HTMLTableElement | JQuery<HTMLTableElement>) =>
+{
+  ($(table).find('thead th.is-sortable, tfoot th.is-sortable') as JQuery<HTMLTableCellElement>).on('click', function ()
+  {
+    const $th = $(this);
+
+    const i = $th.index();
+    const $table = $th.parents('table').first();
+
+    // Get the `th` elements in both table header and footer.
+    const $thSet = $table.find(`>thead>tr>th:nth-child(${i + 1}), >tfoot>tr>th:nth-child(${i + 1})`);
+
+    const order = $thSet.hasClass('is-sorted-asc') ? 'desc' : 'asc';
+
+    $thSet.add($thSet.siblings()).removeClass(['is-sorted-asc', 'is-sorted-desc']);
+    $thSet.addClass(`is-sorted-${order}`);
+
+    sortElement($table.find('>tbody>tr'),
+      elem => $(elem).find('th, td').eq(i).text(),
+      order === 'desc' ? 'DESC' : 'ASC');
+  });
+};

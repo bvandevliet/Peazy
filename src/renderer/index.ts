@@ -1,5 +1,6 @@
 import DateTime from './inc/class-datetime.js';
 import TableList from './inc/class-html-table-list.js';
+import Search from './inc/class-search.js';
 import * as html from './inc/functions-html.js';
 
 /**
@@ -43,37 +44,53 @@ $('#sidebar input[type=search]').on('focus', () =>
 });
 
 /**
- * Handle sortable table columns.
+ * Initiate sorting on any already available / non-dynamically generated html tables that support it.
  */
-const sortTable: JQuery.TypeEventHandler<HTMLTableCellElement, undefined, HTMLElement, HTMLElement, string> = function ()
-{
-  const $th = $(this);
-
-  const i = $th.index();
-  const $table = $th.parents('table').first();
-
-  // Get the `th` elements in both table header and footer.
-  const $thSet = $table.find(`>thead>tr>th:nth-child(${i + 1}), >tfoot>tr>th:nth-child(${i + 1})`);
-
-  const order = $thSet.hasClass('is-sorted-asc') ? 'desc' : 'asc';
-
-  $thSet.add($thSet.siblings()).removeClass(['is-sorted-asc', 'is-sorted-desc']);
-  $thSet.addClass(`is-sorted-${order}`);
-
-  html.sortElement($table.find('>tbody>tr'),
-    elem => $(elem).find('th, td').eq(i).text(),
-    order === 'desc' ? 'DESC' : 'ASC');
-};
+html.makeTableSortable($('table'));
 
 /**
- * Initiate sorting on already available / non-dynamically generated html tables that support it.
+ * Create a `TableList` wrapper for the projects-table html element.
  */
-($('thead th.is-sortable, tfoot th.is-sortable') as JQuery<HTMLTableCellElement>).on('click', sortTable);
-
 const projectBrowser = new TableList($('#projects-table'));
 
+/**
+ * Initiate the search handler for the projects-table.
+ */
+const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr).find('>th, >td').toArray().map(td => td.textContent));
+
+/**
+ * Bind `projectSearch` to search events on the project-table.
+ */
+($('#project-search') as JQuery<HTMLInputElement>)
+  .on('search', function ()
+  {
+    projectSearch.search(this.value);
+  })
+  .on('keyup', function (e)
+  {
+    switch (e.key)
+    {
+      case 'Escape':
+        // eslint-disable-next-line no-useless-return
+        return;
+
+      case 'Enter':
+        // load project !!
+        break;
+
+      default:
+        projectSearch.search(this.value);
+        break;
+    }
+  });
+
+/**
+ * Fetch projects from database to fill the projects-table.
+ */
 const fetchProjectBrowser = () =>
 {
+  // start floating loader !!
+
   projectBrowser.empty();
 
   window.api.project.getProjects(
@@ -122,6 +139,9 @@ const fetchProjectBrowser = () =>
         },
       ]);
     },
-  );
+  ).then(() =>
+  {
+    // stop floating loader !!
+  });
 };
 fetchProjectBrowser();
