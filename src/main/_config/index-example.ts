@@ -1,10 +1,12 @@
 /*
- * This module runs in the MAIN process and should at least contain the application-wide configuration object.
+ * This module runs in the MAIN process and should at least contain the application-wide configuration object and your application specifix SQL queries.
  * Just rename this file to `index.ts` and you're good to go.
  *
- * You may include custom logic that needs to run in the MAIN process, e.g. additional database related logic.
- * Using hooks it is possible to expose parts of it to your RENDERER logic.
+ * You may include additional custom logic that needs to run in the MAIN process, e.g. database related logic.
+ * Using hooks it is possible to expose APIs to your RENDERER logic.
  */
+
+import * as core from '../inc/functions-core';
 
 /**
  * Application-wide configuration.
@@ -26,3 +28,35 @@ export const userConfig: userConfig =
     lookupDirectories: [],
   },
 };
+
+/**
+ * SQL query to fetch one project from the database.
+ */
+core.addFilter('sql_get_project', (query: string, args: ProjectId) =>
+{
+  return query;
+});
+
+/**
+ * SQL query to fetch multiple projects from the database.
+ */
+core.addFilter('sql_get_projects', (query: string, args: Record<string, any>) =>
+{
+  return query;
+});
+
+/**
+ * SQL query to fetch documents that are attached to a project.
+ */
+core.addFilter('sql_get_attached_documents', (query: string, project: Project) =>
+{
+  return query;
+});
+
+/**
+ * SQL query to fetch resource hours worked on a project.
+ */
+core.addFilter('sql_get_work_hours', (query: string, project: Project) =>
+{
+  return query;
+});
