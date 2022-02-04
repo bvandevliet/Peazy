@@ -26,6 +26,7 @@ interface Project
   price?: number;
   date_created?: string | Date;
   date_modified?: string | Date;
+  date_delivery?: string | Date;
   notes?: string;
   sales_manager_id?: any;
   sales_manager_name?: string;
