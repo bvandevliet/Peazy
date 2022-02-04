@@ -21,8 +21,8 @@ interface Project
   customer_name: string;
   customer_country_id?: any;
   customer_country_name?: string;
-  status_id?: any;
-  status_name?: string;
+  status_id: any;
+  status_name: string;
   price?: number;
   date_created?: string | Date;
   date_modified?: string | Date;
