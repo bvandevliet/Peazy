@@ -1,12 +1,7 @@
 // https://stackoverflow.com/a/48244432
 type AtLeastOne<T, U = {[K in keyof T]: Pick<T, K>}> = Partial<T> & U[keyof U];
 
-// eslint-disable-next-line no-shadow
-declare enum Order
-{
-  ASC,
-  DESC,
-}
+type Order = 'ASC' | 'DESC';
 
 interface Project
 {

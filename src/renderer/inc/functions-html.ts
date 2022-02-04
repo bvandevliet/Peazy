@@ -9,7 +9,7 @@ export const sortElement =
 (
   elemSet: any,
   sortBy: (curElem: HTMLElement) => string | number,
-  orderBy: Order = Order.ASC,
+  orderBy: Order = 'ASC',
 ) =>
 {
   const doSort = (a: HTMLElement, b: HTMLElement) =>
@@ -21,7 +21,7 @@ export const sortElement =
   };
 
   $(elemSet).get()
-    .sort((a, b) => orderBy === Order.DESC ? doSort(b, a) : doSort(a, b))
+    .sort((a, b) => orderBy === 'DESC' ? doSort(b, a) : doSort(a, b))
     .forEach(curElem => $(curElem).parent().append(curElem));
 };
 
