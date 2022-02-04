@@ -1,5 +1,3 @@
-import { ColumnValue } from 'tedious';
-
 import { userConfig } from '../_config';
 
 import Database from './class-database';
@@ -28,38 +26,6 @@ const database: Database = new Database(
 );
 
 /**
- * Fetch one project from the database.
- *
- * @param args An object providing either a project ID or a project number.
- */
-export const getProject = (args: ProjectId): Promise<Project> =>
-{
-  const getArgs: getProjectArgs =
-   {
-     single: true,
-     project_ids: !core.isEmpty(args.project_id) ? [args.project_id] : null,
-     project_numbers: !core.isEmpty(args.project_number) ? [args.project_number] : null,
-   };
-
-  /**
-   * Filters the SQL query string for this request.
-   */
-  const query = core.applyFilters('sql_get_projects', '' as string, getArgs);
-
-  return new Promise((resolve, reject) =>
-  {
-    // Last record wins, but there should only be one result.
-    let _columns: Record<string, ColumnValue>;
-
-    database.execSql(query, columns => _columns = columns)
-      .then(rowCount => rowCount > 0
-        ? resolve(core.mapObject(_columns, column => column.value) as Project)
-        : reject(new Error('Project does not exist.')))
-      .catch(err => reject(err));
-  });
-};
-
-/**
  * Fetch multiple projects from the database.
  *
  * @param args  An object providing arguments, passed and handled by the query filter.
@@ -73,6 +39,33 @@ export const getProjects = (args: getProjectArgs, onRow: (project: Project) => v
   const query = core.applyFilters('sql_get_projects', '' as string, args);
 
   return database.execSql(query, columns => onRow(core.mapObject(columns, column => column.value) as Project));
+};
+
+/**
+ * Fetch one project from the database.
+ *
+ * @param args An object providing either a project ID or a project number.
+ */
+export const getProject = (args: ProjectId): Promise<Project> =>
+{
+  const getArgs: getProjectArgs =
+  {
+    single: true,
+    project_ids: !core.isEmpty(args.project_id) ? [args.project_id] : null,
+    project_numbers: !core.isEmpty(args.project_number) ? [args.project_number] : null,
+  };
+
+  return new Promise((resolve, reject) =>
+  {
+    // Last record wins, but there should only be one result.
+    let _project: Project;
+
+    getProjects(getArgs, project => _project = project)
+      .then(rowCount => rowCount > 0
+        ? resolve(_project)
+        : reject(new Error('Project does not exist.')))
+      .catch(err => reject(err));
+  });
 };
 
 /**
