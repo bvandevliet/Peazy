@@ -22,11 +22,11 @@ table {
         display: contents;
         visibility: hidden;
         float: right;
-        content: ' \25B4';
+        content: ' \25BE';
       }
 
-      &.is-sorted-desc::after {
-        content: ' \25BE';
+      &.is-sorted-asc::after {
+        content: ' \25B4';
       }
 
       &:hover::after,
