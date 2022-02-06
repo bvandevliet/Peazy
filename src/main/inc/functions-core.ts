@@ -11,6 +11,15 @@ const filters: Record<string, Hook> = {};
 // const actions: Record<string, Hook> = {};
 
 /**
+ * Sanitizes a string key.
+ *
+ * @param input String key.
+ */
+export const sanitizeKey = (input: string) =>
+  // eslint-disable-next-line no-useless-escape
+  input.replace(/[^a-z0-9_\-]/giu, '');
+
+/**
  * Natively load another script.
  *
  * @param           url           Url to the script, relative to the root directory.
