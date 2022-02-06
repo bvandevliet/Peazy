@@ -32,6 +32,7 @@ export const userConfig: userConfig =
 
 /**
  * SQL query to fetch multiple projects from the database.
+ * The result is expected to be ordered descending by date by default.
  */
 core.addFilter('sql_get_projects', (query: string, args: getProjectArgs) =>
 {
