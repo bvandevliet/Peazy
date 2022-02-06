@@ -5,10 +5,13 @@ import * as html from './functions-html.js';
  */
 export default class TableList
 {
+  /**
+   * The html table element.
+   */
   $table: JQuery<HTMLTableElement>;
 
   /**
-   * Get the tbody count.
+   * The amount of `tbody` elements.
    */
   get tbodyCount ()
   {
@@ -25,7 +28,7 @@ export default class TableList
   }
 
   /**
-   * Remove all tbody elements.
+   * Remove all `tbody` elements.
    */
   empty ()
   {
@@ -33,7 +36,7 @@ export default class TableList
   }
 
   /**
-   * Get a tbody by index.
+   * Get a `tbody` element by index.
    *
    * @param {number} tbodyIndex The index of the tbody element to retrieve.
    */
@@ -55,7 +58,7 @@ export default class TableList
    *
    *@param columns An array of `tableRowColumns` objects.
    */
-  static buildRow (columns: tableRowColumns[])
+  static buildRow (columns: tableCellItem[])
   {
     const $tr = $(document.createElement('tr'));
 
@@ -113,12 +116,12 @@ export default class TableList
   }
 
   /**
-   * Prepend items to a tbody element.
+   * Prepend items to a `tbody` element.
    *
    * @param columns    An array of `tableRowColumns` objects.
-   * @param tbodyIndex The index of the tbody element to apply to.
+   * @param tbodyIndex The index of the `tbody` element to apply to.
    */
-  prependItem (columns: tableRowColumns[], tbodyIndex = 0)
+  prependItem (columns: tableCellItem[], tbodyIndex = 0)
   {
     let $tbody = this.$table.find('>tbody').eq(tbodyIndex) as JQuery<HTMLTableSectionElement>;
 
@@ -137,12 +140,12 @@ export default class TableList
   }
 
   /**
-   * Append items to a tbody element.
+   * Append items to a `tbody` element.
    *
    * @param columns    An array of `tableRowColumns` objects.
-   * @param tbodyIndex The index of the tbody element to apply to.
+   * @param tbodyIndex The index of the `tbody` element to apply to.
    */
-  appendItem (columns: tableRowColumns[], tbodyIndex = 0)
+  appendItem (columns: tableCellItem[], tbodyIndex = 0)
   {
     let $tbody = this.$table.find('>tbody').eq(tbodyIndex) as JQuery<HTMLTableSectionElement>;
 

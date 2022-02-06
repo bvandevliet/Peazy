@@ -1,4 +1,4 @@
-interface tableRowColumns
+interface tableCellItem
 {
   /**
    * The template to use.
