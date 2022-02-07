@@ -1,41 +1,41 @@
 interface tableCellItem
 {
   /**
-   * The template to use.
+   * The `th` or `td` template to use.
    */
   template: string,
   /**
-   * Text to display in the menu item.
+   * Text to display in the cell.
    */
   text?: string,
   /**
-   * Html to display in the menu item.
+   * Html to display in the cell, overwriting `text` if it's set.
    */
   html?: string,
   /**
-   * A title text to display on hover.
+   * Title to display on hover.
    */
   title?: string,
   /**
-   * A function to call on click. If set an <a/> element is created.
+   * Called on click. If set an <a/> element is created.
    */
   onclick?: ($td: JQuery<HTMLTableCellElement>, e: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => void,
   /**
-   * A function to call on double click.
+   * Called on double click.
    */
-  ondblclick?: ($td: JQuery<HTMLTableCellElement>, e: JQueryEventObject) => void,
+  ondblclick?: ($td: JQuery<HTMLTableCellElement>, e: JQuery.DoubleClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void,
   /**
-   * A function to call on contextmenu.
+   * Called on contextmenu.
    */
-  oncontextmenu?: ($td: JQuery<HTMLTableCellElement>, e: JQueryEventObject) => void,
+  oncontextmenu?: ($td: JQuery<HTMLTableCellElement>, e: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void,
   /**
-   * A function to call on middleclick.
+   * Called on middleclick.
    */
-  onmiddleclick?: ($td: JQuery<HTMLTableCellElement>, e: JQueryEventObject) => void,
+  onmiddleclick?: ($td: JQuery<HTMLTableCellElement>, e: JQuery.MouseDownEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void,
   /**
-   * A function to call on dragstart.
+   * Called on dragstart.
    */
-  ondragstart?: ($td: JQuery<HTMLTableCellElement>, e: DragEvent) => void,
+  ondragstart?: ($td: JQuery<HTMLTableCellElement>, e: JQuery.DragStartEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void,
   /**
    * Additional classes.
    */

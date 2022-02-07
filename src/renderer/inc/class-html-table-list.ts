@@ -8,7 +8,7 @@ export default class TableList
   /**
    * The html table element.
    */
-  $table: JQuery<HTMLTableElement>;
+  readonly $table: JQuery<HTMLTableElement>;
 
   /**
    * The amount of `tbody` elements.
@@ -67,29 +67,44 @@ export default class TableList
       const $td = ($(html.getTemplateClone(column.template)) as JQuery<HTMLTableCellElement>)
         .addClass(column.classes);
 
-      let $a: JQuery<HTMLAnchorElement> | typeof $td = $td;
+      // JQuery<HTMLAnchorElement> | typeof $td
+      let $a: JQuery<HTMLElement> = $td;
 
       if (typeof column.onclick === 'function')
       {
         $a = $(document.createElement('a'))
-          .on('click', e => column.onclick($td, e));
+          .on('click', e =>
+          {
+            e.preventDefault();
 
-        $td.append($a);
+            column.onclick($td, e);
+          })
+          .appendTo($td);
       }
 
-      ($a
-        .text(column.text) as JQuery<HTMLElement>)
+      $a
+        .text(column.text)
         .html(column.html)
         .attr('title', column.title);
 
       if (typeof column.ondblclick === 'function')
       {
-        $a.on('dblclick', e => column.ondblclick($td, e));
+        $a.on('dblclick', e =>
+        {
+          e.preventDefault();
+
+          column.ondblclick($td, e);
+        });
       }
 
       if (typeof column.oncontextmenu === 'function')
       {
-        $a.on('contextmenu', e => column.oncontextmenu($td, e));
+        $a.on('contextmenu', e =>
+        {
+          e.preventDefault();
+
+          column.oncontextmenu($td, e);
+        });
       }
 
       if (typeof column.onmiddleclick === 'function')
@@ -98,15 +113,20 @@ export default class TableList
         {
           e.preventDefault();
 
-          if (e.which === 2 || e.button === 4) column.onmiddleclick($td, e);
+          if (e.button === 1) column.onmiddleclick($td, e);
         });
       }
 
       if (typeof column.ondragstart === 'function')
       {
         $a
-          .on('dragstart', e => column.ondragstart($td, e as unknown as DragEvent))
-          .attr('draggable', 'true');
+          .attr('draggable', 'true')
+          .on('dragstart', e =>
+          {
+            e.preventDefault();
+
+            column.ondragstart($td, e);
+          });
       }
 
       $tr.append($td);
