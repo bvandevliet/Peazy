@@ -1,5 +1,6 @@
 import DateTime from './inc/class-datetime.js';
 import TableList from './inc/class-html-table-list.js';
+import Tabs from './inc/class-tabs.js';
 import Search from './inc/class-search.js';
 import * as html from './inc/functions-html.js';
 
@@ -49,6 +50,71 @@ $('#sidebar input[type=search]').on('focus', () =>
 html.makeTableSortable($('table'));
 
 /**
+ * Initiate the main tabs.
+ */
+const mainTabs = new Tabs();
+
+/**
+ * Append main tabs to the main window.
+ */
+$('#main').append(mainTabs.$container);
+
+/**
+ * Load a project.
+ *
+ * @param args An object providing either a project ID or a project number.
+ *
+ * @return Whether the project was found.
+ */
+const loadProject = async (args: ProjectId): Promise<boolean> =>
+{
+  const tabId = 'project-'; // to be appended to later ..
+
+  // If an ID was passed, check if tab already exists, if so, activate it and bail.
+  if (!window.api.core.isEmpty(args.project_id))
+  {
+    const [$li] = mainTabs.tryTrigger(`${tabId}${args.project_id}`);
+
+    if ($li.length > 0) return true;
+  }
+
+  // Fetch project from the database.
+  const project = await window.api.project.getProject(args)
+    .catch(err =>
+    {
+      // spawn ERROR dialog message box !!
+
+      throw new Error(err);
+    });
+
+  // Project not found.
+  if (project === null) return false;
+
+  // Create new tab.
+  const [$li] = mainTabs.addTab({
+    id: `${tabId}${project.project_id}`,
+    template: 'tmpl-li-project-tab',
+    text: window.api.core.applyFilters('project_project_number', project.project_number, project),
+    title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
+    callback: $div =>
+    {
+      $div.html('<p>Paragraph..</p>');
+    },
+  });
+
+  // Configure the "close" button.
+  $li.find('>a.close-btn').on('click', () =>
+  {
+    // dispose relative instances !!
+
+    mainTabs.removeTab($li);
+  });
+
+  // All good.
+  return true;
+};
+
+/**
  * Create a `TableList` wrapper for the projects-table html element.
  */
 const projectBrowser = new TableList($('#projects-table'));
@@ -75,7 +141,17 @@ const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr)
         return;
 
       case 'Enter':
-        // load project !!
+        // start floating loader !!
+        loadProject({ project_number: this.value })
+          .then(found =>
+          {
+            if (!found) return null; // deepsearch !!
+
+            // Clear search and deactivate browsing state.
+            this.value = ''; projectSearch.search('');
+            $(document.body).removeClass('browsing');
+          })
+          .finally(() => null); // stop floating loader !!
         break;
 
       default:
@@ -114,7 +190,12 @@ const fetchProjectBrowser = () =>
           template: 'tmpl-td-install-number',
           text: window.api.core.applyFilters('project_install_number', project.install_number, project),
           title: window.api.core.applyFilters('project_install_number_title', project.install_id ? `${project.install_description}  •  ${project.customer_name}` : null, project),
-          onclick: () => console.log('onclick install-number'),
+          onclick: () =>
+          {
+            // start floating loader !!
+            loadProject({ project_number: window.api.core.applyFilters('project_install_number', project.install_number, project) })
+              .finally(() => null); // stop floating loader !!
+          },
         },
         {
           template: 'tmpl-td-project-description',
@@ -125,7 +206,12 @@ const fetchProjectBrowser = () =>
           template: 'tmpl-td-project-number',
           text: window.api.core.applyFilters('project_project_number', project.project_number, project),
           title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
-          onclick: () => console.log('onclick project-number'),
+          onclick: () =>
+          {
+            // start floating loader !!
+            loadProject(project)
+              .finally(() => null); // stop floating loader !!
+          },
         },
         {
           template: 'tmpl-td-project-description',
