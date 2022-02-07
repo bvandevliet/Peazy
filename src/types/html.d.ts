@@ -53,9 +53,9 @@ interface tabItem
    */
   template?: string,
   /**
-   * Callback function intended for rendering the page content.
+   * Callback function intended for rendering the page content before it is visible.
    */
-  script: ($div: JQuery<HTMLDivElement>) => void,
+  callback: ($div: JQuery<HTMLDivElement>) => void,
   /**
    * Text to display in the tab.
    */
