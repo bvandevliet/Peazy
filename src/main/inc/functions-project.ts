@@ -52,20 +52,13 @@ export const getProject = (args: ProjectId): Promise<Project> =>
   {
     single: true,
     project_ids: !core.isEmpty(args.project_id) ? [args.project_id] : null,
-    project_numbers: !core.isEmpty(args.project_number) ? [args.project_number] : null,
+    project_numbers: core.isEmpty(args.project_id) && !core.isEmpty(args.project_number) ? [args.project_number] : null,
   };
 
-  return new Promise((resolve, reject) =>
-  {
-    // Last record wins, but there should only be one result.
-    let _project: Project;
+  // Last record wins, but there should only be one result.
+  let _project: Project = null;
 
-    getProjects(getArgs, project => _project = project)
-      .then(rowCount => rowCount > 0
-        ? resolve(_project)
-        : reject(new Error('Project does not exist.')))
-      .catch(err => reject(err));
-  });
+  return getProjects(getArgs, project => _project = project).then(() => _project).catch(err => err);
 };
 
 /**
