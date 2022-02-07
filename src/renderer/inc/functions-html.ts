@@ -9,6 +9,16 @@ export const copyText = (text: string) =>
 };
 
 /**
+ * Show/hide floating loader.
+ *
+ * @param enable
+ */
+export const loading = (enable = true) =>
+{
+  enable ? $('#loader').show() : $('#loader').hide();
+};
+
+/**
  * Html template reference cache.
  */
 const templateReferences: Record<string, DocumentFragment> = {};

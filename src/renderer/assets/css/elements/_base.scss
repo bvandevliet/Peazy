@@ -13,11 +13,19 @@ body {
 *,
 *::after,
 *::before {
-  @extend .is-radiusless;
   @extend .is-shadowless;
 
   -webkit-user-drag: none;
   -webkit-app-region: no-drag;
+}
+
+input {
+  @extend .is-radiusless;
+
+  // Remove borders except bottom.
+  border-top: none !important;
+  border-right: none !important;
+  border-left: none !important;
 }
 
 a,

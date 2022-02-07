@@ -49,16 +49,8 @@ $weight-bold:     700;
 $column-gap:    0.75rem;
 $block-spacing: 1.5rem;
 
-*,
-*::after,
-*::before {
-  // Remove borders except bottom.
-  border-top: none !important;
-  border-right: none !important;
-  border-left: none !important;
-}
-
 // Compensate and reset padding (also for input controls with respect to removal of borders).
+
 $control-padding-vertical: .2em;
 $control-padding-horizontal: .5em;
 $control-height: unset;

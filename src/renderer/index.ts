@@ -141,7 +141,7 @@ const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr)
         return;
 
       case 'Enter':
-        // start floating loader !!
+        html.loading();
         loadProject({ project_number: this.value })
           .then(found =>
           {
@@ -151,7 +151,7 @@ const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr)
             this.value = ''; projectSearch.search('');
             $(document.body).removeClass('browsing');
           })
-          .finally(() => null); // stop floating loader !!
+          .finally(() => html.loading(false));
         break;
 
       default:
@@ -165,7 +165,7 @@ const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr)
  */
 const fetchProjectBrowser = () =>
 {
-  // start floating loader !!
+  html.loading();
 
   projectBrowser.empty();
 
@@ -192,9 +192,9 @@ const fetchProjectBrowser = () =>
           title: window.api.core.applyFilters('project_install_number_title', project.install_id ? `${project.install_description}  •  ${project.customer_name}` : null, project),
           onclick: () =>
           {
-            // start floating loader !!
+            html.loading();
             loadProject({ project_number: window.api.core.applyFilters('project_install_number', project.install_number, project) })
-              .finally(() => null); // stop floating loader !!
+              .finally(() => html.loading(false));
           },
         },
         {
@@ -208,9 +208,9 @@ const fetchProjectBrowser = () =>
           title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
           onclick: () =>
           {
-            // start floating loader !!
+            html.loading();
             loadProject(project)
-              .finally(() => null); // stop floating loader !!
+              .finally(() => html.loading(false));
           },
         },
         {
@@ -225,9 +225,7 @@ const fetchProjectBrowser = () =>
         },
       ]);
     },
-  ).then(() =>
-  {
-    // stop floating loader !!
-  });
+  )
+    .finally(() => html.loading(false));
 };
 fetchProjectBrowser();
