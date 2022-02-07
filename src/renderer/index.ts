@@ -17,6 +17,49 @@ document.addEventListener('copy', e =>
   (e.preventDefault(), e.clipboardData.setData('text/plain', document.getSelection().toString())));
 
 /**
+ * Initiate the sidebar categories.
+ */
+const sidebarTabs = new Tabs();
+
+/**
+ * Add sidebar categories.
+ */
+sidebarTabs.addTab({
+  id: 'browser-projects',
+  template: 'tmpl-li-projects',
+  callback: $div =>
+  {
+    $div.append(html.getTemplateClone('tmpl-browser-projects'));
+  },
+});
+
+/**
+ * Append sidebar tabs to the sidebar.
+ */
+$('#sidebar').append(sidebarTabs.$container);
+
+/**
+ * Simple wrapper function to call to exit browsing state.
+ */
+const stopBrowsing = () =>
+{
+  $(document.body).removeClass('browsing');
+  $('#sidebar input[type=search]:focus').first().trigger('blur');
+};
+
+/**
+ * Activate browsing state on sidebar actions.
+ */
+sidebarTabs.$ul.on('mouseup', () =>
+{
+  $(document.body).addClass('browsing');
+});
+$('#sidebar input[type=search]').on('focus', () =>
+{
+  $(document.body).addClass('browsing');
+});
+
+/**
  * Toggle browsing state on key input.
  */
 document.addEventListener('keyup', e =>
@@ -27,27 +70,9 @@ document.addEventListener('keyup', e =>
   }
   else if (e.key === 'Escape')
   {
-    $(document.body).removeClass('browsing');
-    $('#sidebar input[type=search]:focus').first().trigger('blur');
+    stopBrowsing();
   }
 });
-
-/**
- * Activate browsing state on sidebar actions.
- */
-$('#sidebar-categories').on('mouseup', () =>
-{
-  $(document.body).addClass('browsing');
-});
-$('#sidebar input[type=search]').on('focus', () =>
-{
-  $(document.body).addClass('browsing');
-});
-
-/**
- * Initiate sorting on any already available / non-dynamically generated html tables that support it.
- */
-html.makeTableSortable($('table'));
 
 /**
  * Initiate the main tabs.
@@ -58,6 +83,11 @@ const mainTabs = new Tabs();
  * Append main tabs to the main window.
  */
 $('#main').append(mainTabs.$container);
+
+/**
+ * Initiate sorting on rendered html tables that support it.
+ */
+html.makeTableSortable($('table'));
 
 /**
  * Load a project.
@@ -96,10 +126,7 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
     template: 'tmpl-li-project-tab',
     text: window.api.core.applyFilters('project_project_number', project.project_number, project),
     title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
-    callback: $div =>
-    {
-      $div.html('<p>Paragraph..</p>');
-    },
+    callback: () => {},
   });
 
   // Configure the "close" button.
@@ -115,19 +142,19 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
 };
 
 /**
- * Create a `TableList` wrapper for the projects-table html element.
+ * Create a `TableList` wrapper for the table-projects html element.
  */
-const projectBrowser = new TableList($('#projects-table'));
+const projectBrowser = new TableList($('#table-projects'));
 
 /**
- * Initiate the search handler for the projects-table.
+ * Initiate the search handler for the table-projects.
  */
 const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr).find('>th, >td').toArray().map(td => td.textContent));
 
 /**
- * Bind `projectSearch` to search events on the project-table.
+ * Bind `projectSearch` to search events on the project browser.
  */
-($('#project-search') as JQuery<HTMLInputElement>)
+($('#search-projects') as JQuery<HTMLInputElement>)
   .on('search', function ()
   {
     projectSearch.search(this.value);
@@ -147,9 +174,8 @@ const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr)
           {
             if (!found) return null; // deepsearch !!
 
-            // Clear search and deactivate browsing state.
-            this.value = ''; projectSearch.search('');
-            $(document.body).removeClass('browsing');
+            // Clear search and exit browsing state.
+            this.value = ''; projectSearch.search(''); stopBrowsing();
           })
           .finally(() => html.loading(false));
         break;
@@ -161,7 +187,7 @@ const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr)
   });
 
 /**
- * Fetch projects from database to fill the projects-table.
+ * Fetch projects from database to fill the table-projects.
  */
 const fetchProjectBrowser = () =>
 {
@@ -194,6 +220,7 @@ const fetchProjectBrowser = () =>
           {
             html.loading();
             loadProject({ project_number: window.api.core.applyFilters('project_install_number', project.install_number, project) })
+              .then(found => found ? stopBrowsing() : null)
               .finally(() => html.loading(false));
           },
         },
@@ -210,6 +237,7 @@ const fetchProjectBrowser = () =>
           {
             html.loading();
             loadProject(project)
+              .then(found => found ? stopBrowsing() : null)
               .finally(() => html.loading(false));
           },
         },

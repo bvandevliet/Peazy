@@ -1,0 +1,51 @@
+<template id="tmpl-browser-projects">
+  <div class="columns wrapper">
+    <div class="column">
+
+      <div class="control">
+        <input id="search-projects" class="input" type="search" placeholder="Search .." />
+      </div>
+
+    </div>
+    <div class="column entry-content">
+
+      <table id="table-projects" class="table table-projects is-hoverable is-fullwidth no-wrap has-sticky-header has-sticky-column">
+        <thead>
+          <tr>
+            <th class="th-project-date is-sortable is-secondary min-width is-sorted-desc">Date</th>
+            <th class="th-project-status is-sortable is-secondary min-width">Status</th>
+            <th class="th-install-number is-sortable is-secondary min-width"><abbr title="Installation number">Install</abbr></th>
+            <th class="th-install-description is-hidden"></th>
+            <th class="th-project-number is-sortable is-sticky-column min-width"><abbr title="Project number">#</abbr></th>
+            <th class="th-project-description">Description</th>
+            <th class="th-project-customer is-sortable">Customer</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- @see #tmpl-td-project-* -->
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</template>
+
+<template id="tmpl-td-project-date">
+  <td class="td-project-date is-secondary min-width"></td>
+</template>
+<template id="tmpl-td-project-status">
+  <td class="td-project-status is-secondary min-width"></td>
+</template>
+<template id="tmpl-td-install-number">
+  <td class="td-install-number is-secondary min-width"></td>
+</template>
+<template id="tmpl-td-project-number">
+  <th class="td-project-number is-sticky-column min-width"></th>
+</template>
+<template id="tmpl-td-project-description">
+  <td class="td-project-description"></td>
+</template>
+<template id="tmpl-td-project-customer">
+  <td class="td-project-customer"></td>
+</template>

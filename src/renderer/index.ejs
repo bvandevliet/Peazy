@@ -18,7 +18,7 @@
   <script src="./index.js" type="module" defer></script>
 </head>
 
-<body>
+<body class="browsing">
   <div class="columns wrapper">
     <div id="loader"></div>
 
@@ -26,7 +26,7 @@
       <div class="columns full-height">
 
         <div id="sidebar" class="column sidebar">
-          [%- include('./src/renderer/templates/project-browser.ejs') %]
+          <!-- @see #tmpl-browser-projects -->
         </div>
 
         <main id="main" class="column main">
@@ -40,7 +40,7 @@
 
   </div>
 
-  [%- include('./src/renderer/snippets/_snippets.ejs') %]
+  [%- include('./src/renderer/templates/_index.ejs') %]
 </body>
 
 </html>
