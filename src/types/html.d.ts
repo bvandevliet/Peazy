@@ -41,3 +41,55 @@ interface tableCellItem
    */
   classes?: string[],
 }
+
+interface tabItem
+{
+  /**
+   * A unique ID for this tab for within a `Tabs` wrapper.
+   */
+  id: string,
+  /**
+   * The `li` template to use.
+   */
+  template?: string,
+  /**
+   * Callback function intended for rendering the page content.
+   */
+  script: ($div: JQuery<HTMLDivElement>) => void,
+  /**
+   * Text to display in the tab.
+   */
+  text?: string,
+  /**
+   * Html to display in the tab, overwriting `text` if it's set.
+   */
+  html?: string,
+  /**
+   * Title to display on hover.
+   */
+  title?: string,
+  /**
+   * Called on click. If set an <a/> element is created.
+   */
+  onclick?: ($li: JQuery<HTMLLIElement>, $div: JQuery<HTMLDivElement>, e: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => void,
+  /**
+   * Called on double click.
+   */
+  ondblclick?: ($li: JQuery<HTMLLIElement>, $div: JQuery<HTMLDivElement>, e: JQuery.DoubleClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void,
+  /**
+   * Called on contextmenu.
+   */
+  oncontextmenu?: ($li: JQuery<HTMLLIElement>, $div: JQuery<HTMLDivElement>, e: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void,
+  /**
+   * Called on middleclick.
+   */
+  onmiddleclick?: ($li: JQuery<HTMLLIElement>, $div: JQuery<HTMLDivElement>, e: JQuery.MouseDownEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void,
+  /**
+   * Called on dragstart.
+   */
+  ondragstart?: ($li: JQuery<HTMLLIElement>, $div: JQuery<HTMLDivElement>, e: JQuery.DragStartEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void,
+  /**
+   * Additional classes for the tab.
+   */
+  classes?: string[],
+}

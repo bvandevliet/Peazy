@@ -6,7 +6,8 @@ import * as html from './functions-html.js';
 export default class TableList
 {
   /**
-   * The html table element.
+   * The html `table` element.
+   * This is the element you want to add to the DOM.
    */
   readonly $table: JQuery<HTMLTableElement>;
 
