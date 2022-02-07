@@ -74,7 +74,7 @@ export const makeTableSortable = (table: HTMLTableElement | JQuery<HTMLTableElem
     // Get the `th` elements in both table header and footer.
     const $thSet = $table.find(`>thead>tr>th:nth-child(${i + 1}), >tfoot>tr>th:nth-child(${i + 1})`);
 
-    const order = $thSet.hasClass('is-sorted-desc') ? 'asc' : 'desc';
+    const order = $thSet.hasClass('is-sorted-asc') ? 'desc' : 'asc';
 
     $thSet.add($thSet.siblings()).removeClass(['is-sorted-asc', 'is-sorted-desc']);
     $thSet.addClass(`is-sorted-${order}`);
