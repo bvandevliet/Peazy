@@ -195,65 +195,64 @@ const fetchProjectBrowser = () =>
 
   projectBrowser.empty();
 
-  window.api.project.getProjects(
-    {
-      single: false,
-      orderBy: 'DESC',
-    },
-    project =>
-    {
-      projectBrowser.appendItem([
+  window.api.project.getProjects({ orderBy: 'DESC' }, project =>
+  {
+    const project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
+    const install_number = window.api.core.applyFilters('project_install_number', project.install_number, project);
+
+    const isChild = window.api.core.applyFilters('project_is_child', !window.api.core.isEmpty(install_number) && install_number !== project_number, project);
+
+    projectBrowser.appendItem([
+      {
+        template: 'tmpl-td-project-date',
+        text: new DateTime(project.date_created).getDate(),
+      },
+      {
+        template: 'tmpl-td-project-status',
+        text: window.api.core.applyFilters('project_status_id', project.status_id, project),
+        title: window.api.core.applyFilters('project_status_id_title', project.status_name, project),
+      },
+      {
+        template: 'tmpl-td-install-number',
+        text: isChild ? install_number : null,
+        title: window.api.core.applyFilters('project_install_number_title', project.install_id ? `${project.install_description}  •  ${project.customer_name}` : null, project),
+        onclick: () =>
         {
-          template: 'tmpl-td-project-date',
-          text: new DateTime(project.date_created).getDate(),
+          html.loading();
+          loadProject({ project_number: install_number })
+            .then(found => found ? stopBrowsing() : null)
+            .finally(() => html.loading(false));
         },
+      },
+      {
+        template: 'tmpl-td-project-description',
+        text: project.install_description,
+        classes: ['is-hidden'], // hidden column just to enhance search functionality ..
+      },
+      {
+        template: 'tmpl-td-project-number',
+        text: project_number,
+        title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
+        onclick: () =>
         {
-          template: 'tmpl-td-project-status',
-          text: window.api.core.applyFilters('project_status_id', project.status_id, project),
-          title: window.api.core.applyFilters('project_status_id_title', project.status_name, project),
+          html.loading();
+          loadProject(project)
+            .then(found => found ? stopBrowsing() : null)
+            .finally(() => html.loading(false));
         },
-        {
-          template: 'tmpl-td-install-number',
-          text: window.api.core.applyFilters('project_install_number', project.install_number, project),
-          title: window.api.core.applyFilters('project_install_number_title', project.install_id ? `${project.install_description}  •  ${project.customer_name}` : null, project),
-          onclick: () =>
-          {
-            html.loading();
-            loadProject({ project_number: window.api.core.applyFilters('project_install_number', project.install_number, project) })
-              .then(found => found ? stopBrowsing() : null)
-              .finally(() => html.loading(false));
-          },
-        },
-        {
-          template: 'tmpl-td-project-description',
-          text: project.install_description,
-          classes: ['is-hidden'], // hidden column just to enhance search functionality ..
-        },
-        {
-          template: 'tmpl-td-project-number',
-          text: window.api.core.applyFilters('project_project_number', project.project_number, project),
-          title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
-          onclick: () =>
-          {
-            html.loading();
-            loadProject(project)
-              .then(found => found ? stopBrowsing() : null)
-              .finally(() => html.loading(false));
-          },
-        },
-        {
-          template: 'tmpl-td-project-description',
-          text: window.api.core.applyFilters('project_project_description', project.project_description, project),
-          title: window.api.core.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),
-        },
-        {
-          template: 'tmpl-td-project-customer',
-          text: project.customer_name,
-          title: window.api.core.applyFilters('project_customer_name_title', `${project.customer_name}`, project),
-        },
-      ]);
-    },
-  )
+      },
+      {
+        template: 'tmpl-td-project-description',
+        text: window.api.core.applyFilters('project_project_description', project.project_description, project),
+        title: window.api.core.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),
+      },
+      {
+        template: 'tmpl-td-project-customer',
+        text: project.customer_name,
+        title: window.api.core.applyFilters('project_customer_name_title', `${project.customer_name}`, project),
+      },
+    ]);
+  })
     .finally(() => html.loading(false));
 };
 fetchProjectBrowser();
