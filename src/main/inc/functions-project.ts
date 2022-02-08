@@ -101,9 +101,10 @@ export const getProjectTree = async (entryProject: Project) =>
 
     await getProjects({ children_of: install_number }, project =>
     {
+      const prev_project_number = core.applyFilters('project_project_number', prevChild.project_number, prevChild);
       const this_project_number = core.applyFilters('project_project_number', project.project_number, project);
 
-      if (install_number === this_project_number)
+      if (this_project_number === install_number)
       {
         // Set current project.
         currentInstall = project;
@@ -115,7 +116,7 @@ export const getProjectTree = async (entryProject: Project) =>
         // Define next interation.
         install_number = isChild ? this_install_number : null;
       }
-      else if (this_project_number === core.applyFilters('project_project_number', prevChild.project_number, prevChild))
+      else if (this_project_number === prev_project_number)
       {
         // Push previous project as child.
         children.push(prevChild);
