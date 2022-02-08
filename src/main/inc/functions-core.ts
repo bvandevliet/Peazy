@@ -71,7 +71,7 @@ export const mapObject = <T> (input: Record<any, T>, callback: (value: T) => any
  * @param input    The object to merge default values with.
  * @param defaults Object that serves as the defaults.
  */
-export const parseArgs = <T> (input: T, defaults: Record<any, any>): T =>
+export const parseArgs = <T> (input: T, defaults: T): T =>
 {
   for (const [key, value] of Object.entries(defaults))
   {
