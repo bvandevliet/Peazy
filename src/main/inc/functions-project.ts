@@ -79,6 +79,83 @@ export const getProject = (args: ProjectId): Promise<Project> =>
 };
 
 /**
+ * Get the top-most install project with defined `children` properties
+ * down to the given entry project and its children if any.
+ *
+ * @param entryProject The project to start building the tree up from.
+ */
+export const getProjectTree = async (entryProject: Project) =>
+{
+  // Start iteration from the project number so we also fetch these children instead of only building up the tree.
+  let install_number = core.applyFilters('project_project_number', entryProject.project_number, entryProject);
+
+  // Holds the previous install project.
+  let prevChild = entryProject;
+
+  // Start iteration.
+  while (!core.isEmpty(install_number))
+  {
+    let currentInstall: Project = null;
+
+    const children: Project[] = [];
+
+    await getProjects({ children_of: install_number }, project =>
+    {
+      const this_project_number = core.applyFilters('project_project_number', project.project_number, project);
+
+      if (install_number === this_project_number)
+      {
+        // Set current project.
+        currentInstall = project;
+
+        const this_install_number = core.applyFilters('project_install_number', project.install_number, project);
+
+        const isChild = core.applyFilters('project_is_child', !core.isEmpty(this_install_number) && this_install_number !== this_project_number, project);
+
+        // Define next interation.
+        install_number = isChild ? this_install_number : null;
+      }
+      else if (this_project_number === core.applyFilters('project_project_number', prevChild.project_number, prevChild))
+      {
+        // Push previous project as child.
+        children.push(prevChild);
+      }
+      else
+      {
+        // Push child.
+        children.push(project);
+      }
+    });
+
+    // If install project does not exist.
+    if (currentInstall === null)
+    {
+      // Force stop the loop.
+      install_number = null;
+
+      // Set top-most install project as "non-existing".
+      currentInstall =
+      {
+        project_id: null, // `null` indicates it doesn't exist.
+        project_number: install_number, // prevChild
+        project_description: prevChild.install_description,
+        customer_id: prevChild.customer_id,
+        customer_name: prevChild.customer_name,
+        status_id: '!EXISTS',
+        status_name: '!EXISTS',
+      };
+    }
+
+    // Set children and previous child.
+    currentInstall.children = children;
+    prevChild = currentInstall;
+  }
+
+  // The last / top-most install project including the `children` property.
+  return prevChild;
+};
+
+/**
  * Fetch documents that are attached to this `Project` instance.
  *
  * @param onRow Called on each returned row.

@@ -50,7 +50,11 @@ interface getProjectArgs
    */
   siblings_of?: Project['install_number'];
   /**
-   * Get children of this install number.
+   * Get children of this install number including the project itself.
+   *
+   * The project itself should also be included in the result
+   * to reduce requests when building up the project tree,
+   * since then we can directly obtain the next parent installation from it.
    */
   children_of?: Project['install_number'];
   /**
