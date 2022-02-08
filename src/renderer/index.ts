@@ -1,7 +1,8 @@
 import DateTime from './inc/class-datetime.js';
 import TableList from './inc/class-html-table-list.js';
-import Tabs from './inc/class-tabs.js';
 import Search from './inc/class-search.js';
+import Tabs from './inc/class-tabs.js';
+import projectTab from './tabs/project/_index.js';
 import * as html from './inc/functions-html.js';
 
 /**
@@ -120,21 +121,33 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
   // Project not found.
   if (project === null) return false;
 
+  /**
+   * Initiate project tab.
+   */
+  let tabProject: tabPage;
+
   // Create new tab.
   const [$li] = mainTabs.addTab({
     id: `${tabId}${project.project_id}`,
     template: 'tmpl-li-project-tab',
     text: window.api.core.applyFilters('project_project_number', project.project_number, project),
     title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
-    callback: () => {},
+    callback: $div => tabProject = new projectTab($div, project),
+    onclick: () => tabProject.onactivate(),
+    onmiddleclick: $li => $li.find('>a.close-btn').first().trigger('click'),
   });
 
   // Configure the "close" button.
   $li.find('>a.close-btn').on('click', () =>
   {
-    // dispose relative instances !!
+    tabProject.dispose();
+    tabProject = null;
 
     mainTabs.removeTab($li);
+
+    // Collect garbage.
+    window.gc();
+    window.api.gc();
   });
 
   // All good.

@@ -16,6 +16,7 @@ import * as project from './inc/functions-project';
  */
 export const API =
 {
+  gc: global.gc,
   core,
   fs,
   sql,

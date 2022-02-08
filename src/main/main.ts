@@ -19,6 +19,7 @@ app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
 // Enable garbage collection to be triggered manually.
 app.commandLine.appendSwitch('js-flags', '--expose_gc');
+app.commandLine.appendSwitch('js-flags', '--expose-gc');
 
 // Quit app when all windows are closed.
 app.on('window-all-closed', () => app.quit());
