@@ -38,7 +38,18 @@ export const getProjects = (args: getProjectArgs, onRow: (project: Project) => v
    */
   const query = core.applyFilters('sql_get_projects', '' as string, args);
 
-  return database.execSql(query, columns => onRow(core.mapObject(columns, column => column.value) as Project));
+  return new Promise(resolve =>
+    // Only proceed if no `condition` was set or it evaluates to `true`.
+    resolve(typeof args.condition !== 'function' || args.condition()))
+    .then(proceed => proceed
+      ? database.execSql(query, columns =>
+      {
+        const project = core.mapObject(columns, column => column.value) as Project;
+
+        // Only trigger callback if no `filter` was set or it evaluates to `true`.
+        if (typeof args.filter !== 'function' || args.filter(project)) onRow(project);
+      })
+      : 0);
 };
 
 /**
