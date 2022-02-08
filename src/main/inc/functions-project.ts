@@ -33,6 +33,12 @@ const database: Database = new Database(
  */
 export const getProjects = (args: getProjectArgs, onRow: (project: Project) => void): Promise<number> =>
 {
+  args = core.parseArgs(args,
+    {
+      single: false,
+      orderBy: 'ASC',
+    });
+
   /**
    * Filters the SQL query string for this request.
    */

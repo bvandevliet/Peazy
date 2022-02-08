@@ -1,5 +1,7 @@
 interface Project
 {
+  [x: string]: any;
+  children?: Project[];
   /* eslint-disable camelcase */
   install_id?: any;
   install_number?: string;
@@ -32,9 +34,9 @@ type ProjectId = AtLeastOne<{project_id: Project['project_id'], project_number: 
 interface getProjectArgs
 {
   /**
-   * Is the query for a single project?
+   * Is the query for a single project? Default is `false`.
    */
-  single: boolean,
+  single?: boolean,
   /**
    * Array of project IDs this query is for.
    */
@@ -43,6 +45,14 @@ interface getProjectArgs
    * Array of project numbers this query is for.
    */
   project_numbers?: Project['project_number'][],
+  /**
+   * Get children of this install number.
+   */
+  siblings_of?: Project['install_number'];
+  /**
+   * Get children of this install number.
+   */
+  children_of?: Project['install_number'];
   /**
    * Array of project states to query.
    */
