@@ -31,10 +31,26 @@ export const userConfig: userConfig =
 };
 
 /**
+ * Static WHERE clause to fetch projects from the database.
+ */
+core.addFilter('sql_where_get_projects', (query: string) =>
+{
+  return query;
+});
+
+/**
  * SQL query to fetch multiple projects from the database.
+ * The result is expected to be ordered descending by date by default.
  */
 core.addFilter('sql_get_projects', (query: string, args: getProjectArgs) =>
 {
+  query += args.single
+    ? 'SELECT TOP 1'
+    : `SELECT TOP ${userConfig.database.maxSelect}`;
+
+  // WHERE ..
+  query += core.applyFilters('sql_where_get_projects');
+
   return query;
 });
 
