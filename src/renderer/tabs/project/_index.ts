@@ -81,12 +81,6 @@ export default class projectTab implements tabPage
     // Load the project tab page template.
     this.$div.append(html.getTemplateClone('tmpl-tab-page-project'));
 
-    // Initiate the project tabs.
-    this._mainTabs = new Tabs();
-
-    // Append project tabs to the content window.
-    this.$div.find('div.project-content').append(this._mainTabs.$container);
-
     // Create a `TableList` wrapper for the projects table html element.
     this._projectBrowser = new TableList(this.$div.find('table.table-projects') as JQuery<HTMLTableElement>);
 
@@ -103,6 +97,46 @@ export default class projectTab implements tabPage
       {
         thisClass._projectSearch.search(this.value, true);
       });
+
+    // Initiate the project tabs.
+    this._mainTabs = new Tabs();
+
+    // Define the project tabs.
+    const projectSubTabs: tabItem[] = [
+      {
+        id: 'project-info',
+        template: 'tmpl-li-project-info',
+        callback: () => null,
+        // onclick: null,
+      },
+      {
+        id: 'project-docs',
+        template: 'tmpl-li-project-docs',
+        callback: () => null,
+        // onclick: null,
+      },
+      {
+        id: 'project-work',
+        template: 'tmpl-li-project-work',
+        callback: () => null,
+        // onclick: null,
+      },
+      {
+        id: 'project-notes',
+        template: 'tmpl-li-project-notes',
+        callback: () => null,
+        // onclick: null,
+      },
+    ];
+
+    // Add project tabs and activate first.
+    projectSubTabs.forEach((projectSubTab, index) =>
+    {
+      this._mainTabs.addTab(projectSubTab, index === 0);
+    });
+
+    // Append project tabs to the content window.
+    this.$div.find('div.project-content').append(this._mainTabs.$container);
   }
 
   onactivate ()
