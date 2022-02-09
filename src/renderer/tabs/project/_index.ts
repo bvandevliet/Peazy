@@ -46,12 +46,12 @@ export default class projectTab implements tabPage
           template: 'tmpl-td-project-number',
           text: project_number,
           title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
-          onclick: () =>
+          onclick: null !== project.project_id ? () =>
           {
             html.loading();
             return this.loadProject(project)
               .finally(() => html.loading(false));
-          },
+          } : null,
         },
         {
           template: 'tmpl-td-project-description',
