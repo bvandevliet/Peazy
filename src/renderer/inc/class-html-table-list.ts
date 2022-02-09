@@ -33,7 +33,7 @@ export default class TableList
    */
   empty ()
   {
-    this.$table.find('>tbody').remove();
+    this.$table.find('>tbody').empty();
   }
 
   /**
