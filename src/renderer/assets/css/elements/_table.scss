@@ -2,6 +2,40 @@
 
 table {
 
+  th {
+    font-weight: $weight-semibold;
+  }
+
+  thead,
+  tfoot {
+
+    th,
+    td {
+      @extend .is-unselectable;
+
+      &.is-sortable {
+        cursor: pointer;
+
+        &::after {
+          display: contents;
+          visibility: hidden;
+          float: right;
+          content: ' \25B4';
+        }
+
+        &.is-sorted-desc::after {
+          content: ' \25BE';
+        }
+
+        &:hover::after,
+        &.is-sorted-asc::after,
+        &.is-sorted-desc::after {
+          visibility: visible;
+        }
+      }
+    }
+  }
+
   &.is-hoverable,
   &.is-striped {
 
@@ -12,32 +46,6 @@ table {
       >span.indent {
         border-left: 1px solid $grey-lightest;
         padding: calc($control-padding-vertical + .1em) calc($control-padding-horizontal - .1em);
-      }
-    }
-  }
-
-  th {
-    font-weight: $weight-semibold;
-
-    &.is-sortable {
-      @extend .is-unselectable;
-      cursor: pointer;
-
-      &::after {
-        display: contents;
-        visibility: hidden;
-        float: right;
-        content: ' \25B4';
-      }
-
-      &.is-sorted-desc::after {
-        content: ' \25BE';
-      }
-
-      &:hover::after,
-      &.is-sorted-asc::after,
-      &.is-sorted-desc::after {
-        visibility: visible;
       }
     }
   }
