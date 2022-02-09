@@ -187,7 +187,7 @@ const projectBrowser = new TableList($('#table-projects'));
 /**
  * Initiate the search handler for the projects table.
  */
-const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr).find('>th, >td').toArray().map(td => td.textContent));
+const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr).find('>th, >td:not(.ignore-search)').toArray().map(td => td.textContent));
 
 /**
  * Bind `projectSearch` to search events on the project browser.
@@ -261,11 +261,6 @@ const fetchProjectBrowser = () =>
             .then(found => found ? stopBrowsing() : null)
             .finally(() => html.loading(false));
         },
-      },
-      {
-        template: 'tmpl-td-project-description',
-        text: project.install_description,
-        classes: ['is-hidden'], // hidden column just to enhance search functionality ..
       },
       {
         template: 'tmpl-td-project-number',
