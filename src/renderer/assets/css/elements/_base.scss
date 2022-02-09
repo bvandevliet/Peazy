@@ -43,3 +43,7 @@ main,
   @extend div;
   overflow: hidden;
 }
+
+.is-blurred {
+  opacity: .6;
+}
