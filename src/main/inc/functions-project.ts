@@ -131,9 +131,6 @@ export const getProjectTree = async (entryProject: Project) =>
     // If install project does not exist.
     if (currentInstall === null)
     {
-      // Force stop the loop.
-      install_number = null;
-
       // Set top-most install project as "non-existing".
       currentInstall =
       {
@@ -143,8 +140,11 @@ export const getProjectTree = async (entryProject: Project) =>
         customer_id: prevChild.customer_id,
         customer_name: prevChild.customer_name,
         status_id: '!EXISTS',
-        status_name: '!EXISTS',
+        status_name: 'This project doesn\'t exist',
       };
+
+      // Force stop the loop.
+      install_number = null;
     }
 
     // Set children and previous child.
