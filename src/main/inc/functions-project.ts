@@ -140,7 +140,7 @@ export const getProjectTree = async (entryProject: Project) =>
         customer_id: prevChild.customer_id,
         customer_name: prevChild.customer_name,
         status_id: '!EXISTS',
-        status_name: '!EXISTS',
+        status_name: 'This project doesn\'t exist',
       };
 
       // Force stop the loop.
