@@ -19,7 +19,7 @@ interface tableCellItem
   /**
    * Called on click. If set an <a/> element is created.
    */
-  onclick?: ($td?: JQuery<HTMLTableCellElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => void;
+  onclick?: ($td?: JQuery<HTMLTableCellElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => Promise<any>;
   /**
    * Called on double click.
    */
@@ -71,7 +71,7 @@ interface tabItem
   /**
    * Called on click. If set an <a/> element is created.
    */
-  onclick?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => void;
+  onclick?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => Promise<any>;
   /**
    * Called on double click.
    */

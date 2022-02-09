@@ -8,6 +8,11 @@ table {
     th,
     td {
       border: none;
+
+      >span.indent {
+        border-left: 1px solid $grey-lightest;
+        padding: calc($control-padding-vertical + .1em) calc($control-padding-horizontal - .1em);
+      }
     }
   }
 

@@ -133,7 +133,12 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
     text: window.api.core.applyFilters('project_project_number', project.project_number, project),
     title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
     callback: $div => tabProject = new projectTab($div, project),
-    onclick: () => tabProject.onactivate(),
+    onclick: () =>
+    {
+      html.loading();
+      return tabProject.onactivate()
+        .finally(() => html.loading(false));
+    },
     onmiddleclick: $li => $li.find('>a.close-btn').first().trigger('click'),
   });
 
@@ -151,16 +156,16 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
   });
 
   // All good.
-  return true;
+  return tabProject.onactivate().then(() => true);
 };
 
 /**
- * Create a `TableList` wrapper for the table-projects html element.
+ * Create a `TableList` wrapper for the projects table html element.
  */
 const projectBrowser = new TableList($('#table-projects'));
 
 /**
- * Initiate the search handler for the table-projects.
+ * Initiate the search handler for the projects table.
  */
 const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr).find('>th, >td').toArray().map(td => td.textContent));
 
@@ -200,7 +205,7 @@ const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr)
   });
 
 /**
- * Fetch projects from database to fill the table-projects.
+ * Fetch projects from database to fill the projects table.
  */
 const fetchProjectBrowser = () =>
 {
@@ -232,7 +237,7 @@ const fetchProjectBrowser = () =>
         onclick: () =>
         {
           html.loading();
-          loadProject({ project_number: install_number })
+          return loadProject({ project_number: install_number })
             .then(found => found ? stopBrowsing() : null)
             .finally(() => html.loading(false));
         },
@@ -249,7 +254,7 @@ const fetchProjectBrowser = () =>
         onclick: () =>
         {
           html.loading();
-          loadProject(project)
+          return loadProject(project)
             .then(found => found ? stopBrowsing() : null)
             .finally(() => html.loading(false));
         },
