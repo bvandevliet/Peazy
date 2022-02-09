@@ -130,6 +130,11 @@ export default class TableList
           });
       }
 
+      if (typeof column.callback === 'function')
+      {
+        column.callback($td);
+      }
+
       $tr.append($td);
     });
 

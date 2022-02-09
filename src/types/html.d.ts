@@ -5,6 +5,10 @@ interface tableCellItem
    */
   template?: string;
   /**
+   * Callback function intended for rendering additional content to the table cell.
+   */
+  callback?: ($td: JQuery<HTMLTableCellElement>) => void;
+  /**
    * Text to display in the cell.
    */
   text?: string;
