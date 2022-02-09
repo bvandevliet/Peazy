@@ -49,4 +49,8 @@ table {
       }
     }
   }
+
+  tr:not(:hover) .hover-actions {
+    opacity: 0;
+  }
 }
