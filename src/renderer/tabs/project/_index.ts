@@ -102,8 +102,8 @@ export default class projectTab implements tabPage
     // Initiate the project tabs.
     this._mainTabs = new Tabs();
 
-    // Define the project tabs.
-    const projectSubTabs: tabItem[] = [
+    // Add project tabs and activate first.
+    ([
       {
         id: 'project-info',
         template: 'tmpl-li-project-info',
@@ -128,10 +128,7 @@ export default class projectTab implements tabPage
         callback: () => null,
         // onclick: null,
       },
-    ];
-
-    // Add project tabs and activate first.
-    projectSubTabs.forEach((projectSubTab, index) =>
+    ] as tabItem[]).forEach((projectSubTab, index) =>
     {
       this._mainTabs.addTab(projectSubTab, index === 0);
     });
