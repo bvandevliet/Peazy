@@ -35,7 +35,8 @@ export default class projectTab implements tabPage
       const $tr = this._projectBrowser.appendItem([
         {
           template: 'tmpl-td-project-date',
-          text: project.date_created ? new DateTime(project.date_created).getDate() : '-',
+          text: project.date_created ? new DateTime(project.date_created).getYearMonth() : '-',
+          title: project.date_created ? new DateTime(project.date_created).getDate() : null,
         },
         {
           template: 'tmpl-td-project-status',
