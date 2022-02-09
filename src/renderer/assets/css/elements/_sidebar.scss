@@ -26,3 +26,29 @@ body {
     }
   }
 }
+
+#table-projects {
+
+  tr {
+
+    th,
+    td {
+      &.project-number>a::before {
+        display: inline-block;
+        width: 1em;
+        content: '\00a0';
+        transform: scale(.7);
+      }
+    }
+
+    &.has-install {
+
+      th,
+      td {
+        &.project-number>a::before {
+          content: '\21AA';
+        }
+      }
+    }
+  }
+}

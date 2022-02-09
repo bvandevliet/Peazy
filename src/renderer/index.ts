@@ -289,7 +289,9 @@ const fetchProjectBrowser = () =>
         text: project.customer_name,
         title: window.api.core.applyFilters('project_customer_name_title', `${project.customer_name}`, project),
       },
-    ]);
+    ])
+      // If is a child, it has an install number, then add class attribute for selective styling.
+      .addClass(isChild ? 'has-install' : null);
   })
     .finally(() => html.loading(false));
 };
