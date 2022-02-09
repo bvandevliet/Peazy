@@ -70,9 +70,10 @@ export default class Database
     return new Promise((resolve, reject) =>
     {
       /*
-       * Should actually be adding an overload to interface `Request` for the `row` event, in `@types/tedious` to allow for `config.options.useColumnNames` set to `true`.
+       * Added an overload to interface `Request` for the `row` event, in `@types/tedious` to allow for `config.options.useColumnNames` set to `true`.
        *
-       * Overload would look like: `on(event: 'row', listener: (columns: Record<string, ColumnValue>) => void): this;`
+       * @link https://github.com/DefinitelyTyped/DefinitelyTyped/pull/58566
+       * @link https://github.com/DefinitelyTyped/DefinitelyTyped/commit/ed26d61e6e11f679fd682aea2b0ee7d52c3b4c3c
        */
       const request = new dbRequest(query, (err, rowCount) => err ? reject(err) : resolve(rowCount)).on('row', onRow as any);
 
