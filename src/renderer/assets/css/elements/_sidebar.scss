@@ -24,9 +24,5 @@ body {
     #sidebar .is-secondary {
       @extend .is-hidden;
     }
-
-    #sidebar .entry-content {
-      overflow-x: hidden;
-    }
   }
 }
