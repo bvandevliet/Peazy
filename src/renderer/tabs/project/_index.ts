@@ -12,9 +12,9 @@ export default class projectTab implements tabPage
   readonly $div: JQuery<HTMLDivElement>;
   readonly project: Project;
 
-  private mainTabs: Tabs;
-  private projectBrowser: TableList;
-  private projectSearch: Search;
+  private _mainTabs: Tabs;
+  private _projectBrowser: TableList;
+  private _projectSearch: Search;
 
   private loadProject (project: Project)
   {
@@ -23,7 +23,7 @@ export default class projectTab implements tabPage
 
   private async fetchProjectBrowser ()
   {
-    this.projectBrowser.empty();
+    this._projectBrowser.empty();
 
     const installProject = await window.api.project.getProjectTree(this.project);
 
@@ -32,7 +32,7 @@ export default class projectTab implements tabPage
       const project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
       // const install_number = window.api.core.applyFilters('project_install_number', project.install_number, project);
 
-      const $tr = this.projectBrowser.appendItem([
+      const $tr = this._projectBrowser.appendItem([
         {
           template: 'tmpl-td-project-date',
           text: project.date_created ? new DateTime(project.date_created).getDate() : '-',
@@ -82,16 +82,16 @@ export default class projectTab implements tabPage
     this.$div.append(html.getTemplateClone('tmpl-tab-page-project'));
 
     // Initiate the project tabs.
-    this.mainTabs = new Tabs();
+    this._mainTabs = new Tabs();
 
     // Append project tabs to the content window.
-    this.$div.find('div.project-content').append(this.mainTabs.$container);
+    this.$div.find('div.project-content').append(this._mainTabs.$container);
 
     // Create a `TableList` wrapper for the projects table html element.
-    this.projectBrowser = new TableList(this.$div.find('table.table-projects') as JQuery<HTMLTableElement>);
+    this._projectBrowser = new TableList(this.$div.find('table.table-projects') as JQuery<HTMLTableElement>);
 
     // Initiate the search handler for the projects table.
-    this.projectSearch = new Search(this.projectBrowser.$table, '>tbody>tr', tr => $(tr).find('>th, >td').toArray().map(td => td.textContent));
+    this._projectSearch = new Search(this._projectBrowser.$table, '>tbody>tr', tr => $(tr).find('>th, >td').toArray().map(td => td.textContent));
 
     /**
      * Bind `projectSearch` to search events on the project browser.
@@ -101,7 +101,7 @@ export default class projectTab implements tabPage
     (this.$div.find('input.search-projects') as JQuery<HTMLInputElement>)
       .on('search keyup', function ()
       {
-        thisClass.projectSearch.search(this.value, true);
+        thisClass._projectSearch.search(this.value, true);
       });
   }
 
