@@ -140,6 +140,15 @@ export default class Tabs
     // .. and render its content.
     tab.callback($div);
 
+    const activateTab = () =>
+    {
+      this.$ul.find('>li').removeClass('is-active');
+      this.$container.find('>div.wrapper-content').addClass('is-hidden');
+
+      $li.addClass('is-active');
+      $div.removeClass('is-hidden');
+    };
+
     // Then configure the link element.
     let $a = $li.find('>a') as JQuery<HTMLAnchorElement>;
     $a = ($a.length > 0 ? $a.first() : $(document.createElement('a')).prependTo($li))
@@ -150,16 +159,12 @@ export default class Tabs
       {
         e.preventDefault();
 
-        this.$ul.find('>li').removeClass('is-active');
-        this.$container.find('>div.wrapper-content').addClass('is-hidden');
+        activateTab();
 
         if (typeof tab.onclick === 'function')
         {
           tab.onclick($li, $div, e);
         }
-
-        $li.addClass('is-active');
-        $div.removeClass('is-hidden');
       });
 
     if (typeof tab.ondblclick === 'function')
@@ -207,7 +212,7 @@ export default class Tabs
     this.$ul.append($li);
     this.$container.append($div);
 
-    if (activate) $li.find('>a').first().trigger('click');
+    if (activate) activateTab();
 
     return [$li, $div];
   }
