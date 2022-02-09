@@ -65,7 +65,7 @@ export default class TableList
 
     columns.forEach(column =>
     {
-      const $td = ($(html.getTemplateClone(column.template)) as JQuery<HTMLTableCellElement>)
+      const $td = (column.template ? $(html.getTemplateClone(column.template) as HTMLTableCellElement) : $(document.createElement('td')))
         .addClass(column.classes);
 
       // JQuery<HTMLAnchorElement> | typeof $td

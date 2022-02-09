@@ -3,7 +3,7 @@ interface tableCellItem
   /**
    * The `th` or `td` template to use.
    */
-  template: string;
+  template?: string;
   /**
    * Text to display in the cell.
    */
