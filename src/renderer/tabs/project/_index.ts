@@ -86,7 +86,8 @@ export default class projectTab implements tabPage
     this._projectBrowser = new TableList(this.$div.find('table.table-projects') as JQuery<HTMLTableElement>);
 
     // Initiate the search handler for the projects table.
-    this._projectSearch = new Search(this._projectBrowser.$table, '>tbody>tr', tr => $(tr).find('>th, >td:not(.ignore-search)').toArray().map(td => td.textContent));
+    this._projectSearch = new Search(this._projectBrowser.$table, '>tbody>tr', tr =>
+      $(tr).find('>*:not(.ignore-search)').toArray().map(td => td.textContent));
 
     /**
      * Bind `projectSearch` to search events on the project browser.

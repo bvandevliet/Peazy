@@ -187,7 +187,8 @@ const projectBrowser = new TableList($('#table-projects'));
 /**
  * Initiate the search handler for the projects table.
  */
-const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr => $(tr).find('>th, >td:not(.ignore-search)').toArray().map(td => td.textContent));
+const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr =>
+  $(tr).find('>*:not(.ignore-search)').toArray().map(td => td.textContent));
 
 /**
  * Bind `projectSearch` to search events on the project browser.
