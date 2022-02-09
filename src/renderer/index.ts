@@ -23,15 +23,35 @@ document.addEventListener('copy', e =>
 const sidebarTabs = new Tabs();
 
 /**
- * Add sidebar categories.
+ * Add sidebar categories and activate first.
  */
-sidebarTabs.addTab({
-  id: 'browser-projects',
-  template: 'tmpl-li-projects',
-  callback: $div =>
+([
   {
-    $div.append(html.getTemplateClone('tmpl-browser-projects'));
+    id: 'browser-projects',
+    template: 'tmpl-li-projects',
+    callback: $div =>
+    {
+      $div.append(html.getTemplateClone('tmpl-browser-projects'));
+    },
   },
+  {
+    id: 'browser-customers',
+    template: 'tmpl-li-customers',
+    callback: () => null,
+  },
+  {
+    id: 'browser-orders',
+    template: 'tmpl-li-orders',
+    callback: () => null,
+  },
+  {
+    id: 'browser-articles',
+    template: 'tmpl-li-articles',
+    callback: () => null,
+  },
+] as tabItem[]).forEach((sidebarTab, index) =>
+{
+  sidebarTabs.addTab(sidebarTab, index === 0);
 });
 
 /**
