@@ -36,15 +36,19 @@ interface getProjectArgs
   /**
    * Is the query for a single project? Default is `false`.
    */
-  single?: boolean,
+  single?: boolean;
   /**
    * Array of project IDs this query is for.
    */
-  project_ids?: Project['project_id'][],
+  project_ids?: Project['project_id'][];
   /**
    * Array of project numbers this query is for.
    */
-  project_numbers?: Project['project_number'][],
+  project_numbers?: Project['project_number'][];
+  /**
+   * Search for projects that contain these search queries.
+   */
+  search_for?: string[];
   /**
    * Get children of this install number.
    */
@@ -60,43 +64,43 @@ interface getProjectArgs
   /**
    * Array of project states to query.
    */
-  status?: Project['status_id'][],
+  status?: Project['status_id'][];
   /**
    * If evaluates to `false`, skip request and resolve immediately.
    */
-  condition?: () => boolean,
+  condition?: () => boolean;
   /**
    * Filter each project to control whether it should trigger the callback.
    */
-  filter?: (project: Project) => boolean,
+  filter?: (project: Project) => boolean;
   /**
    * Order `ASC` or `DESC`, default is `ASC`.
    */
-  orderBy?: Order,
+  orderBy?: Order;
 }
 
 interface AttachedDocument
 {
-  title: string,
-  version: number,
-  is_visible?: boolean,
-  path: string,
-  size?: number,
-  date_created?: string | Date,
-  date_modified?: string | Date,
+  title: string;
+  version: number;
+  is_visible?: boolean;
+  path: string;
+  size?: number;
+  date_created?: string | Date;
+  date_modified?: string | Date;
 }
 
 interface WorkHours
 {
-  resource_id: any,
-  resource_first_name?: string,
-  resource_name: string,
-  worktype_id: any,
-  worktype_code?: any,
-  worktype_name: string,
-  date_start: string | Date,
-  date_end: string | Date,
-  amount: number,
-  rate_internal: number,
-  expense: number,
+  resource_id: any;
+  resource_first_name?: string;
+  resource_name: string;
+  worktype_id: any;
+  worktype_code?: any;
+  worktype_name: string;
+  date_start: string | Date;
+  date_end: string | Date;
+  amount: number;
+  rate_internal: number;
+  expense: number;
 }
