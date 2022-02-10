@@ -78,7 +78,7 @@ export default class TableList
           {
             e.preventDefault();
 
-            column.onclick($td, e);
+            column.onclick($tr, $td, e);
           })
           .appendTo($td);
       }
@@ -94,7 +94,7 @@ export default class TableList
         {
           e.preventDefault();
 
-          column.ondblclick($td, e);
+          column.ondblclick($tr, $td, e);
         });
       }
 
@@ -104,7 +104,7 @@ export default class TableList
         {
           e.preventDefault();
 
-          column.oncontextmenu($td, e);
+          column.oncontextmenu($tr, $td, e);
         });
       }
 
@@ -114,7 +114,7 @@ export default class TableList
         {
           e.preventDefault();
 
-          if (e.button === 1) column.onmiddleclick($td, e);
+          if (e.button === 1) column.onmiddleclick($tr, $td, e);
         });
       }
 
@@ -126,7 +126,7 @@ export default class TableList
           {
             e.preventDefault();
 
-            column.ondragstart($td, e);
+            column.ondragstart($tr, $td, e);
           });
       }
 

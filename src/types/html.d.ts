@@ -23,23 +23,23 @@ interface tableCellItem
   /**
    * Called on click. If set an <a/> element is created.
    */
-  onclick?: ($td?: JQuery<HTMLTableCellElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => Promise<any>;
+  onclick?: ($tr?: JQuery<HTMLTableRowElement>, $td?: JQuery<HTMLTableCellElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => Promise<any>;
   /**
    * Called on double click.
    */
-  ondblclick?: ($td?: JQuery<HTMLTableCellElement>, e?: JQuery.DoubleClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  ondblclick?: ($tr?: JQuery<HTMLTableRowElement>, $td?: JQuery<HTMLTableCellElement>, e?: JQuery.DoubleClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
   /**
    * Called on contextmenu.
    */
-  oncontextmenu?: ($td?: JQuery<HTMLTableCellElement>, e?: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  oncontextmenu?: ($tr?: JQuery<HTMLTableRowElement>, $td?: JQuery<HTMLTableCellElement>, e?: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
   /**
    * Called on middleclick.
    */
-  onmiddleclick?: ($td?: JQuery<HTMLTableCellElement>, e?: JQuery.MouseDownEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  onmiddleclick?: ($tr?: JQuery<HTMLTableRowElement>, $td?: JQuery<HTMLTableCellElement>, e?: JQuery.MouseDownEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
   /**
    * Called on dragstart.
    */
-  ondragstart?: ($td?: JQuery<HTMLTableCellElement>, e?: JQuery.DragStartEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  ondragstart?: ($tr?: JQuery<HTMLTableRowElement>, $td?: JQuery<HTMLTableCellElement>, e?: JQuery.DragStartEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
   /**
    * Additional classes.
    */
