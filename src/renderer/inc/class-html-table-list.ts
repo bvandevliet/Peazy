@@ -48,10 +48,11 @@ export default class TableList
     if (!$tbody.length)
     {
       $tbody = $(document.createElement('tbody'));
+
       this.$table.append($tbody);
     }
 
-    return $tbody;
+    return $tbody as JQuery<HTMLTableSectionElement>;
   }
 
   /**
@@ -149,18 +150,9 @@ export default class TableList
    */
   prependItem (columns: tableCellItem[], tbodyIndex = 0)
   {
-    let $tbody = this.$table.find('>tbody').eq(tbodyIndex) as JQuery<HTMLTableSectionElement>;
-
-    if (!$tbody.length)
-    {
-      $tbody = $(document.createElement('tbody'));
-
-      this.$table.append($tbody);
-    }
-
     const $tr = TableList.buildRow(columns);
 
-    $tbody.prepend($tr);
+    this.tbody(tbodyIndex).prepend($tr);
 
     return $tr;
   }
@@ -173,18 +165,9 @@ export default class TableList
    */
   appendItem (columns: tableCellItem[], tbodyIndex = 0)
   {
-    let $tbody = this.$table.find('>tbody').eq(tbodyIndex) as JQuery<HTMLTableSectionElement>;
-
-    if (!$tbody.length)
-    {
-      $tbody = $(document.createElement('tbody'));
-
-      this.$table.append($tbody);
-    }
-
     const $tr = TableList.buildRow(columns);
 
-    $tbody.append($tr);
+    this.tbody(tbodyIndex).append($tr);
 
     return $tr;
   }
