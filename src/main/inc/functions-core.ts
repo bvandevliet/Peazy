@@ -20,6 +20,14 @@ export const sanitizeKey = (input: string) =>
   input?.replace(/[^a-z0-9_\-]/giu, '');
 
 /**
+ * Escape a string to use in a regular expression.
+ *
+ * @param input The string.
+ */
+export const regexEscape = (input: string) =>
+  input?.replace(/([\\*+?|{[(,)^$.#])/gu, '\\$1').replace(/\s/gu, '\\s');
+
+/**
  * Natively load another script.
  *
  * @param           url           Url to the script, relative to the root directory.
