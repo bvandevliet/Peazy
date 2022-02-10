@@ -17,7 +17,7 @@ const filters: Record<string, Hook> = {};
  */
 export const sanitizeKey = (input: string) =>
   // eslint-disable-next-line no-useless-escape
-  input.replace(/[^a-z0-9_\-]/giu, '');
+  input?.replace(/[^a-z0-9_\-]/giu, '');
 
 /**
  * Natively load another script.
@@ -47,7 +47,7 @@ export const loadScript = (url: string, callback?: (this: GlobalEventHandlers, e
  * @param input A value to test.
  */
 export const isEmpty = (input: any) =>
-  input === undefined || input === null || (typeof input === 'string' && input.trim() === '');
+  input === undefined || input === null || (typeof input === 'string' && input?.trim() === '');
 
 /**
  * Like `Array.map()` but for object types.
