@@ -59,7 +59,7 @@ interface tabItem
   /**
    * Callback function intended for rendering the page content before it is visible.
    */
-  callback: ($div: JQuery<HTMLDivElement>) => void;
+  callback: ($div: JQuery<HTMLDivElement>, $li?: JQuery<HTMLLIElement>) => void;
   /**
    * Text to display in the tab.
    */

@@ -138,7 +138,7 @@ export default class Tabs
     const $div = $(html.getTemplateClone('tmpl-tab-page') as HTMLDivElement).attr('tab-id', tab.id);
 
     // .. and render its content.
-    tab.callback($div);
+    tab.callback($div, $li);
 
     const activateTab = () =>
     {
