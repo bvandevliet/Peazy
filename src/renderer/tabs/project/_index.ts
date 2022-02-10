@@ -16,23 +16,36 @@ export default class projectTab implements tabPage
   private _projectBrowser: TableList;
   private _projectSearch: Search;
 
+  /**
+   * Prints html to the project content window.
+   *
+   * @param project The project.
+   */
   private loadProject (project: Project)
   {
-    return new Promise(resolve => resolve(true));
+    // return new Promise(resolve => resolve(true));
   }
 
-  private async fetchProjectBrowser ()
+  /**
+   * Builds html for the project tree.
+   */
+  private async buildProjectTree ()
   {
     this._projectBrowser.empty();
 
-    const installProject = await window.api.project.getProjectTree(this.project);
-
-    const projectWalker = (project: Project, depth = 0) =>
+    /**
+     * Get html for a project tree row.
+     *
+     * @param project The project.
+     * @param depth   Depth in the project tree.
+     */
+    const projectRow = (project: Project, depth = 0) =>
     {
       const project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
       // const install_number = window.api.core.applyFilters('project_install_number', project.install_number, project);
 
-      const $tr = this._projectBrowser.appendItem([
+      // Ttable cells definition for a project tree row.
+      const $tr = TableList.buildRow([
         {
           template: 'tmpl-td-project-date',
           text: project.date_created ? new DateTime(project.date_created).getYearMonth() : '-',
@@ -47,19 +60,44 @@ export default class projectTab implements tabPage
           template: 'tmpl-td-project-number',
           text: project_number,
           title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
-          onclick: null !== project.project_id ? () =>
+          onclick: $tr =>
           {
             html.loading();
-            return this.loadProject(project)
+
+            // Remove appended child rows if any.
+            let $trNext = $tr.next(`tr.tree-depth-${(depth + 1)}`);
+            while ($trNext.length)
+            {
+              $trNext.remove();
+              $trNext = $tr.next(`tr.tree-depth-${(depth + 1)}`);
+            }
+
+            // Append new child rows if any.
+            return window.api.project.getProjects({ children_of: project_number, orderBy: 'DESC' }, project =>
+            {
+              const this_project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
+
+              if (this_project_number === project_number && null !== project.project_id)
+              {
+                // Load the clicked project.
+                this.loadProject(project);
+              }
+              else
+              {
+                // Append child row.
+                $tr.after(projectRow(project, depth + 1));
+              }
+            })
               .finally(() => html.loading(false));
-          } : null,
+          },
         },
         {
           template: 'tmpl-td-project-description',
           text: window.api.core.applyFilters('project_project_description', project.project_description, project),
           title: window.api.core.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),
         },
-      ]);
+      ])
+        .addClass(`tree-depth-${depth}`);
 
       const $td_project_number = $tr.find('>th.project-number');
       for (let i = 0; i < depth; i++)
@@ -67,9 +105,27 @@ export default class projectTab implements tabPage
         $td_project_number.prepend('<span class="indent" />');
       }
 
+      return $tr;
+    };
+
+    // Get the project tree build up from the current project.
+    const installProject = await window.api.project.getProjectTree(this.project);
+
+    /**
+     * Recursively builds html for the project tree
+     * starting from the found top-most project down for as long a children are defined.
+     *
+     * @param project Entry project.
+     * @param depth   Entry depth.
+     */
+    const projectWalker = (project: Project, depth = 0) =>
+    {
+      this._projectBrowser.tbody().append(projectRow(project, depth));
+
       project.children?.forEach(project => projectWalker(project, depth + 1));
     };
 
+    // Initiate recursive project tree builder.
     projectWalker(installProject);
   }
 
@@ -140,7 +196,7 @@ export default class projectTab implements tabPage
 
   onactivate ()
   {
-    return this.fetchProjectBrowser();
+    return this.buildProjectTree();
   }
 
   dispose ()
