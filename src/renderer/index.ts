@@ -18,7 +18,7 @@ document.addEventListener('copy', e =>
   (e.preventDefault(), e.clipboardData.setData('text/plain', document.getSelection().toString())));
 
 /**
- * Initiate the sidebar categories.
+ * Initiate the sidebar category tabs.
  */
 const sidebarTabs = new Tabs();
 
@@ -96,7 +96,7 @@ document.addEventListener('keyup', e =>
 });
 
 /**
- * Initiate the main tabs.
+ * The project page tabs.
  */
 const mainTabs = new Tabs();
 
@@ -106,9 +106,54 @@ const mainTabs = new Tabs();
 $('#main').append(mainTabs.$container);
 
 /**
+ * The projects table list.
+ */
+const projectsTable = new TableList($('#table-projects'));
+
+/**
+ * The projects table search handler.
+ */
+const projectSearch = new Search(projectsTable.$table, '>tbody>tr', tr =>
+  $(tr).find('>*:not(.ignore-search)').toArray().map(td => td.textContent));
+
+/**
  * Initiate sorting on rendered html tables that support it.
  */
 html.makeTableSortable($('table'));
+
+/**
+ * Update active rows in the browser according to current active tab.
+ *
+ * @param id The ID of the tab if already known.
+ */
+export const updateActiveStates = (id?: string) =>
+{
+  id = id ?? mainTabs.activeTab[0].attr('tab-id');
+
+  projectsTable.$table.find('tr')
+    .removeClass('is-selected')
+    .filter(function ()
+    {
+      return $(this).attr('row-id') === id;
+    })
+    .addClass('is-selected');
+};
+
+/**
+ * Activate a tab if it already exists.
+ *
+ * @param id The ID of the tab.
+ *
+ * @return The amount of existing tabs. Either `0` or `1`.
+ */
+export const activateTabIfExists = (id: string) =>
+{
+  const existingTab = mainTabs.tryTrigger(id)[0];
+
+  if (existingTab.length) updateActiveStates(id);
+
+  return existingTab.length;
+};
 
 /**
  * Load a project.
@@ -119,15 +164,8 @@ html.makeTableSortable($('table'));
  */
 const loadProject = async (args: ProjectId): Promise<boolean> =>
 {
-  const tabId = 'project-'; // to be appended to later ..
-
   // If an ID was passed, check if tab already exists, if so, activate it and bail.
-  if (!window.api.core.isEmpty(args.project_id))
-  {
-    const [$li] = mainTabs.tryTrigger(`${tabId}${args.project_id}`);
-
-    if ($li.length) return true;
-  }
+  if (!window.api.core.isEmpty(args.project_id) && activateTabIfExists(`project-${args.project_id}`)) return true;
 
   // Fetch project from the database.
   const project = await window.api.project.getProject(args)
@@ -148,11 +186,9 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
 
   // Create new tab.
   const [$li] = mainTabs.addTab({
-    id: `${tabId}${project.project_id}`,
+    id: null, // the projectTab instance will set the ID, text and title for this tab
     template: 'tmpl-li-project-tab',
-    text: window.api.core.applyFilters('project_project_number', project.project_number, project),
-    title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
-    callback: $div => tabProject = new projectTab($div, project),
+    callback: ($div, $li) => tabProject = new projectTab($div, $li, project),
     onclick: () =>
     {
       html.loading();
@@ -173,6 +209,8 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
     // Collect garbage.
     window.gc();
     window.api.gc();
+
+    updateActiveStates();
   });
 
   // All good.
@@ -180,18 +218,7 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
 };
 
 /**
- * Create a `TableList` wrapper for the projects table html element.
- */
-const projectBrowser = new TableList($('#table-projects'));
-
-/**
- * Initiate the search handler for the projects table.
- */
-const projectSearch = new Search(projectBrowser.$table, '>tbody>tr', tr =>
-  $(tr).find('>*:not(.ignore-search)').toArray().map(td => td.textContent));
-
-/**
- * Bind `projectSearch` to search events on the project browser.
+ * Bind `projectSearch` to search events on the project.
  */
 ($('#search-projects') as JQuery<HTMLInputElement>)
   .on('search', function ()
@@ -232,7 +259,7 @@ const fetchProjectBrowser = () =>
 {
   html.loading();
 
-  projectBrowser.empty();
+  projectsTable.empty();
 
   window.api.project.getProjects({ orderBy: 'DESC' }, project =>
   {
@@ -241,7 +268,7 @@ const fetchProjectBrowser = () =>
 
     const isChild = window.api.core.applyFilters('project_is_child', !window.api.core.isEmpty(install_number) && install_number !== project_number, project);
 
-    projectBrowser.appendItem([
+    projectsTable.appendItem([
       {
         template: 'tmpl-td-project-date',
         text: new DateTime(project.date_created).getDate(),
@@ -286,9 +313,13 @@ const fetchProjectBrowser = () =>
         title: window.api.core.applyFilters('project_customer_name_title', `${project.customer_name}`, project),
       },
     ])
-      // If is a child, it has an install number, then add class attribute for selective styling.
+      // Add an ID to the project row to target it when updating active tab.
+      .attr('row-id', `project-${project.project_id}`)
+      // If is a child of an install number, then add class attribute for selective styling.
       .addClass(isChild ? 'has-install' : null);
   })
     .finally(() => html.loading(false));
 };
+
+// Initial fetch.
 fetchProjectBrowser();

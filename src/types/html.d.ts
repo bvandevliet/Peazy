@@ -100,6 +100,9 @@ interface tabItem
 
 interface tabPage
 {
+  readonly $div: JQuery<HTMLDivElement>;
+  readonly $li: JQuery<HTMLLIElement>;
+
   /**
    * Triggered on activating the tab.
    */
