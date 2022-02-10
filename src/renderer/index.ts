@@ -276,6 +276,10 @@ const fetchProjectBrowser = () =>
         },
       },
       {
+        callback: $td => $td.append(html.getTemplateProjectActions(project)),
+        classes: ['hover-actions', 'ignore-search'],
+      },
+      {
         template: 'tmpl-td-project-description',
         text: window.api.core.applyFilters('project_project_description', project.project_description, project),
         title: window.api.core.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),

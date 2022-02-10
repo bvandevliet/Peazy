@@ -94,3 +94,12 @@ export const makeTableSortable = (table: HTMLTableElement | JQuery<HTMLTableElem
       order.toUpperCase() as Order);
   });
 };
+
+export const getTemplateProjectActions = (project: Project) =>
+{
+  // configure the action links !!
+
+  return $(getTemplateClone('tmpl-project-btn-notes'))
+    .add(getTemplateClone('tmpl-project-btn-favorite'))
+    .add(getTemplateClone('tmpl-project-btn-open-folder'));
+};
