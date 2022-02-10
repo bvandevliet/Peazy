@@ -126,7 +126,7 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
   {
     const [$li] = mainTabs.tryTrigger(`${tabId}${args.project_id}`);
 
-    if ($li.length > 0) return true;
+    if ($li.length) return true;
   }
 
   // Fetch project from the database.

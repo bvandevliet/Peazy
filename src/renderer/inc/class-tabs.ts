@@ -122,7 +122,7 @@ export default class Tabs
 
     // Activate existing tab instead if any.
     const [$liExisting, $divExisting] = this.getTabIfExists(tab.id);
-    if ($liExisting.length > 0)
+    if ($liExisting.length)
     {
       $liExisting.find('>a').first().trigger('click');
 
@@ -151,7 +151,7 @@ export default class Tabs
 
     // Then configure the link element.
     let $a = $li.find('>a') as JQuery<HTMLAnchorElement>;
-    $a = ($a.length > 0 ? $a.first() : $(document.createElement('a')).prependTo($li))
+    $a = ($a.length ? $a.first() : $(document.createElement('a')).prependTo($li))
       .text(tab.text)
       .html(tab.html)
       .attr('title', tab.title)
