@@ -259,7 +259,7 @@ const fetchProjectBrowser = () =>
         {
           html.loading();
           return loadProject({ project_number: install_number })
-            .then(found => found ? stopBrowsing() : null)
+            .then(found => found ? (stopBrowsing(), false) : false)
             .finally(() => html.loading(false));
         },
       },
@@ -271,7 +271,7 @@ const fetchProjectBrowser = () =>
         {
           html.loading();
           return loadProject(project)
-            .then(found => found ? stopBrowsing() : null)
+            .then(found => found ? (stopBrowsing(), true) : false)
             .finally(() => html.loading(false));
         },
       },

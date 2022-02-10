@@ -72,16 +72,27 @@ export default class TableList
       // JQuery<HTMLAnchorElement> | typeof $td
       let $a: JQuery<HTMLElement> = $td;
 
+      const activateRow = () =>
+      {
+        const $table = $tr.parents('table').first();
+
+        $table.find('>tbody>tr').removeClass('is-selected');
+
+        $tr.addClass('is-selected');
+      };
+
       if (typeof column.onclick === 'function')
       {
-        $a = $(document.createElement('a'))
+        $a = $td.find('>a');
+        $a = ($a.length
+          ? $a.first() as JQuery<HTMLAnchorElement>
+          : $(document.createElement('a')).prependTo($td))
           .on('click', e =>
           {
             e.preventDefault();
 
-            column.onclick($tr, $td, e);
-          })
-          .appendTo($td);
+            column.onclick($td, $tr, e).then(activate => activate ? (activateRow(), true) : false);
+          });
       }
 
       $a
@@ -95,7 +106,7 @@ export default class TableList
         {
           e.preventDefault();
 
-          column.ondblclick($tr, $td, e);
+          column.ondblclick($td, $tr, e);
         });
       }
 
@@ -105,7 +116,7 @@ export default class TableList
         {
           e.preventDefault();
 
-          column.oncontextmenu($tr, $td, e);
+          column.oncontextmenu($td, $tr, e);
         });
       }
 
@@ -115,7 +126,7 @@ export default class TableList
         {
           e.preventDefault();
 
-          if (e.button === 1) column.onmiddleclick($tr, $td, e);
+          if (e.button === 1) column.onmiddleclick($td, $tr, e);
         });
       }
 
@@ -127,7 +138,7 @@ export default class TableList
           {
             e.preventDefault();
 
-            column.ondragstart($tr, $td, e);
+            column.ondragstart($td, $tr, e);
           });
       }
 

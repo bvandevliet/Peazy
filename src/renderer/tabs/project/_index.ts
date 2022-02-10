@@ -10,7 +10,7 @@ import * as html from '../../inc/functions-html.js';
 export default class projectTab implements tabPage
 {
   readonly $div: JQuery<HTMLDivElement>;
-  readonly project: Project;
+  project: Project;
 
   private _mainTabs: Tabs;
   private _projectBrowser: TableList;
@@ -23,6 +23,8 @@ export default class projectTab implements tabPage
    */
   private loadProject (project: Project)
   {
+    this.project = project;
+
     // return new Promise(resolve => resolve(true));
   }
 
@@ -60,7 +62,7 @@ export default class projectTab implements tabPage
           template: 'tmpl-td-project-number',
           text: project_number,
           title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
-          onclick: $tr =>
+          onclick: (_$td, $tr) =>
           {
             html.loading();
 
@@ -88,7 +90,7 @@ export default class projectTab implements tabPage
                 $tr.after(projectRow(project, depth + 1));
               }
             })
-              .finally(() => html.loading(false));
+              .finally(() => html.loading(false)).then(() => true);
           },
         },
         {
@@ -196,7 +198,9 @@ export default class projectTab implements tabPage
 
   onactivate ()
   {
-    return this.buildProjectTree();
+    this.loadProject(this.project);
+
+    return this.buildProjectTree().then(() => true);
   }
 
   dispose ()

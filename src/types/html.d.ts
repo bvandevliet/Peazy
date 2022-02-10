@@ -23,23 +23,23 @@ interface tableCellItem
   /**
    * Called on click. If set an <a/> element is created.
    */
-  onclick?: ($tr?: JQuery<HTMLTableRowElement>, $td?: JQuery<HTMLTableCellElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => Promise<any>;
+  onclick?: ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => Promise<boolean>;
   /**
    * Called on double click.
    */
-  ondblclick?: ($tr?: JQuery<HTMLTableRowElement>, $td?: JQuery<HTMLTableCellElement>, e?: JQuery.DoubleClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  ondblclick?: ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.DoubleClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
   /**
    * Called on contextmenu.
    */
-  oncontextmenu?: ($tr?: JQuery<HTMLTableRowElement>, $td?: JQuery<HTMLTableCellElement>, e?: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  oncontextmenu?: ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
   /**
    * Called on middleclick.
    */
-  onmiddleclick?: ($tr?: JQuery<HTMLTableRowElement>, $td?: JQuery<HTMLTableCellElement>, e?: JQuery.MouseDownEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  onmiddleclick?: ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.MouseDownEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
   /**
    * Called on dragstart.
    */
-  ondragstart?: ($tr?: JQuery<HTMLTableRowElement>, $td?: JQuery<HTMLTableCellElement>, e?: JQuery.DragStartEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  ondragstart?: ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.DragStartEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
   /**
    * Additional classes.
    */
@@ -75,7 +75,7 @@ interface tabItem
   /**
    * Called on click. If set an <a/> element is created.
    */
-  onclick?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => Promise<any>;
+  onclick?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => Promise<boolean>;
   /**
    * Called on double click.
    */

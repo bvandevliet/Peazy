@@ -150,8 +150,10 @@ export default class Tabs
     };
 
     // Then configure the link element.
-    let $a = $li.find('>a') as JQuery<HTMLAnchorElement>;
-    $a = ($a.length ? $a.first() : $(document.createElement('a')).prependTo($li))
+    let $a = $li.find('>a');
+    $a = ($a.length
+      ? $a.first() as JQuery<HTMLAnchorElement>
+      : $(document.createElement('a')).prependTo($li))
       .text(tab.text)
       .html(tab.html)
       .attr('title', tab.title)
@@ -159,11 +161,10 @@ export default class Tabs
       {
         e.preventDefault();
 
-        activateTab();
-
         if (typeof tab.onclick === 'function')
         {
-          tab.onclick($li, $div, e);
+          // eslint-disable-next-line no-shadow
+          tab.onclick($li, $div, e).then(activate => activate ? (activateTab(), true) : false);
         }
       });
 
