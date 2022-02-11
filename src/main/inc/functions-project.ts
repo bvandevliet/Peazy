@@ -26,6 +26,11 @@ const database: Database = new Database(
 );
 
 /**
+ * Max amount of rows a database request should return.
+ */
+export const maxSelect = userConfig.database.maxSelect;
+
+/**
  * Fetch multiple projects from the database.
  *
  * @param args  An object providing arguments, passed and handled by the query filter.
