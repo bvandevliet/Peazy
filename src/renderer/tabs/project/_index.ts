@@ -106,6 +106,9 @@ export default class projectTab implements tabPage
    */
   private loadProject (project: Project)
   {
+    // Set the current project for this tab.
+    this._project = project;
+
     // Overwrite tab ID.
     this.$li
       .add(this.$div)
@@ -117,11 +120,8 @@ export default class projectTab implements tabPage
       .text(window.api.core.applyFilters('project_project_number', project.project_number, project))
       .attr('title', window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project));
 
-    // Set the current project for this tab.
-    this._project = project;
-
     // Make sure rows are activated in the main window.
-    main.updateActiveStates(`project-${this._project.project_id}`);
+    main.updateActiveStates(`project-${project.project_id}`);
   }
 
   /**
