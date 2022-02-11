@@ -128,14 +128,17 @@ html.makeTableSortable($('table'));
  */
 export const updateActiveStates = (id?: string) =>
 {
+  const $tr = projectsTable.$table.find('>tbody>tr')
+    .removeClass('is-selected');
+
+  if (window.api.core.isEmpty(id)) return;
+
   id = id ?? mainTabs.activeTab[0].attr('tab-id');
 
-  projectsTable.$table.find('tr')
-    .removeClass('is-selected')
-    .filter(function ()
-    {
-      return $(this).attr('row-id') === id;
-    })
+  $tr.filter(function ()
+  {
+    return $(this).attr('row-id') === id;
+  })
     .addClass('is-selected');
 };
 
