@@ -32,7 +32,6 @@ export default class projectTab implements tabPage
    * @param $div                The tab page `div` element.
    * @param $li                 The tab `li` element.
    * @param project             The project to initiate this tab with.
-   * @param activateTabIfExists Called when changing project.
    */
   constructor ($div: JQuery<HTMLDivElement>, $li: JQuery<HTMLLIElement>, project: Project)
   {
