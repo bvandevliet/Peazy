@@ -49,7 +49,7 @@ export default class Tabs
    *
    * @param id The unique ID of the tab to find.
    *
-   * @returns  An array consisting of the `li` tab and `div` page element.
+   * @returns An array consisting of the `li` tab and `div` page element.
    */
   getTabIfExists (id: tabItem['id']): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>]
   {
@@ -66,47 +66,54 @@ export default class Tabs
    *
    * @param id The unique ID of the tab to find.
    *
-   * @returns  An array consisting of the `li` tab and `div` page element.
+   * @returns An array consisting of the `li` tab, `div` page element and the `onclick` promise.
    */
-  tryTrigger (id: tabItem['id']): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>]
+  tryTrigger (id: tabItem['id']): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>, ReturnType<tabItem['onclick']>?]
   {
     const [$li, $div] = this.getTabIfExists(id);
 
-    $li.find('>a').first().trigger('click');
+    let _promise;
 
-    return [$li, $div];
+    $li.find('>a').first().trigger('click', [(promise: ReturnType<tabItem['onclick']>) => _promise = promise]);
+
+    return [$li, $div, _promise];
   }
 
   /**
    * Try trigger `onclick` on the first tab.
    *
-   * @returns  An array consisting of the `li` tab and `div` page element.
+   * @returns An array consisting of the `li` tab, `div` page element and the `onclick` promise.
    */
-  tryTriggerFirst (): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>]
+  tryTriggerFirst (): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>, ReturnType<tabItem['onclick']>?]
   {
     const $li = this.$ul.find('>li').first() as JQuery<HTMLLIElement>;
     const id = $li.attr('tab-id');
 
-    $li.find('>a').first().trigger('click');
+    let _promise;
+
+    $li.find('>a').first().trigger('click', [(promise: ReturnType<tabItem['onclick']>) => _promise = promise]);
 
     return [
       $li,
       this.$container.find('>div.wrapper-content').filter(function () { return $(this).attr('tab-id') === id; }).first() as JQuery<HTMLDivElement>,
+      _promise,
     ];
   }
 
   /**
    * Try trigger `onclick` on the active tab.
    *
-   * @returns  An array consisting of the `li` tab and `div` page element.
+   * @returns An array consisting of the `li` tab, `div` page element and the `onclick` promise.
    */
-  tryTriggerActive (): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>]
+  tryTriggerActive (): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>, ReturnType<tabItem['onclick']>?]
   {
     const [$li, $div] = this.activeTab;
 
-    $li.find('>a').first().trigger('click');
+    let _promise;
 
-    return [$li, $div];
+    $li.find('>a').first().trigger('click', [(promise: ReturnType<tabItem['onclick']>) => _promise = promise]);
+
+    return [$li, $div, _promise];
   }
 
   /**
@@ -114,7 +121,7 @@ export default class Tabs
    *
    * @param id The unique ID of the tab to add.
    *
-   * @returns  An array consisting of the `li` tab and `div` page element.
+   * @returns An array consisting of the `li` tab and `div` page element.
    */
   addTab (tab: tabItem, activate = true): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>]
   {
@@ -157,14 +164,16 @@ export default class Tabs
       .text(tab.text)
       .html(tab.html)
       .attr('title', tab.title)
-      .on('click', e =>
+      .on('click', (e, callback?: (promise: ReturnType<tabItem['onclick']>) => void) =>
       {
         e.preventDefault();
 
         if (typeof tab.onclick === 'function')
         {
           // eslint-disable-next-line no-shadow
-          tab.onclick($li, $div, e).then(activate => activate ? (activateTab(), true) : false);
+          const promise = tab.onclick($li, $div, e).then(activate => activate ? (activateTab(), true) : false);
+
+          if (typeof callback === 'function') callback(promise);
         }
       });
 

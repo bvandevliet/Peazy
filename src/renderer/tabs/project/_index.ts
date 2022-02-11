@@ -122,6 +122,9 @@ export default class projectTab implements tabPage
 
     // Make sure rows are activated in the main window.
     main.updateActiveStates(`project-${project.project_id}`);
+
+    // Reload active tab.
+    return this._projectTabs.tryTriggerActive()[2];
   }
 
   /**
@@ -162,17 +165,15 @@ export default class projectTab implements tabPage
           const trNextCount = $tr.next(`tr.tree-depth-${(depth + 1)}`).length;
 
           // Append new child rows if any and load the clicked project when it passes by in the tree build.
-          let found = false;
+          let clickedProject: Project = null;
           return window.api.project.getProjects({ children_of: project_number, orderBy: 'DESC' }, project =>
           {
             const this_project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
 
             if (this_project_number === project_number)
             {
-              found = true;
-
-              // Load the clicked project.
-              this.loadProject(project);
+              // Set clicked project.
+              clickedProject = project;
             }
 
             // Append child rows only if they were not already there.
@@ -182,7 +183,9 @@ export default class projectTab implements tabPage
               $tr.after(this.projectRow(project, depth + 1));
             }
           })
-            .finally(() => html.loading(false)).then(() => found);
+            // If clicked project exists, load it.
+            .then(() => clickedProject ? this.loadProject(project) : null)
+            .finally(() => html.loading(false)).then(() => null !== clickedProject);
         },
       },
       {
@@ -219,6 +222,8 @@ export default class projectTab implements tabPage
 
     const tab_project_number = window.api.core.applyFilters('project_project_number', this._project.project_number, this._project);
 
+    let clickedProject: Project = null;
+
     /**
      * Recursively builds html for the project tree
      * starting from the given top-most project down for as long a children are defined.
@@ -232,8 +237,8 @@ export default class projectTab implements tabPage
 
       if (this_project_number === tab_project_number)
       {
-        // Load the clicked project.
-        this.loadProject(project);
+        // Set clicked project.
+        clickedProject = project;
       }
 
       this._projectsTable.tbody().append(this.projectRow(project, depth));
@@ -251,6 +256,9 @@ export default class projectTab implements tabPage
         return $(elem).attr('row-id') === `project-${this._project.project_id}`;
       })
       .addClass('is-selected');
+
+    // Load the clicked project.
+    if (null !== clickedProject) await this.loadProject(clickedProject);
   }
 
   init ()
