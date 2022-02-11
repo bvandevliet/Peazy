@@ -14,9 +14,9 @@ export default class Search
   public elemSelector: string;
 
   /**
-   * The callback function to return a value to search in.
+   * The callback function to return an array of strings to search in.
    */
-  public searchIn: (curElem: HTMLElement) => string | string[];
+  public searchIn: (curElem: HTMLElement) => string[];
 
   /**
    * Internal search timeout timer.
@@ -27,13 +27,13 @@ export default class Search
    *
    * @param elemMaster   A container element that is a close parent of the `elemSelector` selector.
    * @param elemSelector A selector string that refers to the elements to show/hide relative to `elemMaster`.
-   * @param searchIn     A callback function to return a value to search in.
+   * @param searchIn     A callback function to return an array of strings to search in.
    */
   constructor
   (
     elemMaster: any,
     elemSelector: string,
-    searchIn: (curElem: HTMLElement) => string | string[],
+    searchIn: (curElem: HTMLElement) => string[],
   )
   {
     this.$elemMaster = $(elemMaster);
@@ -68,14 +68,13 @@ export default class Search
   /**
    * Test if a search array matches a search query.
    *
-   * @param searchIn  String or array to search in.
+   * @param searchIn  String array to search in.
    * @param searchFor String or array of search queries.
    *                  These can contain negative queries starting with `!`
    *                  and (negative) regex queries starting with `(!)^`.
    */
-  static isMatch (searchIn: string | string[], searchFor: string | string[])
+  static isMatch (searchIn: string[], searchFor: string | string[])
   {
-    searchIn = Search.flatten(searchIn);
     searchFor = Search.flatten(searchFor);
 
     return searchFor.every(queryItem =>
@@ -105,7 +104,7 @@ export default class Search
 
       // Does every positive query item match at least one search item?
       // And does every negative query segment not match any search segment?
-      return !queryItem.length || negative !== (searchIn as string[]).some(searchItem =>
+      return !queryItem.length || negative !== searchIn.some(searchItem =>
         queryRegex ? queryRegex.test(searchItem) : Search.includes(searchItem, queryItem));
     });
   }
