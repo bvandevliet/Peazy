@@ -27,7 +27,12 @@ body {
   }
 }
 
+// #sidebar
 #table-projects {
+
+  tbody.deepsearch {
+    @extend .is-italic;
+  }
 
   tr {
 

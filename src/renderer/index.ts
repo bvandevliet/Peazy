@@ -165,23 +165,20 @@ export const activateTabIfExists = (id: string) =>
 const loadProject = async (args: ProjectId): Promise<boolean> =>
 {
   // If an ID was passed, check if tab already exists, if so, activate it and bail.
-  if (!window.api.core.isEmpty(args.project_id) && activateTabIfExists(`project-${args.project_id}`)) return true;
+  if (!window.api.core.isEmpty(args.project_id))
+  {
+    if (activateTabIfExists(`project-${args.project_id}`)) return true;
+  }
+  // If no ID and no project number was passed, bail anyway.
+  else if (window.api.core.isEmpty(args.project_number)) return true;
 
   // Fetch project from the database.
-  const project = await window.api.project.getProject(args)
-    .catch(err =>
-    {
-      // spawn ERROR dialog message box !!
-
-      throw new Error(err);
-    });
+  const project = await window.api.project.getProject(args);
 
   // Project not found.
   if (project === null) return false;
 
-  /**
-   * Initiate project tab.
-   */
+  // Initiate project tab.
   let tabProject: tabPage;
 
   // Create new tab.
@@ -218,11 +215,129 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
 };
 
 /**
+ * Get html for a project tree row.
+ *
+ * @param project The project.
+ */
+const projectRow = (project: Project) =>
+{
+  const project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
+  const install_number = window.api.core.applyFilters('project_install_number', project.install_number, project);
+
+  const isChild = window.api.core.applyFilters('project_is_child', !window.api.core.isEmpty(install_number) && install_number !== project_number, project);
+
+  // Table cells definition for a project browser row.
+  return TableList.buildRow([
+    {
+      template: 'tmpl-td-project-date',
+      text: new DateTime(project.date_created).getDate(),
+    },
+    {
+      template: 'tmpl-td-project-status',
+      text: window.api.core.applyFilters('project_status_id', project.status_id, project),
+      title: window.api.core.applyFilters('project_status_id_title', project.status_name, project),
+    },
+    {
+      template: 'tmpl-td-install-number',
+      text: isChild ? install_number : null,
+      title: window.api.core.applyFilters('project_install_number_title', project.install_id ? `${project.install_description}  •  ${project.customer_name}` : null, project),
+      onclick: () =>
+      {
+        html.loading();
+        return loadProject({ project_number: install_number })
+          .then(found => found ? (stopBrowsing(), false) : false) // if found, still return false /  don't activate row since install number was clicked
+          .finally(() => html.loading(false));
+      },
+    },
+    {
+      template: 'tmpl-td-project-number',
+      text: project_number,
+      title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
+      onclick: () =>
+      {
+        html.loading();
+        return loadProject(project)
+          .then(found => found ? (stopBrowsing(), /* true*/ false) : false) // if found, still return false / don't activate row since the tab will handle this
+          .finally(() => html.loading(false));
+      },
+    },
+    {
+      template: 'tmpl-td-project-description',
+      text: window.api.core.applyFilters('project_project_description', project.project_description, project),
+      title: window.api.core.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),
+    },
+    {
+      template: 'tmpl-td-project-customer',
+      text: window.api.core.applyFilters('project_customer_name', project.customer_name, project),
+      title: window.api.core.applyFilters('project_customer_name_title', `${project.customer_name}`, project),
+    },
+  ])
+    // Add an ID to the project row to target it when updating active tab.
+    .attr('row-id', `project-${project.project_id}`)
+    // If is a child of an install number, then add class attribute for selective styling.
+    .addClass(isChild ? 'has-install' : null);
+};
+
+/**
+ * Performs a deepsearch.
+ *
+ * @param queryStr The raw search query.
+ *
+ * @ignore string1 !anti1 14.5 15,4 0,text ^regex1 !^antireg1
+ */
+const deepsearch = (queryStr: string) =>
+{
+  // Only show the deepsearch table section.
+  projectsTable.$table.find('>tbody').hide();
+  projectsTable.tbody(2).empty().show();
+
+  // Divide search query into regexes and strings to force regexes
+  // to be handled by the application instead of the database request.
+  const [regexArr, stringArr] = window.api.core.partitionArr(Search.flatten(queryStr), queryItem => /^!?\^/u.test(queryItem));
+
+  // Extract strings with decimal symbols and force them to be handled by the application
+  // instead of the database request to allow any related filters to work as expected.
+  // eslint-disable-next-line prefer-const
+  let [searchedByApp, searchedByDatabase] = window.api.core.partitionArr(stringArr, stringItem => /[.,](\d)/u.test(stringItem));
+  searchedByApp = searchedByApp.concat(regexArr);
+
+  // Query database with search strings and filter returned rows by the regex array.
+  let matches = 0;
+  return window.api.project.getProjects({ search_for: searchedByDatabase, orderBy: 'DESC' }, project =>
+  {
+    if (matches <= window.api.project.maxSelect
+      &&
+      // Test returned projects against the regex array before appending it to the
+      Search.isMatch([
+        window.api.core.applyFilters('project_project_number', project.project_number, project),
+        window.api.core.applyFilters('project_project_description', project.project_description, project),
+        window.api.core.applyFilters('project_customer_name', project.customer_name, project),
+      ],
+      searchedByApp))
+    {
+      projectsTable.tbody(2).append(projectRow(project));
+
+      matches++;
+    }
+  });
+};
+
+const exitDeepsearch = () =>
+{
+  projectsTable.$table.find('>tbody').hide();
+  projectsTable.tbody(2).empty();
+  projectsTable.tbody(0).show();
+  projectsTable.tbody(1).show();
+};
+
+/**
  * Bind `projectSearch` to search events on the project.
  */
 ($('#search-projects') as JQuery<HTMLInputElement>)
   .on('search', function ()
   {
+    if (!this.value) exitDeepsearch();
+
     projectSearch.search(this.value);
   })
   .on('keyup', function (e)
@@ -236,12 +351,19 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
       case 'Enter':
         html.loading();
         loadProject({ project_number: this.value })
-          .then(found =>
+          .then(async (found) =>
           {
-            if (!found) return null; // deepsearch !!
-
-            // Clear search and exit browsing state.
-            this.value = ''; projectSearch.search(''); stopBrowsing();
+            if (!found)
+            {
+              // Perform a deepsearch.
+              await deepsearch(this.value); return false;
+            }
+            else
+            {
+              // Clear search and exit browsing state.
+              this.value = ''; projectSearch.search('');
+              stopBrowsing(); return true;
+            }
           })
           .finally(() => html.loading(false));
         break;
@@ -259,64 +381,12 @@ const fetchProjectBrowser = () =>
 {
   html.loading();
 
-  projectsTable.empty();
+  projectsTable.tbody(1).empty();
+  exitDeepsearch();
 
   window.api.project.getProjects({ orderBy: 'DESC' }, project =>
   {
-    const project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
-    const install_number = window.api.core.applyFilters('project_install_number', project.install_number, project);
-
-    const isChild = window.api.core.applyFilters('project_is_child', !window.api.core.isEmpty(install_number) && install_number !== project_number, project);
-
-    projectsTable.appendItem([
-      {
-        template: 'tmpl-td-project-date',
-        text: new DateTime(project.date_created).getDate(),
-      },
-      {
-        template: 'tmpl-td-project-status',
-        text: window.api.core.applyFilters('project_status_id', project.status_id, project),
-        title: window.api.core.applyFilters('project_status_id_title', project.status_name, project),
-      },
-      {
-        template: 'tmpl-td-install-number',
-        text: isChild ? install_number : null,
-        title: window.api.core.applyFilters('project_install_number_title', project.install_id ? `${project.install_description}  •  ${project.customer_name}` : null, project),
-        onclick: () =>
-        {
-          html.loading();
-          return loadProject({ project_number: install_number })
-            .then(found => found ? (stopBrowsing(), false) : false)
-            .finally(() => html.loading(false));
-        },
-      },
-      {
-        template: 'tmpl-td-project-number',
-        text: project_number,
-        title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
-        onclick: () =>
-        {
-          html.loading();
-          return loadProject(project)
-            .then(found => found ? (stopBrowsing(), true) : false)
-            .finally(() => html.loading(false));
-        },
-      },
-      {
-        template: 'tmpl-td-project-description',
-        text: window.api.core.applyFilters('project_project_description', project.project_description, project),
-        title: window.api.core.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),
-      },
-      {
-        template: 'tmpl-td-project-customer',
-        text: project.customer_name,
-        title: window.api.core.applyFilters('project_customer_name_title', `${project.customer_name}`, project),
-      },
-    ])
-      // Add an ID to the project row to target it when updating active tab.
-      .attr('row-id', `project-${project.project_id}`)
-      // If is a child of an install number, then add class attribute for selective styling.
-      .addClass(isChild ? 'has-install' : null);
+    projectsTable.tbody(1).append(projectRow(project));
   })
     .finally(() => html.loading(false));
 };
