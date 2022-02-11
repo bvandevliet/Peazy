@@ -69,33 +69,6 @@ const stopBrowsing = () =>
 };
 
 /**
- * Activate browsing state on sidebar actions.
- */
-sidebarTabs.$ul.on('mouseup', () =>
-{
-  $(document.body).addClass('browsing');
-});
-$('#sidebar input[type=search]').on('focus', () =>
-{
-  $(document.body).addClass('browsing');
-});
-
-/**
- * Toggle browsing state on key input.
- */
-document.addEventListener('keyup', e =>
-{
-  if (e.ctrlKey && e.shiftKey && e.key === 'F')
-  {
-    $('#sidebar input[type=search]:visible').first().trigger('focus');
-  }
-  else if (e.key === 'Escape')
-  {
-    stopBrowsing();
-  }
-});
-
-/**
  * The project page tabs.
  */
 const mainTabs = new Tabs();
@@ -394,3 +367,34 @@ const fetchProjectBrowser = async () =>
 
 // Initial fetch.
 fetchProjectBrowser();
+
+/**
+ * Activate browsing state on sidebar actions.
+ */
+sidebarTabs.$ul.on('mouseup', () =>
+{
+  $(document.body).addClass('browsing');
+});
+$('#sidebar input[type=search]').on('focus', () =>
+{
+  $(document.body).addClass('browsing');
+});
+
+/**
+ * Toggle browsing state on key input.
+ */
+document.addEventListener('keyup', e =>
+{
+  if (e.ctrlKey && e.shiftKey && e.key === 'F')
+  {
+    $('#sidebar input[type=search]:visible').first().trigger('focus');
+  }
+  else if (e.key === 'Escape')
+  {
+    stopBrowsing();
+  }
+  else if (e.key === 'F5')
+  {
+    fetchProjectBrowser();
+  }
+});
