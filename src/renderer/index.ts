@@ -336,62 +336,55 @@ const exitDeepsearch = () =>
 /**
  * Bind `projectSearch` to search events on the project.
  */
-($('#search-projects') as JQuery<HTMLInputElement>)
-  .on('search', function ()
+($('#search-projects') as JQuery<HTMLInputElement>).on({
+  input: function ()
   {
-    if (!this.value) exitDeepsearch();
-
+    if (this.value === '') exitDeepsearch();
     projectSearch.search(this.value);
-  })
-  .on('keyup', function (e)
+  },
+  keyup: function (e)
   {
-    switch (e.key)
+    if (e.key === 'Enter')
     {
-      case 'Escape':
-        // eslint-disable-next-line no-useless-return
-        return;
-
-      case 'Enter':
-        html.loading();
-        loadProject({ project_number: this.value })
-          .then(async (found) =>
+      html.loading();
+      loadProject({ project_number: this.value })
+        .then(async (found) =>
+        {
+          if (!found)
           {
-            if (!found)
-            {
-              // Perform a deepsearch.
-              await deepsearch(this.value); return false;
-            }
-            else
-            {
-              // Clear search and exit browsing state.
-              this.value = ''; projectSearch.search('');
-              stopBrowsing(); return true;
-            }
-          })
-          .finally(() => html.loading(false));
-        break;
-
-      default:
-        projectSearch.search(this.value);
-        break;
+            // Perform a deepsearch.
+            await deepsearch(this.value); return false;
+          }
+          else
+          {
+            // Clear search and exit browsing state.
+            this.value = ''; projectSearch.search('');
+            stopBrowsing(); return true;
+          }
+        })
+        .finally(() => html.loading(false));
     }
-  });
+  },
+});
 
 /**
  * Fetch projects from database to fill the projects table.
  */
-const fetchProjectBrowser = () =>
+const fetchProjectBrowser = async () =>
 {
   html.loading();
 
   projectsTable.tbody(1).empty();
   exitDeepsearch();
 
-  window.api.project.getProjects({ orderBy: 'DESC' }, project =>
+  await window.api.project.getProjects({ orderBy: 'DESC' }, project =>
   {
     projectsTable.tbody(1).append(projectRow(project));
   })
     .finally(() => html.loading(false));
+
+  // Make sure search is up-to-date.
+  $('#search-projects').trigger('input');
 };
 
 // Initial fetch.

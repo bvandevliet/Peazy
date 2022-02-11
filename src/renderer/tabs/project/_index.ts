@@ -55,11 +55,10 @@ export default class projectTab implements tabPage
      */
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisClass = this;
-    (this.$div.find('input.search-projects') as JQuery<HTMLInputElement>)
-      .on('search keyup', function ()
-      {
-        thisClass._projectSearch.search(this.value, true);
-      });
+    (this.$div.find('input.search-projects') as JQuery<HTMLInputElement>).on('input', function ()
+    {
+      thisClass._projectSearch.search(this.value, true);
+    });
 
     // Initiate the project tabs.
     this._projectTabs = new Tabs();
@@ -256,6 +255,9 @@ export default class projectTab implements tabPage
         return $(elem).attr('row-id') === `project-${this._project.project_id}`;
       })
       .addClass('is-selected');
+
+    // Make sure search is up-to-date.
+    this.$div.find('input.search-projects').trigger('input');
 
     // Load the clicked project.
     if (null !== clickedProject) await this.loadProject(clickedProject);
