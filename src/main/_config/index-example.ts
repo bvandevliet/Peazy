@@ -44,12 +44,96 @@ core.addFilter('sql_where_get_projects', (query: string) =>
  */
 core.addFilter('sql_get_projects', (query: string, args: getProjectArgs) =>
 {
-  query += args.single
-    ? 'SELECT TOP 1'
-    : `SELECT TOP ${userConfig.database.maxSelect}`;
+  query += 'SELECT';
+
+  if (!Array.isArray(args.search_for))
+  {
+    query += args.single
+      ? ' TOP 1'
+      : ` TOP ${userConfig.database.maxSelect}`;
+  }
 
   // WHERE ..
   query += core.applyFilters('sql_where_get_projects');
+
+  // project ID ..
+  if (Array.isArray(args.project_ids))
+  {
+    query += `
+  AND [projects].[id] IN (${args.project_ids.map(id => `'${sql.sanitizeSql(id.trim())}'`).join(', ')})`;
+  }
+
+  // project number ..
+  else if (Array.isArray(args.project_numbers))
+  {
+    query += `
+  AND upper([projects].[project_number]) IN (${args.project_numbers.map(nr => `'${sql.sanitizeSql(nr.trim().toUpperCase())}'`).join(', ')})`;
+  }
+
+  // children of ..
+  else if (!core.isEmpty(args.children_of))
+  {
+    const install_number = sql.sanitizeSql(args.children_of.trim().toUpperCase());
+
+    query += `
+  AND (
+    upper([projects].[project_number]) = '${install_number}'
+    OR upper([installations].[install_number]) LIKE '${install_number}%'
+  )`;
+  }
+
+  // deepsearch ..
+  else if (Array.isArray(args.search_for))
+  {
+    if (args.search_for.length)
+    {
+      query += `
+  AND (`;
+
+      args.search_for.forEach((queryItem, index) =>
+      {
+        queryItem = sql.sanitizeSql(queryItem).toLowerCase();
+
+        if (index > 0) query += `
+    AND`;
+
+        const negative = queryItem.startsWith('!');
+
+        if (negative) queryItem = queryItem.substring(1);
+
+        query += `
+    (
+      lower([projects].[project_number]) ${negative ? 'NOT ' : ''}LIKE '%${queryItem}%' ESCAPE '\\'
+      ${negative ? 'AND' : 'OR'}
+      lower([projects].[description]) ${negative ? 'NOT ' : ''}LIKE '%${queryItem}%' ESCAPE '\\' COLLATE Latin1_General_CI_AI
+      ${negative ? 'AND' : 'OR'}
+      lower([relations].[name]) ${negative ? 'NOT ' : ''}LIKE '%${queryItem}%' ESCAPE '\\' COLLATE Latin1_General_CI_AI
+    )`;
+      });
+
+      query += `
+  )`;
+    }
+  }
+
+  // status ..
+  else if (Array.isArray(args.status))
+  {
+    query += `
+  AND [projects].[status] IN (${args.status.map(stat => `'${sql.sanitizeSql(stat.trim())}'`).join(', ')})`;
+  }
+
+  // order ..
+  query += '\nORDER BY';
+  query += args.orderBy !== 'DESC'
+    ? `
+  [date_created],
+  [project_number],
+  [install_number]`
+    : `
+  [date_created] DESC,
+  [project_number] DESC,
+  [install_number] DESC`;
 
   return query;
 });
