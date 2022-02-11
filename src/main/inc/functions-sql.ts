@@ -8,7 +8,7 @@ import * as core from './functions-core';
  */
 export const sanitizeSql = (input: string, escLike = false) =>
 {
-  input = input.replace(/(')/giu, '\'$1');
+  input = (input ?? '').replace(/(')/giu, '\'$1');
   return escLike ? input.replace(/([%_[])/giu, '\\$1') : input;
 };
 
