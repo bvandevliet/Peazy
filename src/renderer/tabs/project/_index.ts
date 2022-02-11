@@ -159,31 +159,31 @@ export default class projectTab implements tabPage
           // Check if tab already exists, if so, activate it and bail.
           if (main.activateTabIfExists(`project-${project.project_id}`)) return new Promise(resolve => resolve(false));
 
-          // Remove appended child rows if any.
-          let $trNext = $tr.next(`tr.tree-depth-${(depth + 1)}`);
-          while ($trNext.length)
-          {
-            $trNext.remove();
-            $trNext = $tr.next(`tr.tree-depth-${(depth + 1)}`);
-          }
+          // Length of next-level project rows.
+          const trNextCount = $tr.next(`tr.tree-depth-${(depth + 1)}`).length;
 
           // Append new child rows if any and load the clicked project when it passes by in the tree build.
+          let found = false;
           return window.api.project.getProjects({ children_of: project_number, orderBy: 'DESC' }, project =>
           {
             const this_project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
 
             if (this_project_number === project_number)
             {
+              found = true;
+
               // Load the clicked project.
               this.loadProject(project);
             }
-            else
+
+            // Append child rows only if they were not already there.
+            // A fresh rebuild can still be triggered with a tab `onclick`.
+            else if (!trNextCount)
             {
-              // Append child row.
               $tr.after(this.projectRow(project, depth + 1));
             }
           })
-            .finally(() => html.loading(false)).then(() => true);
+            .finally(() => html.loading(false)).then(() => found);
         },
       },
       {
