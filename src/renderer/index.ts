@@ -316,36 +316,38 @@ const exitDeepsearch = () =>
 /**
  * Bind `projectSearch` to search events on the project.
  */
-($('#search-projects') as JQuery<HTMLInputElement>).on({
-  input: function ()
-  {
-    if (this.value === '') exitDeepsearch();
-    projectSearch.search(this.value);
-  },
-  keyup: function (e)
-  {
-    if (e.key === 'Enter')
+($('#search-projects') as JQuery<HTMLInputElement>)
+  .attr('title', 'Enter keyword(s) to search for (and hit Enter to search deep). [Ctrl+Shift+F]')
+  .on({
+    input: function ()
     {
-      html.loading();
-      loadProject({ project_number: this.value })
-        .then(async (found) =>
-        {
-          if (!found)
+      if (this.value === '') exitDeepsearch();
+      projectSearch.search(this.value);
+    },
+    keyup: function (e)
+    {
+      if (e.key === 'Enter')
+      {
+        html.loading();
+        loadProject({ project_number: this.value })
+          .then(async (found) =>
           {
+            if (!found)
+            {
             // Perform a deepsearch.
-            await deepsearch(this.value); return false;
-          }
-          else
-          {
+              await deepsearch(this.value); return false;
+            }
+            else
+            {
             // Clear search and exit browsing state.
-            this.value = ''; projectSearch.search('');
-            stopBrowsing(); return true;
-          }
-        })
-        .finally(() => html.loading(false));
-    }
-  },
-});
+              this.value = ''; projectSearch.search('');
+              stopBrowsing(); return true;
+            }
+          })
+          .finally(() => html.loading(false));
+      }
+    },
+  });
 
 /**
  * Fetch projects from database to fill the projects table.

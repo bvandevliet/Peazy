@@ -102,7 +102,7 @@ const createWindow = () =>
   mainWindow = new BrowserWindow({
     show: false, // @see 'ready-to-show' event
     autoHideMenuBar: true,
-    minWidth: 1024,
+    minWidth: 768,
     minHeight: 768,
     icon: path.join(__dirname, '../../src/renderer/assets/img/favicon.ico'),
     webPreferences: {
