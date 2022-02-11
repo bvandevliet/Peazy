@@ -120,7 +120,7 @@ export default class projectTab implements tabPage
       .attr('title', window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project));
 
     // Make sure rows are activated in the main window.
-    main.updateActiveStates(`project-${project.project_id}`);
+    main.updateActiveStates(this.$li);
 
     // Reload active tab.
     return this._projectTabs.tryTriggerActive()[2];
@@ -271,7 +271,7 @@ export default class projectTab implements tabPage
   onactivate (): Promise<boolean>
   {
     // Make sure rows are activated in the main window.
-    main.updateActiveStates(`project-${this.project.project_id}`);
+    main.updateActiveStates(this.$li);
 
     return new Promise(resolve => resolve(true));
   }

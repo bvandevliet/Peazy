@@ -95,24 +95,31 @@ const projectSearch = new Search(projectsTable.$table, '>tbody>tr', tr =>
 html.makeTableSortable($('table'));
 
 /**
- * Update active rows in the browser according to current active tab.
+ * Update app title and active rows in the browser according to current active tab.
  *
- * @param id The ID of the tab if already known.
+ * @param $li The current active tab.
  */
-export const updateActiveStates = (id?: string) =>
+export const updateActiveStates = ($li?: JQuery<HTMLLIElement>) =>
 {
   const $tr = projectsTable.$table.find('>tbody>tr')
     .removeClass('is-selected');
 
-  if (window.api.core.isEmpty(id)) return;
+  $li = $li ?? mainTabs.activeTab[0];
 
-  id = id ?? mainTabs.activeTab[0].attr('tab-id');
+  const id = $li.attr('tab-id');
+
+  if (window.api.core.isEmpty(id))
+  {
+    document.title = 'Peazy'; return;
+  }
 
   $tr.filter(function ()
   {
     return $(this).attr('row-id') === id;
   })
     .addClass('is-selected');
+
+  document.title = $li.find('>a').first().text();
 };
 
 /**
@@ -126,7 +133,7 @@ export const activateTabIfExists = (id: string) =>
 {
   const existingTab = mainTabs.tryTrigger(id)[0];
 
-  if (existingTab.length) updateActiveStates(id);
+  if (existingTab.length) updateActiveStates(existingTab);
 
   return existingTab.length;
 };
