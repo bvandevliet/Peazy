@@ -383,6 +383,11 @@ const fetchProjectBrowser = async () =>
   })
     .finally(() => html.loading(false));
 
+  // Make sure table header sort indicator is up-to-date.
+  projectsTable.$table.find('th')
+    .removeClass(['is-sorted-asc', 'is-sorted-desc'])
+    .filter('.project-date').addClass('is-sorted-desc');
+
   // Make sure search is up-to-date.
   $('#search-projects').trigger('input');
 };
