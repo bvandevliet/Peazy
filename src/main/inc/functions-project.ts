@@ -36,7 +36,7 @@ export const getProjects = (args: getProjectArgs, onRow: (project: Project) => v
   args = core.parseArgs(args,
     {
       single: false,
-      orderBy: 'ASC',
+      orderBy: 'DESC',
     });
 
   /**
@@ -70,12 +70,34 @@ export const getProject = (args: ProjectId): Promise<Project> =>
     single: true,
     project_ids: !core.isEmpty(args.project_id) ? [args.project_id] : null,
     project_numbers: core.isEmpty(args.project_id) && !core.isEmpty(args.project_number) ? [args.project_number] : null,
+    orderBy: 'DESC',
   };
 
   // Last record wins, but there should only be one result.
   let _project: Project = null;
 
   return getProjects(getArgs, project => _project = project).then(() => _project).catch(err => err);
+};
+
+/**
+ * Fetch a project and its children from the database.
+ *
+ * The project itself is also included to reduce requests for when building up the project tree,
+ * since then we can directly obtain the next parent installation from it.
+ *
+ * @param project_number The parent's project number.
+ * @param onRow          Called on each returned row.
+ */
+export const getProjectAndChildren = (project_number: Project['project_number'], onRow: (project: Project) => void): Promise<number> =>
+{
+  const getArgs: getProjectArgs =
+  {
+    single: false,
+    children_of: project_number,
+    orderBy: 'ASC',
+  };
+
+  return getProjects(getArgs, onRow);
 };
 
 /**
@@ -99,7 +121,7 @@ export const getProjectTree = async (entryProject: Project) =>
 
     const children: Project[] = [];
 
-    await getProjects({ children_of: install_number }, project =>
+    await getProjectAndChildren(install_number, project =>
     {
       const prev_project_number = core.applyFilters('project_project_number', prevChild.project_number, prevChild);
       const this_project_number = core.applyFilters('project_project_number', project.project_number, project);

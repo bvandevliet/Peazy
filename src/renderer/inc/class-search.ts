@@ -91,9 +91,11 @@ export default class Search
 
       if (queryItem.startsWith('^'))
       {
+        queryItem = queryItem.substring(1);
+
         try
         {
-          queryRegex = new RegExp(queryItem.substring(1), 'iu');
+          queryRegex = new RegExp(queryItem, 'iu');
         }
         catch (err)
         {
@@ -103,7 +105,7 @@ export default class Search
 
       // Does every positive query item match at least one search item?
       // And does every negative query segment not match any search segment?
-      return negative !== (searchIn as string[]).some(searchItem =>
+      return !queryItem.length || negative !== (searchIn as string[]).some(searchItem =>
         queryRegex ? queryRegex.test(searchItem) : Search.includes(searchItem, queryItem));
     });
   }
