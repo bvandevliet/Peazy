@@ -104,6 +104,10 @@ interface tabPage
   readonly $li: JQuery<HTMLLIElement>;
 
   /**
+   * Triggered to initialize the tab.
+   */
+  init: tabItem['onclick'];
+  /**
    * Triggered on activating the tab.
    */
   onactivate: tabItem['onclick'];

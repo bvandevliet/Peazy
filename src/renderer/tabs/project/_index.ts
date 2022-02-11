@@ -71,25 +71,25 @@ export default class projectTab implements tabPage
         id: 'project-info',
         template: 'tmpl-li-project-info',
         callback: () => null,
-        // onclick: null,
+        onclick: () => new Promise(resolve => resolve(true)),
       },
       {
         id: 'project-docs',
         template: 'tmpl-li-project-docs',
         callback: () => null,
-        // onclick: null,
+        onclick: () => new Promise(resolve => resolve(true)),
       },
       {
         id: 'project-work',
         template: 'tmpl-li-project-work',
         callback: () => null,
-        // onclick: null,
+        onclick: () => new Promise(resolve => resolve(true)),
       },
       {
         id: 'project-notes',
         template: 'tmpl-li-project-notes',
         callback: () => null,
-        // onclick: null,
+        onclick: () => new Promise(resolve => resolve(true)),
       },
     ] as tabItem[]).forEach((projectSubTab, index) =>
     {
@@ -122,7 +122,7 @@ export default class projectTab implements tabPage
     this._project = project;
 
     // Make sure rows are activated in the main window.
-    main.updateActiveStates(`project-${project.project_id}`);
+    main.updateActiveStates(`project-${this._project.project_id}`);
   }
 
   /**
@@ -156,8 +156,8 @@ export default class projectTab implements tabPage
         {
           html.loading();
 
-          // Check if tab already exists, if so, activate it and bail.
-          if (main.activateTabIfExists(`project-${project.project_id}`)) return new Promise(resolve => resolve(false));
+          // If project row is not currently active, check if project tab already exists, if so, activate it and bail.
+          if (!$tr.hasClass('is-selected') && main.activateTabIfExists(`project-${project.project_id}`)) return new Promise(resolve => resolve(false));
 
           // Length of next-level project rows.
           const trNextCount = $tr.next(`tr.tree-depth-${(depth + 1)}`).length;
@@ -254,9 +254,17 @@ export default class projectTab implements tabPage
       .addClass('is-selected');
   }
 
-  onactivate ()
+  init ()
   {
     return this.rebuildProjectTreeAndLoad().then(() => true);
+  }
+
+  onactivate (): Promise<boolean>
+  {
+    // Make sure rows are activated in the main window.
+    main.updateActiveStates(`project-${this.project.project_id}`);
+
+    return new Promise(resolve => resolve(true));
   }
 
   dispose ()

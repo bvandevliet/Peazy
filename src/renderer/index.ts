@@ -214,7 +214,7 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
   });
 
   // All good.
-  return tabProject.onactivate().then(() => true);
+  return tabProject.init();
 };
 
 /**
