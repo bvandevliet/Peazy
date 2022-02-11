@@ -136,7 +136,7 @@ export default class projectTab implements tabPage
     const project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
     // const install_number = window.api.core.applyFilters('project_install_number', project.install_number, project);
 
-    // Ttable cells definition for a project tree row.
+    // Table cells definition for a project tree row.
     const $tr = TableList.buildRow([
       {
         template: 'tmpl-td-project-date',
