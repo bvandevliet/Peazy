@@ -48,7 +48,7 @@ export default class Search
    */
   static flatten (input: string | string[])
   {
-    return (!Array.isArray(input) ? [input] : input).flatMap(str => str.replace(/\s+/gu, ' ').trim().split(' '));
+    return (!Array.isArray(input) ? [input] : input).flatMap(str => str?.replace(/\s+/gu, ' ').trim().split(' '));
   }
 
   /**
