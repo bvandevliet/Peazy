@@ -189,10 +189,10 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
     id: null, // the projectTab instance will set the ID, text and title for this tab
     template: 'tmpl-li-project-tab',
     callback: ($div, $li) => tabProject = new projectTab($div, $li, project),
-    onclick: () =>
+    onclick: $li =>
     {
       html.loading();
-      return tabProject.onactivate()
+      return ($li.hasClass('is-active') ? tabProject.init() : tabProject.onactivate())
         .finally(() => html.loading(false));
     },
     onmiddleclick: $li => $li.find('>a.close-btn').first().trigger('click'),
