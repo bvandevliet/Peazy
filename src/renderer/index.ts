@@ -404,6 +404,6 @@ document.addEventListener('keyup', e =>
   }
   else if (e.key === 'F5')
   {
-    fetchProjectBrowser();
+    $(document.body).hasClass('browsing') ? fetchProjectBrowser() : mainTabs.tryTriggerActive();
   }
 });
