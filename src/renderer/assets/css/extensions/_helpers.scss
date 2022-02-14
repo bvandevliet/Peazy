@@ -6,12 +6,10 @@
   white-space: pre;
 }
 
-table.no-wrap {
-
-  th.min-width,
-  td.min-width {
-    width: 0;
-  }
+th.min-width,
+td.min-width {
+  width: 0;
+  white-space: pre;
 }
 
 table.has-separated-tbodies {

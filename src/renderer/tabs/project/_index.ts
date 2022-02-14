@@ -90,7 +90,7 @@ export default class projectTab implements tabPage
         id: 'project-notes',
         template: 'tmpl-li-project-notes',
         callback: () => null,
-        onclick: () => null,
+        onclick: () => new Promise(resolve => resolve(false)),
       },
     ] as tabItem[]).forEach((projectSubTab, index) =>
     {
@@ -125,13 +125,13 @@ export default class projectTab implements tabPage
     // Make sure rows are activated in the main window.
     main.updateActiveStates(this.$li);
 
-    // Print project info. MAKE FILTER !!
+    // Print project info.
     this._projectInfo.empty();
-    ([
+    (window.api.core.applyFilters('project_info_tbodies', [
       [[
         {
+          template: 'tmpl-th-no-wrap',
           text: '[Install] Project',
-          classes: ['min-width'],
         },
         {
           text: `[${project.install_number}] ${project.project_number}`,
@@ -139,8 +139,8 @@ export default class projectTab implements tabPage
       ],
       [
         {
+          template: 'tmpl-th-no-wrap',
           text: 'Description',
-          classes: ['min-width'],
         },
         {
           text: project.project_description,
@@ -148,18 +148,18 @@ export default class projectTab implements tabPage
       ],
       [
         {
+          template: 'tmpl-th-no-wrap',
           text: 'Customer (country)',
-          classes: ['min-width'],
         },
         {
           text: `${project.customer_name} (${project.customer_country_name})`,
-          onclick: null,
+          onclick: () => new Promise(resolve => resolve(false)),
         },
       ]],
       [[
         {
+          template: 'tmpl-th-no-wrap',
           text: 'Status',
-          classes: ['min-width'],
         },
         {
           text: project.status_name,
@@ -167,8 +167,8 @@ export default class projectTab implements tabPage
       ],
       [
         {
+          template: 'tmpl-th-no-wrap',
           text: 'Date created',
-          classes: ['min-width'],
         },
         {
           text: new DateTime(project.date_created).getDate(),
@@ -176,8 +176,8 @@ export default class projectTab implements tabPage
       ],
       [
         {
+          template: 'tmpl-th-no-wrap',
           text: 'Date delivery',
-          classes: ['min-width'],
         },
         {
           text: new DateTime(project.date_delivery).getDate(),
@@ -185,8 +185,8 @@ export default class projectTab implements tabPage
       ]],
       [[
         {
+          template: 'tmpl-th-no-wrap',
           text: 'Price',
-          classes: ['min-width'],
         },
         {
           text: project.price,
@@ -194,8 +194,8 @@ export default class projectTab implements tabPage
       ],
       [
         {
+          template: 'tmpl-th-no-wrap',
           text: 'Notes',
-          classes: ['min-width'],
         },
         {
           text: project.notes,
@@ -203,35 +203,35 @@ export default class projectTab implements tabPage
       ]],
       [[
         {
+          template: 'tmpl-th-no-wrap',
           text: 'Sales manager',
-          classes: ['min-width'],
         },
         {
           text: project.sales_manager_name,
-          onclick: null,
+          onclick: () => new Promise(resolve => resolve(false)),
         },
       ],
       [
         {
+          template: 'tmpl-th-no-wrap',
           text: 'Project manager',
-          classes: ['min-width'],
         },
         {
           text: project.project_manager_name,
-          onclick: null,
+          onclick: () => new Promise(resolve => resolve(false)),
         },
       ],
       [
         {
+          template: 'tmpl-th-no-wrap',
           text: 'Project engineer',
-          classes: ['min-width'],
         },
         {
           text: project.project_engineer_name,
-          onclick: null,
+          onclick: () => new Promise(resolve => resolve(false)),
         },
       ]],
-    ] as tableCellItem[][][]).forEach((tbody, index) =>
+    ], project) as tableCellItem[][][]).forEach((tbody, index) =>
     {
       tbody.forEach(tableRow =>
       {
