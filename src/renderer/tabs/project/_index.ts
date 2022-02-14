@@ -303,6 +303,14 @@ export default class projectTab implements tabPage
             .then(() => clickedProject ? this.loadProject(project) : null)
             .finally(() => html.loading(false)).then(() => null !== clickedProject);
         },
+        // Somehow this doesn't work ..
+        // This event is handled on the main index.ts "$(document).on('mousedown', e =>"
+        // onmiddleclick: () =>
+        // {
+        //   html.loading();
+        //   main.loadProject({ project_id: project.project_id })
+        //     .finally(() => html.loading(false));
+        // },
       },
       {
         template: 'tmpl-td-project-description',

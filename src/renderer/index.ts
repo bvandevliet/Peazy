@@ -145,7 +145,7 @@ export const activateTabIfExists = (id: string) =>
  *
  * @return Whether the project was found.
  */
-const loadProject = async (args: ProjectId): Promise<boolean> =>
+export const loadProject = async (args: ProjectId): Promise<boolean> =>
 {
   // If an ID was passed, check if tab already exists, if so, activate it and bail.
   if (!window.api.core.isEmpty(args.project_id))
@@ -160,6 +160,9 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
 
   // Project not found.
   if (project === null) return false;
+
+  // Check once again if tab already exists, if so, activate it and bail.
+  if (activateTabIfExists(`project-${project.project_id}`)) return true;
 
   // Initiate project tab.
   let tabProject: tabPage;
@@ -196,6 +199,29 @@ const loadProject = async (args: ProjectId): Promise<boolean> =>
   // All good.
   return tabProject.init();
 };
+
+/**
+ * Handle middleclicks on project cells.
+ */
+$(document).on('mousedown', e =>
+{
+  if (e.button === 1)
+  {
+    const $target = $(e.target);
+    const $parent = $(e.target.parentElement);
+
+    if ($target.is('a') && (
+      $parent.hasClass('project-number') || $parent.hasClass('install-number')))
+    {
+      e.preventDefault();
+
+      html.loading(true);
+      loadProject({ project_number: e.target.textContent })
+        .then(found => found ? stopBrowsing() : null)
+        .finally(() => html.loading(false));
+    }
+  }
+});
 
 /**
  * Get html for a project tree row.
