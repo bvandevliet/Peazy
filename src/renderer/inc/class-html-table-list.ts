@@ -124,9 +124,7 @@ export default class TableList
       {
         $a.on('mousedown', e =>
         {
-          e.preventDefault();
-
-          if (e.button === 1) column.onmiddleclick($td, $tr, e);
+          if (e.button === 1) { e.preventDefault(); column.onmiddleclick($td, $tr, e); }
         });
       }
 

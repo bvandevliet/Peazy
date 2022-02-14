@@ -201,9 +201,7 @@ export default class Tabs
     {
       $a.on('mousedown', e =>
       {
-        e.preventDefault();
-
-        if (e.button === 1) tab.onmiddleclick($li, $div, e);
+        if (e.button === 1) { e.preventDefault(); tab.onmiddleclick($li, $div, e); }
       });
     }
 
