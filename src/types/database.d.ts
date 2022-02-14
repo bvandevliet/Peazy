@@ -66,14 +66,6 @@ interface getProjectArgs
    */
   status?: Project['status_id'][];
   /**
-   * If evaluates to `false`, skip request and resolve immediately.
-   */
-  condition?: () => boolean;
-  /**
-   * Filter each project to control whether it should trigger the callback.
-   */
-  filter?: (project: Project) => boolean;
-  /**
    * Order `ASC` or `DESC`, default is `ASC`.
    */
   orderBy?: Order;
