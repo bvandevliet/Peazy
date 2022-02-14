@@ -116,7 +116,7 @@ export default class TableList
         {
           e.preventDefault();
 
-          column.oncontextmenu($td, $tr, e);
+          window.api.core.contextMenu(column.oncontextmenu($td, $tr, e));
         });
       }
 

@@ -6,6 +6,14 @@
  */
 
 /**
+ * Filter the context-menu for clickable project number entries.
+ */
+window.api.core.addFilter('project_entry_contextmenu', (menuItems: Partial<Electron.MenuItem>[], project: Project) =>
+{
+  return menuItems;
+});
+
+/**
  * Filter the data shown at the project info tab.
  */
 window.api.core.addFilter('project_info_tbodies', (tbodies: tableCellItem[][][], project: Project) =>

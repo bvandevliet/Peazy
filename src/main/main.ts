@@ -183,12 +183,25 @@ app.whenReady().then(() =>
  *
  * @link https://www.electronjs.org/docs/latest/tutorial/native-file-drag-drop
  */
-ipcMain.on('ondragstart', (e, filePath) =>
+ipcMain.on('ondragstart', (e, filePath: string) =>
 {
   e.sender.startDrag({
     file: path.join(__dirname, filePath),
     icon: path.join(__dirname, '../../src/renderer/assets/img/empty.ico'),
   });
+});
+
+/**
+ * Popup contextmenu.
+ */
+ipcMain.on('context-menu', (e, menuItems: Electron.MenuItem[]) =>
+{
+  menuItems.forEach(menuItem =>
+  {
+    menuItem.click = () => e.sender.send('context-menu-command', menuItem.id);
+  });
+
+  Menu.buildFromTemplate(menuItems).popup({ window: BrowserWindow.fromWebContents(e.sender) });
 });
 
 /*

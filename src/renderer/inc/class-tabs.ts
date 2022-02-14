@@ -193,7 +193,7 @@ export default class Tabs
       {
         e.preventDefault();
 
-        tab.oncontextmenu($li, $div, e);
+        window.api.core.contextMenu(tab.oncontextmenu($li, $div, e));
       });
     }
 

@@ -31,7 +31,7 @@ interface tableCellItem
   /**
    * Called on contextmenu.
    */
-  oncontextmenu?: ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  oncontextmenu?: ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => Partial<Electron.MenuItem>[];
   /**
    * Called on middleclick.
    */
@@ -83,7 +83,7 @@ interface tabItem
   /**
    * Called on contextmenu.
    */
-  oncontextmenu?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  oncontextmenu?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => Partial<Electron.MenuItem>[];
   /**
    * Called on middleclick.
    */

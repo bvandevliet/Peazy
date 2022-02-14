@@ -1,9 +1,10 @@
 import DateTime from './inc/class-datetime.js';
+import Tabs from './inc/class-tabs.js';
 import TableList from './inc/class-html-table-list.js';
 import Search from './inc/class-search.js';
-import Tabs from './inc/class-tabs.js';
 import projectTab from './tabs/project/_index.js';
 import * as html from './inc/functions-html.js';
+import * as contextMenu from './inc/templates-contextmenu.js';
 
 /**
  * Prevent default 'dragover' and 'drop' behaviour.
@@ -257,6 +258,12 @@ const projectRow = (project: Project) =>
           .then(found => found ? (stopBrowsing(), false) : false) // if found, still return false /  don't activate row since install number was clicked
           .finally(() => html.loading(false));
       },
+      oncontextmenu: () => window.api.core.applyFilters('project_entry_contextmenu',
+        [
+          contextMenu.openProjectFolder({ install_number: project.install_number }),
+          contextMenu.copyProjectPath({ install_number: project.install_number }),
+        ],
+        project),
     },
     {
       template: 'tmpl-td-project-number',
@@ -269,6 +276,12 @@ const projectRow = (project: Project) =>
           .then(found => found ? (stopBrowsing(), /* true*/ false) : false) // if found, still return false / don't activate row since the tab will handle this
           .finally(() => html.loading(false));
       },
+      oncontextmenu: () => window.api.core.applyFilters('project_entry_contextmenu',
+        [
+          contextMenu.openProjectFolder(project),
+          contextMenu.copyProjectPath(project),
+        ],
+        project),
     },
     {
       template: 'tmpl-td-project-description',

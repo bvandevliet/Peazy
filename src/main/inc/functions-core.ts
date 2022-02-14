@@ -1,7 +1,7 @@
 import path from 'path';
 import
 {
-  app,
+  app, ipcRenderer,
 }
   from 'electron';
 
@@ -140,4 +140,38 @@ export const applyFilters = <T> (hookName: string, value?: T, ...args: any): T =
   }
 
   return value;
+};
+
+/**
+ * Popup a context-menu.
+ *
+ * @param menuItems Array of menu-items to popup.
+ *
+ * @link https://www.electronjs.org/docs/latest/api/menu#render-process
+ */
+export const contextMenu = (menuItems: Partial<Electron.MenuItem>[]) =>
+{
+  // Clone array of objects in order to keep original intact.
+  // eslint-disable-next-line prefer-object-spread
+  const ipcSafeItems = menuItems.map(a => Object.assign({}, a));
+
+  // Remove IPC unsafe properties.
+  ipcSafeItems.forEach(menuItem =>
+  {
+    // A new `click` handler is set by the main process on `send('context-menu-command', menuItem.id)`.
+    mapObject(menuItem, prop => typeof prop === 'function' ? null : prop);
+  });
+
+  // Handle `click` event and bind it back to the original handler.
+  ipcRenderer
+    .removeAllListeners('context-menu-command')
+    .once('context-menu-command', (_e, id: string) =>
+    {
+      const clickedItem = menuItems.find(menuItem => menuItem.id === id);
+
+      if (typeof clickedItem?.click === 'function') clickedItem?.click();
+    });
+
+  // Send IPC-safe menu items.
+  ipcRenderer.send('context-menu', ipcSafeItems);
 };

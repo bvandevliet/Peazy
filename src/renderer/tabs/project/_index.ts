@@ -4,6 +4,7 @@ import TableList from '../../inc/class-html-table-list.js';
 import Search from '../../inc/class-search.js';
 import * as main from '../../index.js';
 import * as html from '../../inc/functions-html.js';
+import * as contextMenu from '../../inc/templates-contextmenu.js';
 
 /**
  * A wrapper class to handle html for tabs.
@@ -311,6 +312,12 @@ export default class projectTab implements tabPage
         //   main.loadProject({ project_id: project.project_id })
         //     .finally(() => html.loading(false));
         // },
+        oncontextmenu: () => window.api.core.applyFilters('project_entry_contextmenu',
+          [
+            contextMenu.openProjectFolder(project),
+            contextMenu.copyProjectPath(project),
+          ],
+          project),
       },
       {
         template: 'tmpl-td-project-description',
