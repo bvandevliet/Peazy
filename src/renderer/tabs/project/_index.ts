@@ -71,7 +71,7 @@ export default class projectTab implements tabPage
         id: 'project-info',
         template: 'tmpl-li-project-info',
         // eslint-disable-next-line no-shadow
-        callback: $div => $div.append(this._projectInfo.$table),
+        callback: $div => $div.append($(html.getTemplateClone('tmpl-entry-content')).append(this._projectInfo.$table)),
         onclick: () => new Promise(resolve => resolve(true)),
       },
       {

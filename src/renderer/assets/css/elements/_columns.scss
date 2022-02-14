@@ -12,6 +12,7 @@
   &.wrapper {
     @extend .is-flex-direction-column;
 
+    position: relative;
     height: 100%;
     overflow: hidden;
 
@@ -24,10 +25,20 @@
         position: relative;
         flex-grow: 1;
         overflow: hidden;
-      }
 
-      &.entry-content:hover {
-        overflow: auto;
+        >.entry-content {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    .entry-content {
+      overflow: hidden;
+
+      &:hover {
+        overflow: auto !important;
       }
     }
   }
