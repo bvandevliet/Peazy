@@ -15,6 +15,8 @@ export default class projectTab implements tabPage
 
   private _project;
 
+  private _projectInfo = new TableList(html.getTemplateClone('tmpl-table-info') as HTMLTableElement);
+
   private _projectTabs;
   private _projectsTable;
   private _projectSearch;
@@ -68,7 +70,8 @@ export default class projectTab implements tabPage
       {
         id: 'project-info',
         template: 'tmpl-li-project-info',
-        callback: () => null,
+        // eslint-disable-next-line no-shadow
+        callback: $div => $div.append(this._projectInfo.$table),
         onclick: () => new Promise(resolve => resolve(true)),
       },
       {
@@ -87,7 +90,7 @@ export default class projectTab implements tabPage
         id: 'project-notes',
         template: 'tmpl-li-project-notes',
         callback: () => null,
-        onclick: () => new Promise(resolve => resolve(true)),
+        onclick: () => null,
       },
     ] as tabItem[]).forEach((projectSubTab, index) =>
     {
@@ -121,6 +124,120 @@ export default class projectTab implements tabPage
 
     // Make sure rows are activated in the main window.
     main.updateActiveStates(this.$li);
+
+    // Print project info. MAKE FILTER !!
+    this._projectInfo.empty();
+    ([
+      [[
+        {
+          text: '[Install] Project',
+          classes: ['min-width'],
+        },
+        {
+          text: `[${project.install_number}] ${project.project_number}`,
+        },
+      ],
+      [
+        {
+          text: 'Description',
+          classes: ['min-width'],
+        },
+        {
+          text: project.project_description,
+        },
+      ],
+      [
+        {
+          text: 'Customer (country)',
+          classes: ['min-width'],
+        },
+        {
+          text: `${project.customer_name} (${project.customer_country_name})`,
+          onclick: null,
+        },
+      ]],
+      [[
+        {
+          text: 'Status',
+          classes: ['min-width'],
+        },
+        {
+          text: project.status_name,
+        },
+      ],
+      [
+        {
+          text: 'Date created',
+          classes: ['min-width'],
+        },
+        {
+          text: new DateTime(project.date_created).getDate(),
+        },
+      ],
+      [
+        {
+          text: 'Date delivery',
+          classes: ['min-width'],
+        },
+        {
+          text: new DateTime(project.date_delivery).getDate(),
+        },
+      ]],
+      [[
+        {
+          text: 'Price',
+          classes: ['min-width'],
+        },
+        {
+          text: project.price,
+        },
+      ],
+      [
+        {
+          text: 'Notes',
+          classes: ['min-width'],
+        },
+        {
+          text: project.notes,
+        },
+      ]],
+      [[
+        {
+          text: 'Sales manager',
+          classes: ['min-width'],
+        },
+        {
+          text: project.sales_manager_name,
+          onclick: null,
+        },
+      ],
+      [
+        {
+          text: 'Project manager',
+          classes: ['min-width'],
+        },
+        {
+          text: project.project_manager_name,
+          onclick: null,
+        },
+      ],
+      [
+        {
+          text: 'Project engineer',
+          classes: ['min-width'],
+        },
+        {
+          text: project.project_engineer_name,
+          onclick: null,
+        },
+      ]],
+    ] as tableCellItem[][][]).forEach((tbody, index) =>
+    {
+      tbody.forEach(tableRow =>
+      {
+        this._projectInfo.appendItem(tableRow, index);
+      });
+    });
 
     // Reload active tab.
     return this._projectTabs.tryTriggerActive()[2];
