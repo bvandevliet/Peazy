@@ -12,3 +12,15 @@ window.api.core.addFilter('project_info_tbodies', (tbodies: tableCellItem[][][],
 {
   return tbodies;
 });
+
+/**
+ * Filter the project price to allow for digit grouping and currency symbols.
+ */
+window.api.core.addFilter('project_price', (price: number, project: Project) =>
+{
+  return `€ ${
+    price.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+});

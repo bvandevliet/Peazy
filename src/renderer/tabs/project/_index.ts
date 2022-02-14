@@ -189,7 +189,7 @@ export default class projectTab implements tabPage
           text: 'Price',
         },
         {
-          text: project.price,
+          text: window.api.core.applyFilters('project_price', project.price, project),
         },
       ],
       [
