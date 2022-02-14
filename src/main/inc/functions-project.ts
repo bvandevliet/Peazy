@@ -1,5 +1,8 @@
 import { userConfig } from '../_config';
 
+import path from 'path';
+import fs from 'fs';
+
 import Database from './class-database';
 import * as core from './functions-core';
 
@@ -173,6 +176,80 @@ export const getProjectTree = async (entryProject: Project) =>
 
   // The last / top-most install project including the `children` property.
   return prevChild;
+};
+
+/**
+ * Find project directories.
+ *
+ * @param number Install- and/or project number.
+ */
+export const getProjectPaths = (number: ProjectOrInstall) =>
+{
+  const validPaths =
+  {
+    installPaths: [] as string[],
+    projectPaths: [] as string[],
+  };
+
+  const dirLookupWalker = (lookupDir: string) =>
+  {
+    // Supports one wildcard level.
+    if (lookupDir.endsWith('*'))
+    {
+      lookupDir = path.dirname(lookupDir);
+
+      if (!fs.existsSync(lookupDir)) return;
+      if (!fs.statSync(lookupDir).isDirectory()) return;
+
+      fs.readdirSync(lookupDir)
+        .sort((a, b) =>
+          a.localeCompare(b, undefined, {
+            numeric: true,
+            sensitivity: 'base',
+          }))
+        .forEach(subItem => dirLookupWalker(path.join(lookupDir, subItem)));
+
+      return;
+    }
+
+    if (!fs.existsSync(lookupDir)) return;
+    if (!fs.statSync(lookupDir).isDirectory()) return;
+
+    fs.readdirSync(lookupDir)
+      .sort((a, b) =>
+        a.localeCompare(b, undefined, {
+          numeric: true,
+          sensitivity: 'base',
+        }))
+      .forEach(subItem =>
+      {
+        const potentialProjectPath = path.join(lookupDir, subItem);
+        const potentialInstallPath = path.join(lookupDir, subItem);
+
+        if (
+          !core.isEmpty(number.project_number) && fs.statSync(potentialProjectPath).isDirectory() &&
+          core.applyFilters('project_path_is_match', false, potentialProjectPath, number.project_number)
+        )
+        {
+          validPaths.projectPaths.push(potentialProjectPath);
+        }
+
+        else if (
+          !core.isEmpty(number.install_number) && fs.statSync(potentialInstallPath).isDirectory() &&
+          core.applyFilters('install_path_is_match', false, potentialInstallPath, number.install_number)
+        )
+        {
+          validPaths.installPaths.push(potentialInstallPath);
+
+          // Deep lookup install folders.
+          dirLookupWalker(potentialInstallPath);
+        }
+      });
+  };
+
+  userConfig.filesystem.lookupDirectories.forEach(dirLookupWalker);
+
+  return validPaths;
 };
 
 /**

@@ -6,6 +6,8 @@
  * Using hooks it is possible to expose APIs to your RENDERER logic.
  */
 
+import path from 'path';
+
 import * as core from '../inc/functions-core';
 import * as sql from '../inc/functions-sql';
 
@@ -29,6 +31,22 @@ export const userConfig: userConfig =
     lookupDirectories: [],
   },
 };
+
+/**
+ * Determine if a path is a valid install path for a given install number.
+ */
+core.addFilter('install_path_is_match', (_isMatch: boolean, potentialInstallPath: string, install_number: string) =>
+{
+  return path.basename(potentialInstallPath).endsWith(core.applyFilters('project_install_number', install_number).trim());
+});
+
+/**
+ * Determine if a path is a valid project path for a given project number.
+ */
+core.addFilter('project_path_is_match', (_isMatch: boolean, potentialProjectPath: string, project_number: string) =>
+{
+  return path.basename(potentialProjectPath).endsWith(core.applyFilters('project_project_number', project_number).trim());
+});
 
 /**
  * Static WHERE clause to fetch projects from the database.

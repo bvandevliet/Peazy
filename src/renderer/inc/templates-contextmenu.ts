@@ -9,7 +9,7 @@ export const openProjectFolder = (number: ProjectOrInstall): Partial<Electron.Me
     id: 'openProjectFolder',
     label: 'Open project folder',
     icon: null,
-    click: null,
+    click: () => console.log(window.api.project.getProjectPaths(number)),
   };
 };
 
@@ -19,6 +19,6 @@ export const copyProjectPath = (number: ProjectOrInstall): Partial<Electron.Menu
     id: 'copyProjectPath',
     label: 'Copy project path',
     icon: null,
-    click: null,
+    click: () => console.log(window.api.project.getProjectPaths(number)),
   };
 };
