@@ -28,24 +28,48 @@ export const userConfig: userConfig =
   },
   filesystem: {
     ignoreFiles: null,
-    lookupDirectories: [],
+    lookupPaths: [],
   },
 };
+
+// Filter both project- / and install number.
+core.addFilter('project_install_number', install_number => ((install_number ?? '') as string).trim());
+core.addFilter('project_project_number', project_number => ((project_number ?? '') as string).trim());
+
+/**
+ * Return valid install path basenames for a given install number.
+ */
+core.addFilter('install_path_basenames', (basenames: string[], install_number: string) =>
+{
+  return [
+    core.applyFilters('project_install_number', install_number, { install_number: install_number }),
+  ];
+});
+
+/**
+ * Return valid project path basenames for a given project number.
+ */
+core.addFilter('project_path_basenames', (basenames: string[], project_number: string) =>
+{
+  return [
+    core.applyFilters('project_project_number', project_number, { project_number: project_number }),
+  ];
+});
 
 /**
  * Determine if a path is a valid install path for a given install number.
  */
-core.addFilter('install_path_is_match', (_isMatch: boolean, potentialInstallPath: string, install_number: string) =>
+core.addFilter('install_path_is_match', (_isMatch: boolean, potentialInstallPath: string, validInstallPathBasenames: string[]) =>
 {
-  return path.basename(potentialInstallPath).endsWith(core.applyFilters('project_install_number', install_number).trim());
+  return validInstallPathBasenames.some(basename => path.basename(potentialInstallPath).endsWith(basename));
 });
 
 /**
  * Determine if a path is a valid project path for a given project number.
  */
-core.addFilter('project_path_is_match', (_isMatch: boolean, potentialProjectPath: string, project_number: string) =>
+core.addFilter('project_path_is_match', (_isMatch: boolean, potentialProjectPath: string, validProjectPathBasenames: string[]) =>
 {
-  return path.basename(potentialProjectPath).endsWith(core.applyFilters('project_project_number', project_number).trim());
+  return validProjectPathBasenames.some(basename => path.basename(potentialProjectPath).endsWith(basename));
 });
 
 /**

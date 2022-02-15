@@ -46,6 +46,6 @@ interface userConfig {
     /**
      * Directories to search for project folders.
      */
-    lookupDirectories: string[],
+    lookupPaths: string[],
   },
 }

@@ -183,7 +183,7 @@ export const getProjectTree = async (entryProject: Project) =>
  *
  * @param number Install- and/or project number.
  */
-export const getProjectPaths = (number: ProjectOrInstall) =>
+export const getProjectPaths = (number: ProjectAndInstallNumber) =>
 {
   const validPaths =
   {
@@ -191,63 +191,104 @@ export const getProjectPaths = (number: ProjectOrInstall) =>
     projectPaths: [] as string[],
   };
 
-  const dirLookupWalker = (lookupDir: string) =>
+  // If install number is empty, make it equal to the project number.
+  if (core.isEmpty(number.install_number)) number.install_number = number.project_number;
+
+  const validProjectPathBasenames =
+    core.applyFilters('project_path_basenames', [number.project_number], number.project_number).filter(basename => !core.isEmpty(basename));
+  const validInstallPathBasenames =
+    core.applyFilters('install_path_basenames', [number.install_number], number.install_number).filter(basename => !core.isEmpty(basename));
+
+  /**
+   * Performs the lookup for project folders, recursive for install folders.
+   *
+   * @param lookupPath     A Path to look in for existing project folders.
+   * @param deepValidation Whether to perform a thorough lookup, more expensive.
+   */
+  const dirLookupWalker = (lookupPath: string, deepValidation = false) =>
   {
-    // Supports one wildcard level.
-    if (lookupDir.endsWith('*'))
+    if (!deepValidation)
     {
-      lookupDir = path.dirname(lookupDir);
+      validProjectPathBasenames.forEach(projectBasename =>
+      {
+        const potentialPath = path.join(lookupPath, projectBasename);
 
-      if (!fs.existsSync(lookupDir)) return;
-      if (!fs.statSync(lookupDir).isDirectory()) return;
+        if (fs.existsSync(potentialPath) && fs.statSync(potentialPath).isDirectory())
+        {
+          validPaths.projectPaths.push(potentialPath);
+        }
+      });
 
-      fs.readdirSync(lookupDir)
-        .sort((a, b) =>
-          a.localeCompare(b, undefined, {
-            numeric: true,
-            sensitivity: 'base',
-          }))
-        .forEach(subItem => dirLookupWalker(path.join(lookupDir, subItem)));
+      validInstallPathBasenames.forEach(installBasename =>
+      {
+        const potentialPath = path.join(lookupPath, installBasename);
+
+        if (fs.existsSync(potentialPath) && fs.statSync(potentialPath).isDirectory())
+        {
+          validPaths.installPaths.push(potentialPath);
+
+          // Recursive deep lookup install dir.
+          dirLookupWalker(potentialPath, true);
+        }
+      });
 
       return;
     }
 
-    if (!fs.existsSync(lookupDir)) return;
-    if (!fs.statSync(lookupDir).isDirectory()) return;
+    // else (deepValidation === true) { ..
 
-    fs.readdirSync(lookupDir)
-      .sort((a, b) =>
-        a.localeCompare(b, undefined, {
-          numeric: true,
-          sensitivity: 'base',
-        }))
-      .forEach(subItem =>
+    if (!fs.existsSync(lookupPath)) return;
+    if (!fs.statSync(lookupPath).isDirectory()) return;
+
+    const potentialDirs = fs.readdirSync(lookupPath)
+      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+
+    potentialDirs.forEach(potentialDir =>
+    {
+      const potentialPath = path.join(lookupPath, potentialDir);
+
+      if (
+        !core.isEmpty(number.project_number) && fs.statSync(potentialPath).isDirectory() &&
+        core.applyFilters('project_path_is_match', false, potentialPath, validProjectPathBasenames)
+      )
       {
-        const potentialProjectPath = path.join(lookupDir, subItem);
-        const potentialInstallPath = path.join(lookupDir, subItem);
+        validPaths.projectPaths.push(potentialPath);
+      }
 
-        if (
-          !core.isEmpty(number.project_number) && fs.statSync(potentialProjectPath).isDirectory() &&
-          core.applyFilters('project_path_is_match', false, potentialProjectPath, number.project_number)
-        )
-        {
-          validPaths.projectPaths.push(potentialProjectPath);
-        }
+      if (
+        !core.isEmpty(number.install_number) && fs.statSync(potentialPath).isDirectory() &&
+        core.applyFilters('install_path_is_match', false, potentialPath, validInstallPathBasenames)
+      )
+      {
+        validPaths.installPaths.push(potentialPath);
 
-        else if (
-          !core.isEmpty(number.install_number) && fs.statSync(potentialInstallPath).isDirectory() &&
-          core.applyFilters('install_path_is_match', false, potentialInstallPath, number.install_number)
-        )
-        {
-          validPaths.installPaths.push(potentialInstallPath);
-
-          // Deep lookup install folders.
-          dirLookupWalker(potentialInstallPath);
-        }
-      });
+        // Recursive deep lookup install dir.
+        dirLookupWalker(potentialPath, true);
+      }
+    });
   };
 
-  userConfig.filesystem.lookupDirectories.forEach(dirLookupWalker);
+  // Define the initial lookup dirs and start the lookup.
+  userConfig.filesystem.lookupPaths.forEach(lookupPath =>
+  {
+    let lookupPaths = [lookupPath];
+
+    // Support one wildcard level.
+    if (lookupPath.endsWith('*'))
+    {
+      lookupPath = path.dirname(lookupPath);
+
+      if (!fs.existsSync(lookupPath)) return;
+      if (!fs.statSync(lookupPath).isDirectory()) return;
+
+      lookupPaths = fs.readdirSync(lookupPath)
+        .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
+        .map(lookupSubDir => path.join(lookupPath, lookupSubDir));
+    }
+
+    // eslint-disable-next-line no-shadow
+    lookupPaths.forEach(lookupPath => dirLookupWalker(lookupPath));
+  });
 
   return validPaths;
 };

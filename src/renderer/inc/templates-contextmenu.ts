@@ -3,7 +3,7 @@ export const separator: Partial<Electron.MenuItem> =
   type: 'separator',
 };
 
-export const openProjectFolder = (number: ProjectOrInstall): Partial<Electron.MenuItem> =>
+export const openProjectFolder = (number: ProjectAndInstallNumber): Partial<Electron.MenuItem> =>
 {
   return {
     id: 'openProjectFolder',
@@ -13,7 +13,7 @@ export const openProjectFolder = (number: ProjectOrInstall): Partial<Electron.Me
   };
 };
 
-export const copyProjectPath = (number: ProjectOrInstall): Partial<Electron.MenuItem> =>
+export const copyProjectPath = (number: ProjectAndInstallNumber): Partial<Electron.MenuItem> =>
 {
   return {
     id: 'copyProjectPath',

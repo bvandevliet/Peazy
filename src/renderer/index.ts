@@ -260,8 +260,8 @@ const projectRow = (project: Project) =>
       },
       oncontextmenu: () => window.api.core.applyFilters('project_entry_contextmenu',
         [
-          contextMenu.openProjectFolder({ install_number: project.install_number }),
-          contextMenu.copyProjectPath({ install_number: project.install_number }),
+          contextMenu.openProjectFolder({ project_number: project.install_number }),
+          contextMenu.copyProjectPath({ project_number: project.install_number }),
         ],
         project),
     },

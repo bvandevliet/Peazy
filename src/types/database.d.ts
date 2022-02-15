@@ -32,7 +32,7 @@ interface Project
 type ProjectId = AtLeastOne<{project_id: Project['project_id'], project_number: Project['project_number']}>;
 
 // `Pick` didn't work as expected, but the below doesn't look like the best approach either !!
-type ProjectOrInstall = AtLeastOne<{install_number: Project['install_number'], project_number: Project['project_number']}>;
+type ProjectAndInstallNumber = {project_number: Project['project_number'], install_number?: Project['install_number']};
 
 interface getProjectArgs
 {
