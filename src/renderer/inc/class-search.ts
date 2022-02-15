@@ -59,10 +59,10 @@ export default class Search
    */
   static includes (haystack: string, needle: string)
   {
-    const decomposedA = haystack.normalize('NFD').replace(/[\u0300-\u036f]/gu, '').toLowerCase();
-    const decomposedB = needle.normalize('NFD').replace(/[\u0300-\u036f]/gu, '').toLowerCase();
+    const decomposedA = haystack?.normalize('NFD').replace(/[\u0300-\u036f]/gu, '').toLowerCase();
+    const decomposedB = needle?.normalize('NFD').replace(/[\u0300-\u036f]/gu, '').toLowerCase();
 
-    return decomposedA.includes(decomposedB);
+    return decomposedA?.includes(decomposedB);
   }
 
   /**
