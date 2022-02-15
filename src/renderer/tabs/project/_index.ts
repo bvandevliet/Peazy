@@ -276,7 +276,11 @@ export default class projectTab implements tabPage
           html.loading();
 
           // If project row is not currently active, check if project tab already exists, if so, activate it and bail.
-          if (!$tr.hasClass('is-selected') && main.activateTabIfExists(`project-${project.project_id}`)) return new Promise(resolve => resolve(false));
+          if (!$tr.hasClass('is-selected'))
+          {
+            const existingTab = main.activateTabIfExists(`project-${project.project_id}`);
+            if (undefined !== existingTab) return existingTab.finally(() => html.loading(false)).then(() => false);
+          }
 
           // Length of next-level project rows.
           const trNextCount = $tr.next(`tr.tree-depth-${(depth + 1)}`).length;
