@@ -132,7 +132,7 @@ export default class projectTab implements tabPage
       [[
         {
           template: 'tmpl-th-no-wrap',
-          text: '[Install] Project',
+          text: '[Install-] Project number',
         },
         {
           text: `[${project.install_number}] ${project.project_number}`,
@@ -150,7 +150,7 @@ export default class projectTab implements tabPage
       [
         {
           template: 'tmpl-th-no-wrap',
-          text: 'Customer (country)',
+          text: 'Customer (Country)',
         },
         {
           text: `${project.customer_name} (${project.customer_country_name})`,
