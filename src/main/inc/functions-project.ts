@@ -68,8 +68,8 @@ export const getProject = (args: ProjectId): Promise<Project> =>
   const getArgs: getProjectArgs =
   {
     single: true,
-    project_ids: !core.isEmpty(args.project_id) ? [args.project_id] : null,
-    project_numbers: core.isEmpty(args.project_id) && !core.isEmpty(args.project_number) ? [args.project_number] : null,
+    project_ids: !core.isEmpty(args.project_id) ? [args.project_id] : undefined,
+    project_numbers: !core.isEmpty(args.project_number) ? [args.project_number] : undefined,
     orderBy: 'DESC',
   };
 

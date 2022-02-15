@@ -211,29 +211,6 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
 };
 
 /**
- * Handle middleclicks on project cells.
- */
-$(document).on('mousedown', e =>
-{
-  if (e.button === 1)
-  {
-    const $target = $(e.target);
-    const $parent = $(e.target.parentElement);
-
-    if ($target.is('a') && (
-      $parent.hasClass('project-number') || $parent.hasClass('install-number')))
-    {
-      e.preventDefault();
-
-      html.loading(true);
-      loadProject({ project_number: e.target.textContent })
-        .then(found => found ? stopBrowsing() : null)
-        .finally(() => html.loading(false));
-    }
-  }
-});
-
-/**
  * Get html for a project tree row.
  *
  * @param project The project.
