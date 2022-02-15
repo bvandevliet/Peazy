@@ -312,12 +312,15 @@ export default class projectTab implements tabPage
         //   main.loadProject({ project_id: project.project_id })
         //     .finally(() => html.loading(false));
         // },
-        oncontextmenu: () => window.api.core.applyFilters('project_entry_contextmenu',
-          [
-            contextMenu.openProjectFolder(project),
-            contextMenu.copyProjectPath(project),
-          ],
-          project),
+        oncontextmenu: () =>
+        {
+          return window.api.core.applyFilters('project_entry_contextmenu',
+            [
+              contextMenu.openProjectFolder(project),
+              contextMenu.copyProjectPath(project),
+            ],
+            project);
+        },
       },
       {
         template: 'tmpl-td-project-description',

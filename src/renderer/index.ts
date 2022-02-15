@@ -166,7 +166,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
   if (activateTabIfExists(`project-${project.project_id}`)) return true;
 
   // Initiate project tab.
-  let tabProject: tabPage;
+  let tabProject: projectTab;
 
   // Create new tab.
   const [$li] = mainTabs.addTab({
@@ -180,6 +180,15 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
         .finally(() => html.loading(false));
     },
     onmiddleclick: $li => $li.find('>a.close-btn').first().trigger('click'),
+    oncontextmenu: () =>
+    {
+      return window.api.core.applyFilters('project_tab_contextmenu',
+        [
+          contextMenu.openProjectFolder(tabProject.project),
+          contextMenu.copyProjectPath(tabProject.project),
+        ],
+        tabProject.project);
+    },
   });
 
   // Configure the "close" button.
@@ -258,12 +267,15 @@ const projectRow = (project: Project) =>
           .then(found => found ? (stopBrowsing(), false) : false) // if found, still return false /  don't activate row since install number was clicked
           .finally(() => html.loading(false));
       },
-      oncontextmenu: () => window.api.core.applyFilters('project_entry_contextmenu',
-        [
-          contextMenu.openProjectFolder({ project_number: project.install_number }),
-          contextMenu.copyProjectPath({ project_number: project.install_number }),
-        ],
-        project),
+      oncontextmenu: () =>
+      {
+        return window.api.core.applyFilters('project_entry_contextmenu',
+          [
+            contextMenu.openProjectFolder({ project_number: project.install_number }),
+            contextMenu.copyProjectPath({ project_number: project.install_number }),
+          ],
+          project);
+      },
     },
     {
       template: 'tmpl-td-project-number',
@@ -276,12 +288,15 @@ const projectRow = (project: Project) =>
           .then(found => found ? (stopBrowsing(), /* true*/ false) : false) // if found, still return false / don't activate row since the tab will handle this
           .finally(() => html.loading(false));
       },
-      oncontextmenu: () => window.api.core.applyFilters('project_entry_contextmenu',
-        [
-          contextMenu.openProjectFolder(project),
-          contextMenu.copyProjectPath(project),
-        ],
-        project),
+      oncontextmenu: () =>
+      {
+        return window.api.core.applyFilters('project_entry_contextmenu',
+          [
+            contextMenu.openProjectFolder(project),
+            contextMenu.copyProjectPath(project),
+          ],
+          project);
+      },
     },
     {
       template: 'tmpl-td-project-description',
