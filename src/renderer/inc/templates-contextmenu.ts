@@ -10,7 +10,7 @@ export const openProjectFolder = (number: ProjectAndInstallNumber): Partial<Elec
   return {
     id: 'openProjectFolder',
     label: 'Open project folder',
-    icon: null,
+    icon: './src/renderer/assets/img/cm_folder.png',
     click: () =>
     {
       const projectPaths = window.api.project.getProjectPaths(number).projectPaths;
@@ -28,7 +28,7 @@ export const copyProjectPath = (number: ProjectAndInstallNumber): Partial<Electr
   return {
     id: 'copyProjectPath',
     label: 'Copy project path',
-    icon: null,
+    icon: './src/renderer/assets/img/cm_copypath.png',
     click: () =>
     {
       const projectPaths = window.api.project.getProjectPaths(number).projectPaths;
