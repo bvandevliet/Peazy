@@ -9,3 +9,7 @@ package-lock.json
 
 **/_config/**/*
 !**/_config/index-example.ts
+
+favicon*.ico
+favicon*.png
+favicon*.svg
