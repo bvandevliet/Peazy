@@ -356,7 +356,8 @@ const deepsearch = (queryStr: string) =>
 
       matches++;
     }
-  });
+  })
+    .then(rowCount => (updateActiveStates(), rowCount));
 };
 
 const exitDeepsearch = () =>
