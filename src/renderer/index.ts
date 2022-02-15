@@ -429,7 +429,7 @@ $('#sidebar input[type=search]').on('focus', () =>
 /**
  * Toggle browsing state on key input.
  */
-document.addEventListener('keyup', e =>
+document.addEventListener('keydown', e =>
 {
   if (e.ctrlKey && e.shiftKey && e.key === 'F')
   {
@@ -437,7 +437,9 @@ document.addEventListener('keyup', e =>
   }
   else if (e.key === 'Escape')
   {
-    stopBrowsing();
+    const $inputSearch = $('#sidebar input[type=search]:visible').first();
+
+    if (!$inputSearch.is(':focus') || $inputSearch.val() === '') stopBrowsing();
   }
   else if (e.key === 'F5')
   {
