@@ -8,6 +8,11 @@ import
 }
   from 'electron';
 
+// https://github.com/iffy/electron-updater-example
+import { autoUpdater } from 'electron-updater';
+autoUpdater.autoDownload = true;
+autoUpdater.autoInstallOnAppQuit = true;
+
 // Force locale since external tools may reference it.
 app.commandLine.appendSwitch('lang', 'en-US');
 

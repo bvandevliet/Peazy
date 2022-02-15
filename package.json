@@ -7,30 +7,36 @@
   "scripts": {
     "dist": "( if exist .\\dist\\ rd .\\dist\\ /s /q ) && tsc && tsc --project .\\src\\main\\tsc.cjs.json && ejs -p [ -c ] -w .\\src\\renderer\\index.ejs -o .\\dist\\renderer\\index.html && sass src\\:dist\\ --style=compressed",
     "start": "npm run dist && .\\node_modules\\electron\\dist\\electron.exe . --dev",
-    "build": "npm run dist && ( if exist .\\out\\ rd .\\out\\ /s /q ) && electron-builder build --win"
+    "build": "npm run dist && ( if exist .\\out\\ rd .\\out\\ /s /q ) && electron-builder build --win",
+    "publish": "npm run dist && ( if exist .\\out\\ rd .\\out\\ /s /q ) && electron-builder --win -p always"
   },
-  "repository": "https://github.com/bvandevliet/electron-boilerplate",
+  "repository": "https://github.com/bvandevliet/<repo>",
   "keywords": [],
   "author": {
-    "name": "Bob Vandevliet",
-    "email": "info@bvandevliet.nl"
+    "name": "Your Name",
+    "email": "email@example.com"
   },
   "license": "MIT",
   "build": {
     "productName": "my-new-app",
     "appId": "com.electron.my-new-app",
-    "copyright": "Copyright © 2022 Bob Vandevliet",
+    "copyright": "Copyright © 2022 Your Name",
     "directories": {
       "output": "./out"
     },
     "win": {
       "target": "nsis",
-      "icon": "./src/assets/img/favicon.ico",
-      "publisherName": "Bob Vandevliet"
-    },
-    "nsis": {
-      "createDesktopShortcut": false,
-      "createStartMenuShortcut": false
+      "icon": "./src/renderer/assets/img/favicon.ico",
+      "publisherName": "Your Name",
+      "publish": [
+        {
+          "provider": "github",
+          "repo": "<repo>",
+          "owner": "<owner>",
+          "vPrefixedTagName": false,
+          "channel": "latest"
+        }
+      ]
     },
     "files": [
       "!**/*.ejs",
@@ -49,12 +55,11 @@
   },
   "devDependencies": {
     "@types/jquery": "^3.5.13",
-    "@types/tedious": "^4.0.6",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "bulma": "^0.9.3",
     "ejs": "^3.1.6",
-    "electron": "^16.0.7",
+    "electron": "^17.0.1",
     "electron-builder": "^22.14.5",
     "eslint": "^8.7.0",
     "eslint-plugin-import": "^2.25.4",
@@ -62,6 +67,6 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "tedious": "^11.0.8"
+    "electron-updater": "^4.6.5"
   }
 }
