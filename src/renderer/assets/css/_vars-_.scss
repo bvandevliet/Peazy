@@ -49,6 +49,14 @@ $weight-bold:     700;
 $column-gap:    0.75rem;
 $block-spacing: 1.5rem;
 
+// Compensate and reset padding (also for input controls with respect to removal of borders).
+
+$control-padding-vertical: .2em;
+$control-padding-horizontal: .5em;
+$control-height: unset;
+$table-cell-padding: $control-padding-vertical $control-padding-horizontal;
+$tabs-link-padding: $table-cell-padding;
+
 // Miscellaneous
 
 $easing:       ease-out;

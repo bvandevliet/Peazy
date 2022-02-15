@@ -113,8 +113,9 @@ export default class Search
    * Perform a search action on this instance.
    *
    * @param queryStr The search query string.
+   * @param blurOnly When `true`, the element will not be hidden
    */
-  search (queryStr: string)
+  search (queryStr: string, blurOnly = false)
   {
     clearTimeout(this._timer);
     this._timer = setTimeout(() =>
@@ -123,7 +124,7 @@ export default class Search
 
       if (!queryStr.trim().length)
       {
-        $elemSet.show(); return;
+        $elemSet.removeClass(['is-hidden', 'is-blurred']); return;
       }
 
       // Loop through each parent element and show/hide it based on search query matching.
@@ -135,7 +136,14 @@ export default class Search
 
         const searchArr = this.searchIn(elemParent);
 
-        Search.isMatch(searchArr, queryStr) ? $elemParent.show() : $elemParent.hide();
+        if (Search.isMatch(searchArr, queryStr))
+        {
+          $elemParent.removeClass(['is-hidden', 'is-blurred']);
+        }
+        else
+        {
+          blurOnly ? $elemParent.addClass('is-blurred') : $elemParent.addClass('is-hidden');
+        }
       });
     },
     200);

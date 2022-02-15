@@ -11,6 +11,11 @@ declare global
     /**
      * The ContextBridge API.
      */
-    api: typeof API,
+    api: typeof API;
+
+    /**
+     * Only available if `--expose-gc` is passed to the process.
+     */
+    gc: undefined | (() => void);
   }
 }

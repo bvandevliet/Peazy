@@ -66,6 +66,16 @@ export default class DateTime
   }
 
   /**
+   * Returns the date (yyyy/MM) according to local time.
+   *
+   * @param separator Delimiter to user in between the date segments.
+   */
+  getYearMonth (separator = '/')
+  {
+    return this.getFullYear() + separator + this.getMonth();
+  }
+
+  /**
    * Returns the date (yyyy/MM/dd) according to local time.
    *
    * @param separator Delimiter to user in between the date segments.

@@ -5,13 +5,16 @@ import
   from 'electron';
 
 import * as core from './inc/functions-core';
+import * as fs from './inc/functions-fs';
 
 /**
  * The APIs to expose to the global Window object.
  */
 export const API =
 {
+  gc: global.gc,
   core,
+  fs,
 };
 
 /**
