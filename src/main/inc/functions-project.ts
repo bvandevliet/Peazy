@@ -131,7 +131,7 @@ export const getProjectTree = async (entryProject: Project) =>
         // Set current project.
         currentInstall = project;
 
-        const this_install_number = core.applyFilters('project_install_number', project.install_number, project);
+        const this_install_number = core.applyFilters('project_project_number', project.install_number, { project_number: project.install_number });
 
         const isChild = core.applyFilters('project_is_child', !core.isEmpty(this_install_number) && this_install_number !== this_project_number, project);
 
