@@ -243,7 +243,7 @@ const projectRow = (project: Project) =>
       onclick: () =>
       {
         html.loading();
-        return loadProject({ project_number: window.api.core.applyFilters('project_project_number', install_number, { project_number: install_number }) })
+        return loadProject({ project_number: window.api.core.applyFilters('project_project_number', install_number) })
           .then(found => found ? (stopBrowsing(), false) : false) // if found, still return false /  don't activate row since install number was clicked
           .finally(() => html.loading(false));
       },

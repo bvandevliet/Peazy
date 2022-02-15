@@ -287,7 +287,7 @@ export default class projectTab implements tabPage
 
           // Append new child rows if any and load the clicked project when it passes by in the tree build.
           let clickedProject: Project = null;
-          return window.api.project.getProjects({ children_of: project_number, orderBy: 'DESC' }, project =>
+          return window.api.project.getProjects({ children_of: project.project_number, orderBy: 'DESC' }, project =>
           {
             const this_project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
 

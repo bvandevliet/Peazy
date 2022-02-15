@@ -109,7 +109,7 @@ export const getProjectAndChildren = (project_number: Project['project_number'],
 export const getProjectTree = async (entryProject: Project) =>
 {
   // Start iteration from the project number so we also fetch these children instead of only building up the tree.
-  let install_number = core.applyFilters('project_project_number', entryProject.project_number, entryProject);
+  let install_number = core.applyFilters('project_project_number', entryProject.project_number);
 
   // Holds the previous install project.
   let prevChild = entryProject;
@@ -123,15 +123,15 @@ export const getProjectTree = async (entryProject: Project) =>
 
     await getProjectAndChildren(install_number, project =>
     {
-      const prev_project_number = core.applyFilters('project_project_number', prevChild.project_number, prevChild);
-      const this_project_number = core.applyFilters('project_project_number', project.project_number, project);
+      const prev_project_number = core.applyFilters('project_project_number', prevChild.project_number);
+      const this_project_number = core.applyFilters('project_project_number', project.project_number);
 
       if (this_project_number === install_number)
       {
         // Set current project.
         currentInstall = project;
 
-        const this_install_number = core.applyFilters('project_project_number', project.install_number, { project_number: project.install_number });
+        const this_install_number = core.applyFilters('project_project_number', project.install_number);
 
         const isChild = core.applyFilters('project_is_child', !core.isEmpty(this_install_number) && this_install_number !== this_project_number, project);
 
