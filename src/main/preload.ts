@@ -4,12 +4,7 @@ import
 }
   from 'electron';
 
-// import { userConfig } from './_config/index.js';
-
 import * as core from './inc/functions-core';
-import * as fs from './inc/functions-fs';
-import * as sql from './inc/functions-sql';
-import * as project from './inc/functions-project';
 
 /**
  * The APIs to expose to the global Window object.
@@ -17,9 +12,6 @@ import * as project from './inc/functions-project';
 export const API =
 {
   core,
-  fs,
-  sql,
-  project,
 };
 
 /**
