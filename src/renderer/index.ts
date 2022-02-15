@@ -105,7 +105,7 @@ export const updateActiveStates = ($li?: JQuery<HTMLLIElement>) =>
   const $tr = projectsTable.$table.find('>tbody>tr')
     .removeClass('is-selected');
 
-  $li = $li ?? mainTabs.activeTab[0];
+  $li = $li ?? mainTabs.activeTab.$li;
 
   const id = $li.attr('tab-id');
 
@@ -134,9 +134,9 @@ export const activateTabIfExists = (id: string) =>
 {
   const existingTab = mainTabs.tryTrigger(id);
 
-  if (existingTab[0].length) updateActiveStates(existingTab[0]);
+  if (existingTab.$li.length) updateActiveStates(existingTab.$li);
 
-  return existingTab[2];
+  return existingTab;
 };
 
 /**
@@ -152,7 +152,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
   if (!window.api.core.isEmpty(args.project_id))
   {
     const existingTab = activateTabIfExists(`project-${args.project_id}`);
-    if (undefined !== existingTab) return existingTab.then(() => false);
+    if (existingTab.$li.length) return existingTab.promise.then(() => false);
   }
   // If no ID and no project number was passed, bail anyway.
   else if (window.api.core.isEmpty(args.project_number)) return true;
@@ -165,13 +165,13 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
 
   // Check once again if tab already exists, if so, activate it and bail.
   const existingTab = activateTabIfExists(`project-${args.project_id}`);
-  if (undefined !== existingTab) return existingTab.then(() => false);
+  if (existingTab.$li.length) return existingTab.promise.then(() => false);
 
   // Initiate project tab.
   let tabProject: projectTab;
 
   // Create new tab.
-  const [$li] = mainTabs.addTab({
+  const { $li } = mainTabs.addTab({
     id: null, // the projectTab instance will set the ID, text and title for this tab
     template: 'tmpl-li-project-tab',
     callback: ($div, $li) => tabProject = new projectTab($div, $li, project),

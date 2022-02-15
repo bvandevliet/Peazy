@@ -241,7 +241,7 @@ export default class projectTab implements tabPage
     });
 
     // Reload active tab.
-    return this._projectTabs.tryTriggerActive()[2];
+    return this._projectTabs.tryTriggerActive().promise;
   }
 
   /**
@@ -279,7 +279,7 @@ export default class projectTab implements tabPage
           if (!$tr.hasClass('is-selected'))
           {
             const existingTab = main.activateTabIfExists(`project-${project.project_id}`);
-            if (undefined !== existingTab) return existingTab.finally(() => html.loading(false)).then(() => false);
+            if (existingTab.$li.length) return existingTab.promise.finally(() => html.loading(false)).then(() => false);
           }
 
           // Length of next-level project rows.

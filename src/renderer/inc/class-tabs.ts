@@ -27,15 +27,15 @@ export default class Tabs
   /**
    * The currently activated tab and page element.
    */
-  get activeTab (): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>]
+  get activeTab ()
   {
     const $li = this.$ul.find('>li.is-active').first() as JQuery<HTMLLIElement>;
     const id = $li.attr('tab-id');
 
-    return [
-      $li,
-      this.$container.find('>div.wrapper-content').filter(function () { return $(this).attr('tab-id') === id; }).first() as JQuery<HTMLDivElement>,
-    ];
+    return {
+      $li: $li,
+      $div: this.$container.find('>div.wrapper-content').filter(function () { return $(this).attr('tab-id') === id; }).first() as JQuery<HTMLDivElement>,
+    };
   }
 
   constructor ()
@@ -48,101 +48,91 @@ export default class Tabs
    * Get an existing tab and its page.
    *
    * @param id The unique ID of the tab to find.
-   *
-   * @returns An array consisting of the `li` tab and `div` page element.
    */
-  getTabIfExists (id: tabItem['id']): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>]
+  getTabIfExists (id: tabItem['id'])
   {
     id = window.api.core.sanitizeKey(id);
 
-    return [
-      this.$ul.find('>li').filter(function () { return $(this).attr('tab-id') === id; }).first() as JQuery<HTMLLIElement>,
-      this.$container.find('>div.wrapper-content').filter(function () { return $(this).attr('tab-id') === id; }).first() as JQuery<HTMLDivElement>,
-    ];
+    return {
+      $li: this.$ul.find('>li').filter(function () { return $(this).attr('tab-id') === id; }).first() as JQuery<HTMLLIElement>,
+      $div: this.$container.find('>div.wrapper-content').filter(function () { return $(this).attr('tab-id') === id; }).first() as JQuery<HTMLDivElement>,
+    };
   }
 
   /**
    * Try trigger `onclick` on an existing tab.
    *
    * @param id The unique ID of the tab to find.
-   *
-   * @returns An array consisting of the `li` tab, `div` page element and the `onclick` promise.
    */
-  tryTrigger (id: tabItem['id']): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>, ReturnType<tabItem['onclick']>?]
+  tryTrigger (id: tabItem['id'])
   {
-    const [$li, $div] = this.getTabIfExists(id);
+    const { $li, $div } = this.getTabIfExists(id);
 
-    let _promise;
+    let _promise: ReturnType<tabItem['onclick']> = null;
 
     $li.find('>a').first().trigger('click', [(promise: ReturnType<tabItem['onclick']>) => _promise = promise]);
 
-    return [$li, $div, _promise];
+    return { $li: $li, $div: $div, promise: _promise ?? new Promise(resolve => resolve(false)) };
   }
 
   /**
    * Try trigger `onclick` on the first tab.
-   *
-   * @returns An array consisting of the `li` tab, `div` page element and the `onclick` promise.
    */
-  tryTriggerFirst (): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>, ReturnType<tabItem['onclick']>?]
+  tryTriggerFirst ()
   {
     const $li = this.$ul.find('>li').first() as JQuery<HTMLLIElement>;
     const id = $li.attr('tab-id');
 
-    let _promise;
+    let _promise: ReturnType<tabItem['onclick']> = null;
 
     $li.find('>a').first().trigger('click', [(promise: ReturnType<tabItem['onclick']>) => _promise = promise]);
 
-    return [
-      $li,
-      this.$container.find('>div.wrapper-content').filter(function () { return $(this).attr('tab-id') === id; }).first() as JQuery<HTMLDivElement>,
-      _promise,
-    ];
+    return {
+      $li: $li,
+      $div: this.$container.find('>div.wrapper-content').filter(function () { return $(this).attr('tab-id') === id; }).first() as JQuery<HTMLDivElement>,
+      promise: _promise ?? new Promise(resolve => resolve(false)),
+    };
   }
 
   /**
    * Try trigger `onclick` on the active tab.
-   *
-   * @returns An array consisting of the `li` tab, `div` page element and the `onclick` promise.
    */
-  tryTriggerActive (): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>, ReturnType<tabItem['onclick']>?]
+  tryTriggerActive ()
   {
-    const [$li, $div] = this.activeTab;
+    const { $li, $div } = this.activeTab;
 
-    let _promise;
+    let _promise: ReturnType<tabItem['onclick']> = null;
 
     $li.find('>a').first().trigger('click', [(promise: ReturnType<tabItem['onclick']>) => _promise = promise]);
 
-    return [$li, $div, _promise];
+    return { $li: $li, $div: $div, promise: _promise ?? new Promise(resolve => resolve(false)) };
   }
 
   /**
    * Add a tab and page.
    *
    * @param id The unique ID of the tab to add.
-   *
-   * @returns An array consisting of the `li` tab and `div` page element.
    */
-  addTab (tab: tabItem, activate = true): [JQuery<HTMLLIElement>, JQuery<HTMLDivElement>]
+  addTab (tab: tabItem, activate = true)
   {
     tab.id = window.api.core.sanitizeKey(tab.id);
 
     // Activate existing tab instead if any.
-    const [$liExisting, $divExisting] = this.getTabIfExists(tab.id);
-    if ($liExisting.length)
+    let { $li, $div } = this.getTabIfExists(tab.id);
+    if ($li.length)
     {
-      $liExisting.find('>a').first().trigger('click');
+      $li.find('>a').first().trigger('click');
 
-      return [$liExisting, $divExisting];
+      return { $li: $li, $div: $div };
     }
 
     // Create a new tab element.
-    const $li = (tab.template ? $(html.getTemplateClone(tab.template) as HTMLLIElement) : $(document.createElement('li')))
+    $li = (tab.template ? $(html.getTemplateClone(tab.template) as HTMLLIElement) : $(document.createElement('li')))
       .attr('tab-id', `${tab.id}`)
       .addClass(tab.classes);
 
     // Create a new tab page element ..
-    const $div = $(html.getTemplateClone('tmpl-tab-page') as HTMLDivElement).attr('tab-id', tab.id);
+    $div = $(html.getTemplateClone('tmpl-tab-page') as HTMLDivElement).attr('tab-id', tab.id);
 
     // .. and render its content.
     tab.callback($div, $li);
@@ -222,7 +212,7 @@ export default class Tabs
 
     if (activate) activateTab();
 
-    return [$li, $div];
+    return { $li: $li, $div: $div };
   }
 
   /**
@@ -234,6 +224,6 @@ export default class Tabs
   {
     if (typeof id !== 'string') id = id.attr('tab-id');
 
-    this.getTabIfExists(id).forEach($elem => $elem.remove());
+    for (const $elem of Object.values(this.getTabIfExists(id))) $elem.remove();
   }
 }
