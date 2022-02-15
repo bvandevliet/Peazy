@@ -203,6 +203,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
     window.gc();
     window.api.gc();
 
+    // Make sure the active states are up-to-date.
     updateActiveStates();
   });
 
@@ -401,6 +402,9 @@ const fetchProjectBrowser = async () =>
   projectsTable.$table.find('th')
     .removeClass(['is-sorted-asc', 'is-sorted-desc'])
     .filter('.project-date').addClass('is-sorted-desc');
+
+  // Make sure the active states are up-to-date.
+  updateActiveStates();
 
   // Make sure search is up-to-date.
   $('#search-projects').trigger('input');
