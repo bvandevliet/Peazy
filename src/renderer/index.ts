@@ -335,6 +335,7 @@ const deepsearch = (queryStr: string) =>
       matches++;
     }
   })
+    // Make sure the active states are up-to-date.
     .then(rowCount => (updateActiveStates(), rowCount));
 };
 
