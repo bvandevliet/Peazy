@@ -39,20 +39,20 @@ core.addFilter('project_project_number', project_number => ((project_number ?? '
 /**
  * Return valid install path basenames for a given install number.
  */
-core.addFilter('install_path_basenames', (basenames: string[], install_number: string) =>
+core.addFilter('install_path_basenames', (basenames: string[], number: ProjectAndInstallNumber) =>
 {
   return [
-    core.applyFilters('project_install_number', install_number, { install_number: install_number }),
+    core.applyFilters('project_project_number', number.install_number, { project_number: number.install_number }),
   ];
 });
 
 /**
  * Return valid project path basenames for a given project number.
  */
-core.addFilter('project_path_basenames', (basenames: string[], project_number: string) =>
+core.addFilter('project_path_basenames', (basenames: string[], number: ProjectAndInstallNumber) =>
 {
   return [
-    core.applyFilters('project_project_number', project_number, { project_number: project_number }),
+    core.applyFilters('project_project_number', number.project_number, { project_number: number.project_number }),
   ];
 });
 

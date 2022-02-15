@@ -195,9 +195,9 @@ export const getProjectPaths = (number: ProjectAndInstallNumber) =>
   if (core.isEmpty(number.install_number)) number.install_number = number.project_number;
 
   const validProjectPathBasenames =
-    core.applyFilters('project_path_basenames', [number.project_number], number.project_number).filter(basename => !core.isEmpty(basename));
+    core.applyFilters('project_path_basenames', [number.project_number], number).filter(basename => !core.isEmpty(basename));
   const validInstallPathBasenames =
-    core.applyFilters('install_path_basenames', [number.install_number], number.install_number).filter(basename => !core.isEmpty(basename));
+    core.applyFilters('install_path_basenames', [number.install_number], number).filter(basename => !core.isEmpty(basename));
 
   /**
    * Performs the lookup for project folders, recursive for install folders.
