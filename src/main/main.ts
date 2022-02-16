@@ -21,6 +21,9 @@ app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 app.commandLine.appendSwitch('js-flags', '--expose_gc');
 app.commandLine.appendSwitch('js-flags', '--expose-gc');
 
+// The absolute path to the application directory.
+const ABSPATH = app.getAppPath();
+
 // Quit app when all windows are closed.
 app.on('window-all-closed', () => app.quit());
 
@@ -146,7 +149,7 @@ const createWindow = () =>
   if (process.argv[2] === '--dev')
   {
     let reloading = false;
-    fs.watch(path.join(app.getAppPath(), './src/renderer/'), { recursive: true, persistent: true }, () =>
+    fs.watch(path.join(ABSPATH, './src/renderer/'), { recursive: true, persistent: true }, () =>
     {
       if (reloading) return;
       reloading = true;
@@ -199,6 +202,7 @@ ipcMain.on('context-menu', (e, menuItems: Electron.MenuItem[]) =>
   menuItems.forEach(menuItem =>
   {
     menuItem.click = () => e.sender.send('context-menu-command', menuItem.id);
+    menuItem.icon = path.join(ABSPATH, menuItem.icon as string);
   });
 
   Menu.buildFromTemplate(menuItems).popup({ window: BrowserWindow.fromWebContents(e.sender) });
