@@ -29,3 +29,16 @@ table.has-separated-tbodies {
 .is-blurred {
   opacity: .6;
 }
+
+.is-number {
+  @extend .is-family-monospace;
+  @extend .has-text-right;
+}
+
+th,
+td {
+  &.is-number {
+    padding-top: calc($control-padding-vertical + .125em);
+    padding-bottom: calc($control-padding-vertical - .125em);
+  }
+}
