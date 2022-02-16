@@ -313,7 +313,7 @@ export const getAttachedDocuments = (args: ProjectId, onRow: (doc: AttachedDocum
  *
  * @param onRow Called on each returned row.
  */
-export const getWorkHours = (args: ProjectId, onRow: (doc: WorkHours) => void): Promise<number> =>
+export const getWorkHours = (args: ProjectId, onRow: (hours: WorkHours) => void): Promise<number> =>
 {
   /**
    * Filters the SQL query string for this request.
