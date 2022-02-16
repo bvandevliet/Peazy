@@ -9,7 +9,7 @@
     "start": "npm run dist && .\\node_modules\\electron\\dist\\electron.exe . --dev",
     "build": "npm run dist && ( if exist .\\out\\ rd .\\out\\ /s /q ) && electron-builder build --win"
   },
-  "repository": "https://github.com/bvandevliet/electron-boilerplate",
+  "repository": "https://github.com/bvandevliet/peazy",
   "keywords": [],
   "author": {
     "name": "Bob Vandevliet",
