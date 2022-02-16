@@ -28,11 +28,6 @@ input {
   border-left: none !important;
 }
 
-a,
-a * {
-  @extend .is-unselectable;
-}
-
 div {
   @extend .m-0;
   @extend .p-0;
