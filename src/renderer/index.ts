@@ -34,6 +34,7 @@ const sidebarTabs = new Tabs();
     {
       $div.append(html.getTemplateClone('tmpl-browser-projects'));
     },
+    onclick: () => new Promise(resolve => resolve(true)),
   },
   {
     id: 'browser-customers',

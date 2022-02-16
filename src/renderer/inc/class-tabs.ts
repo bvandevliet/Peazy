@@ -167,6 +167,9 @@ export default class Tabs
         }
       });
 
+    // Render as disabled.
+    if (typeof tab.onclick !== 'function') $li.css('opacity', '.6');
+
     if (typeof tab.ondblclick === 'function')
     {
       $a.on('dblclick', e =>
