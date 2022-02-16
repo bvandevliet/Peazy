@@ -338,7 +338,9 @@ const deepsearch = (queryStr: string) =>
     }
   })
     // Make sure the active states are up-to-date.
-    .then(rowCount => (updateActiveStates(), rowCount));
+    .then(rowCount => (updateActiveStates(), rowCount))
+    // Make sure search is up-to-date.
+    .then(rowCount => ($('#search-projects').trigger('input'), rowCount));
 };
 
 const exitDeepsearch = () =>
