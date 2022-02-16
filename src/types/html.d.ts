@@ -106,11 +106,11 @@ interface tabPage
   /**
    * Triggered to initialize the tab.
    */
-  init: tabItem['onclick'];
+  init: (...args: any) => ReturnType<tabItem['onclick']>;
   /**
    * Triggered on activating the tab.
    */
-  onactivate: tabItem['onclick'];
+  onactivate: (...args: any) => ReturnType<tabItem['onclick']>;
   /**
    * Triggered when the tab is closing.
    */

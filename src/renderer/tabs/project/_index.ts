@@ -5,6 +5,7 @@ import Search from '../../inc/class-search.js';
 import * as main from '../../index.js';
 import * as html from '../../inc/functions-html.js';
 import * as contextMenu from '../../inc/templates-contextmenu.js';
+import workTab from './work.js';
 
 /**
  * A wrapper class to handle html for tabs.
@@ -66,6 +67,9 @@ export default class projectTab implements tabPage
     // Initiate the project tabs.
     this._projectTabs = new Tabs();
 
+    // Initiate the sub tabs.
+    let _workTab: workTab;
+
     // Add project tabs and activate first.
     ([
       {
@@ -79,19 +83,32 @@ export default class projectTab implements tabPage
         id: 'project-docs',
         template: 'tmpl-li-project-docs',
         callback: () => null,
-        onclick: () => new Promise(resolve => resolve(true)),
       },
       {
         id: 'project-work',
         template: 'tmpl-li-project-work',
+        callback: ($div, $li) => _workTab = new workTab($div, $li),
+        onclick: $li =>
+        {
+          html.loading();
+          return ($li.hasClass('is-active') ? _workTab.init(this.project) : _workTab.onactivate(this.project))
+            .finally(() => html.loading(false));
+        },
+      },
+      {
+        id: 'project-orders',
+        template: 'tmpl-li-project-orders',
         callback: () => null,
-        onclick: () => new Promise(resolve => resolve(true)),
       },
       {
         id: 'project-notes',
         template: 'tmpl-li-project-notes',
         callback: () => null,
-        onclick: () => new Promise(resolve => resolve(false)),
+      },
+      {
+        id: 'project-files',
+        template: 'tmpl-li-project-files',
+        callback: () => null,
       },
     ] as tabItem[]).forEach((projectSubTab, index) =>
     {
