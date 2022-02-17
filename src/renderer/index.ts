@@ -283,6 +283,7 @@ const projectRow = (project: Project) =>
       template: 'tmpl-td-project-description',
       text: window.api.core.applyFilters('project_project_description', project.project_description, project),
       title: window.api.core.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),
+      classes: ['min-width'], // not `min-width` by default but in this case not the last column, so set it here
     },
     {
       template: 'tmpl-td-project-customer',
