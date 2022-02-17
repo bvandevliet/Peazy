@@ -27,8 +27,8 @@ export default class workTab implements tabPage
 
   /**
    *
-   * @param $div                The tab page `div` element.
-   * @param $li                 The tab `li` element.
+   * @param $div The tab page `div` element.
+   * @param $li  The tab `li` element.
    */
   constructor ($div: JQuery<HTMLDivElement>, $li: JQuery<HTMLLIElement>)
   {
@@ -37,7 +37,7 @@ export default class workTab implements tabPage
     this.$li = $li;
 
     // Load the tab page template.
-    this.$div.append(html.getTemplateClone('tmpl-tab-page-project-hours')); // !!
+    this.$div.append(html.getTemplateClone('tmpl-tab-page-project-hours'));
 
     // Create a `TableList` wrapper for the table.
     this._workHours = new TableList(this.$div.find('table.table-hours') as JQuery<HTMLTableElement>);
@@ -48,14 +48,14 @@ export default class workTab implements tabPage
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisClass = this;
-    (this.$div.find('input.search-hours') as JQuery<HTMLInputElement>).on('input', function () // !!
+    (this.$div.find('input.search-hours') as JQuery<HTMLInputElement>).on('input', function ()
     {
       thisClass._workSearch.search(this.value, true);
     });
   }
 
   /**
-   * Prints html to the project content window.
+   * Prints html.
    *
    * @param project The project.
    */
@@ -64,9 +64,8 @@ export default class workTab implements tabPage
     // Set the current project for this tab.
     this._project = project;
 
-    // Print project info.
+    // Print.
     this._workHours.empty();
-
     return window.api.project.getWorkHours(this._project, hours =>
     {
       // FILTER, BUT THINK ABOUT THEAD TOO !!
