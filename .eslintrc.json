@@ -1,5 +1,8 @@
 {
   "root": true,
+  "ignorePatterns": [
+    "src/renderer/assets/bulma/"
+  ],
   "env": {
     "browser": true,
     "es6": true

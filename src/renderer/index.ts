@@ -413,8 +413,10 @@ const fetchProjectBrowser = async () =>
   // Make sure the active states are up-to-date.
   updateActiveStates();
 
-  // Make sure search is up-to-date.
-  $('#search-projects').trigger('input');
+  // Make sure search is up-to-date and focussed.
+  $('#search-projects')
+    .trigger('input')
+    .trigger('focus');
 };
 
 // Initial fetch.
