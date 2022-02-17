@@ -53,4 +53,19 @@ table {
   tr:not(:hover) .hover-actions {
     opacity: 0;
   }
+
+  th,
+  td {
+    &.file-icon {
+      @extend .min-width;
+      padding-right: 0;
+
+      padding-top: calc($control-padding-vertical + .15em);
+      padding-bottom: calc($control-padding-vertical - .15em);
+    }
+
+    >img {
+      max-width: unset;
+    }
+  }
 }

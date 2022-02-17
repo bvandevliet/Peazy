@@ -29,6 +29,11 @@ export const userConfig: userConfig =
   filesystem: {
     ignoreFiles: null,
     lookupPaths: [],
+    docsServer: {
+      server: null,
+      username: null,
+      password: null,
+    },
   },
 };
 

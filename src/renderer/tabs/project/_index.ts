@@ -6,6 +6,7 @@ import * as main from '../../index.js';
 import * as html from '../../inc/functions-html.js';
 import * as contextMenu from '../../inc/templates-contextmenu.js';
 import workTab from './work.js';
+import docsTab from './docs.js';
 
 /**
  * A wrapper class to handle html for tabs.
@@ -69,6 +70,7 @@ export default class projectTab implements tabPage
 
     // Initiate the sub tabs.
     let _workTab: workTab;
+    let _docsTab: docsTab;
 
     // Add project tabs and activate first.
     ([
@@ -82,7 +84,13 @@ export default class projectTab implements tabPage
       {
         id: 'project-docs',
         template: 'tmpl-li-project-docs',
-        callback: () => null,
+        callback: ($div, $li) => _docsTab = new docsTab($div, $li),
+        onclick: $li =>
+        {
+          html.loading();
+          return ($li.hasClass('is-active') ? _docsTab.init(this.project) : _docsTab.onactivate(this.project))
+            .finally(() => html.loading(false));
+        },
       },
       {
         id: 'project-work',

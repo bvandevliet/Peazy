@@ -26,7 +26,30 @@ export const sanitizeFilename = (input: string) =>
  */
 export const startDrag = (filePath: string) =>
 {
+  filePath = path.normalize(filePath);
+
   ipcRenderer.send('ondragstart', filePath);
+};
+
+/**
+ * Fetch a path's associated icon.
+ *
+ * @param filePath
+ * @param options
+ *
+ * @return The data URL of the image.
+ */
+export const getFileIcon = (filePath: string, options: Electron.FileIconOptions = { size: 'small' }): Promise<string> =>
+{
+  filePath = path.normalize(filePath);
+
+  return new Promise(resolve =>
+  {
+    ipcRenderer
+      .once(`file-icon-data-${filePath}`, (_e, dataUrl: string) => resolve(dataUrl));
+
+    ipcRenderer.send('file-icon', filePath, options);
+  });
 };
 
 /**
@@ -38,6 +61,8 @@ export const startDrag = (filePath: string) =>
  */
 export const showInFolder = (filePath: string) =>
 {
+  filePath = path.normalize(filePath);
+
   if (!fs.existsSync(filePath)) return false;
 
   shell.showItemInFolder(filePath); return true;
@@ -46,13 +71,15 @@ export const showInFolder = (filePath: string) =>
 /**
  * Open the given file or folder in the desktop's default manner.
  *
- * @param pathLike
+ * @param filePath
  *
  * @returns Whether the file or folder exists.
  */
-export const openNative = (pathLike: string) =>
+export const openNative = (filePath: string) =>
 {
-  if (!fs.existsSync(pathLike)) return false;
+  filePath = path.normalize(filePath);
 
-  shell.openPath(pathLike); return true;
+  if (!fs.existsSync(filePath)) return false;
+
+  shell.openPath(filePath); return true;
 };

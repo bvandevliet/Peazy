@@ -47,5 +47,13 @@ interface userConfig {
      * Directories to search for project folders.
      */
     lookupPaths: string[],
+    /**
+     * Server for attached documents.
+     */
+    docsServer: {
+      server: string,
+      username: string,
+      password: string,
+    },
   },
 }

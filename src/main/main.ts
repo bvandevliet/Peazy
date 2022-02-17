@@ -1,6 +1,9 @@
+import { userConfig } from './_config';
+
 import path from 'path';
 import fs from 'fs';
-import { exec } from 'child_process';
+import { exec, execSync } from 'child_process';
+
 import
 {
   app, BrowserWindow, ipcMain,
@@ -23,6 +26,14 @@ app.commandLine.appendSwitch('js-flags', '--expose-gc');
 
 // The absolute path to the application directory.
 const ABSPATH = app.getAppPath();
+
+// Make sure we are logged in to the attached documents server.
+try
+{
+  execSync(`net use "${userConfig.filesystem.docsServer.server}" /user:"${userConfig.filesystem.docsServer.username}" "${userConfig.filesystem.docsServer.password}"`);
+}
+// eslint-disable-next-line no-empty
+catch (err) {}
 
 // Quit app when all windows are closed.
 app.on('window-all-closed', () => app.quit());
@@ -192,6 +203,15 @@ ipcMain.on('ondragstart', (e, filePath: string) =>
     file: path.join(__dirname, filePath),
     icon: path.join(__dirname, '../../src/renderer/assets/img/empty.ico'),
   });
+});
+
+/**
+ * Get file icon.
+ */
+ipcMain.on('file-icon', (e, filePath: string, options?: Electron.FileIconOptions) =>
+{
+  app.getFileIcon(filePath, options)
+    .then(nativeImg => e.sender.send(`file-icon-data-${filePath}`, nativeImg.toDataURL()));
 });
 
 /**

@@ -44,3 +44,13 @@ export const copyProjectPath = (number: ProjectAndInstallNumber): Partial<Electr
     },
   };
 };
+
+export const openFileNative = (filePath: string): Partial<Electron.MenuItem> =>
+{
+  return {
+    id: 'openFileNative',
+    label: 'Open file',
+    icon: './src/renderer/assets/img/cm_open.png',
+    click: () => window.api.fs.openNative(filePath),
+  };
+};
