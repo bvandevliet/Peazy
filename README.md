@@ -9,13 +9,37 @@ This project originated at work where we use an unpleasant ERP system. Many time
 ### Clone this repository
 ```
 git clone https://github.com/bvandevliet/peazy.git
+cd ./peazy
 ```
+
 ### Install dependencies
 ```
 npm install
 ```
+
+### Clone Bulma fork into `assets`
+This fork allows for theme support (WIP), see PR: [#3490](https://github.com/jgthms/bulma/pull/3490)
+```
+cd ./src/renderer/assets
+git clone https://github.com/bvandevliet/bulma.git
+cd ../../../
+```
+
 ### Configure to your needs
 Rename the `index-example.ts` file in `./src/main/_config` and in `./src/renderer/_config` to `index.ts`.  
 In these files you can write code to configure Peazy for your situation.
 
 Further documentation on filter hooks etc. will follow soon ..
+
+### Test
+Compile and start Peazy using your configuration files.
+```
+npm start
+```
+
+### Build
+Compile and build the Peazy installer.  
+Let users make a shortcut to your `Peazy.exe` installer to ensure they always use the latest version.
+```
+npm run build
+```

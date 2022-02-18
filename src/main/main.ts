@@ -7,7 +7,7 @@ import { exec, execSync } from 'child_process';
 import
 {
   app, BrowserWindow, ipcMain,
-  Tray, Menu,
+  Tray, Menu, dialog,
 }
   from 'electron';
 
@@ -96,10 +96,22 @@ const applicationMenu = Menu.buildFromTemplate([
     label: 'Window',
     role: 'windowMenu',
   },
-  // {
-  //   label: 'Help',
-  //   role: 'help',
-  // },
+  {
+    label: 'About',
+    click: () =>
+    {
+      dialog.showMessageBox(mainWindow, {
+        type: 'info',
+        title: `About ${app.name}`,
+        message: 'Made by Bob Vandevliet' +
+          '\n' +
+          `\nPeazy  v${app.getVersion()}` +
+          `\nElectron.js  v${process.versions.electron}` +
+          `\nNode.js  v${process.versions.node}` +
+          `\nChromium  v${process.versions.chrome}`,
+      });
+    },
+  },
 ]);
 
 /**
