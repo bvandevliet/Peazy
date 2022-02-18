@@ -1,69 +1,99 @@
 @charset 'utf-8';
-@import './_vars-_.scss';
-@import './_vars-derived.sass';
 
-// Bulma scripts ..
 
-@import '../../../../node_modules/bulma/sass/utilities/_all.sass';
-@import '../../../../node_modules/bulma/sass/base/_all.sass';
+// Typography
 
-// @import '../../../../node_modules/bulma/sass/elements/_all.sass';
-// @import '../../../../node_modules/bulma/sass/elements/box.sass';
-@import '../../../../node_modules/bulma/sass/elements/button.sass';
-// @import '../../../../node_modules/bulma/sass/elements/container.sass';
-// @import '../../../../node_modules/bulma/sass/elements/content.sass';
-// @import '../../../../node_modules/bulma/sass/elements/icon.sass';
-// @import '../../../../node_modules/bulma/sass/elements/image.sass';
-// @import '../../../../node_modules/bulma/sass/elements/notification.sass';
-// @import '../../../../node_modules/bulma/sass/elements/progress.sass';
-@import '../../../../node_modules/bulma/sass/elements/table.sass';
-@import '../../../../node_modules/bulma/sass/elements/tag.sass';
-@import '../../../../node_modules/bulma/sass/elements/title.sass';
-@import '../../../../node_modules/bulma/sass/elements/other.sass';
+$family-sans-serif: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+$family-monospace:  monospace;
+$render-mode:       optimizeLegibility;
 
-// @import '../../../../node_modules/bulma/sass/form/_all.sass';
-@import '../../../../node_modules/bulma/sass/form/shared.sass';
-@import '../../../../node_modules/bulma/sass/form/input-textarea.sass';
-// @import '../../../../node_modules/bulma/sass/form/checkbox-radio.sass';
-// @import '../../../../node_modules/bulma/sass/form/select.sass';
-// @import '../../../../node_modules/bulma/sass/form/file.sass';
-@import '../../../../node_modules/bulma/sass/form/tools.sass';
+$size-1: 3rem;
+$size-2: 2.5rem;
+$size-3: 2rem;
+$size-4: 1.5rem;
+$size-5: 1.25rem;
+$size-6: 1rem;
+$size-7: 0.75rem;
 
-// @import '../../../../node_modules/bulma/sass/components/_all.sass';
-// @import '../../../../node_modules/bulma/sass/components/breadcrumb.sass';
-// @import '../../../../node_modules/bulma/sass/components/card.sass';
-// @import '../../../../node_modules/bulma/sass/components/dropdown.sass';
-// @import '../../../../node_modules/bulma/sass/components/level.sass';
-// @import '../../../../node_modules/bulma/sass/components/media.sass';
-// @import '../../../../node_modules/bulma/sass/components/menu.sass';
-// @import '../../../../node_modules/bulma/sass/components/message.sass';
-// @import '../../../../node_modules/bulma/sass/components/modal.sass';
-// @import '../../../../node_modules/bulma/sass/components/navbar.sass';
-// @import '../../../../node_modules/bulma/sass/components/pagination.sass';
-// @import '../../../../node_modules/bulma/sass/components/panel.sass';
-@import '../../../../node_modules/bulma/sass/components/tabs.sass';
 
-// @import '../../../../node_modules/bulma/sass/grid/_all.sass';
-@import '../../../../node_modules/bulma/sass/grid/columns.sass';
-// @import '../../../../node_modules/bulma/sass/grid/tiles.sass';
+// Spacing
 
-// @import '../../../../node_modules/bulma/sass/helpers/_all.sass';
-@import '../../../../node_modules/bulma/sass/helpers/color.sass';
-@import '../../../../node_modules/bulma/sass/helpers/flexbox.sass';
-@import '../../../../node_modules/bulma/sass/helpers/float.sass';
-@import '../../../../node_modules/bulma/sass/helpers/other.sass';
-@import '../../../../node_modules/bulma/sass/helpers/overflow.sass';
-@import '../../../../node_modules/bulma/sass/helpers/position.sass';
-@import '../../../../node_modules/bulma/sass/helpers/spacing.sass';
-@import '../../../../node_modules/bulma/sass/helpers/typography.sass';
-@import '../../../../node_modules/bulma/sass/helpers/visibility.sass';
+$column-gap:    0.75rem;
+$block-spacing: 1.5rem;
 
-// @import '../../../../node_modules/bulma/sass/layout/_all.sass';
-// @import '../../../../node_modules/bulma/sass/layout/hero.sass';
-@import '../../../../node_modules/bulma/sass/layout/section.sass';
-// @import '../../../../node_modules/bulma/sass/layout/footer.sass';
 
-// Local scripts ..
+// Compensate and reset padding (also for input controls with respect to removal of borders).
+
+$control-padding-vertical: .2em;
+$control-padding-horizontal: .5em;
+$control-height: unset;
+$table-cell-padding: $control-padding-vertical $control-padding-horizontal;
+$tabs-link-padding: $table-cell-padding;
+
+
+// Bulma ..
+
+@import './../bulma/sass/utilities/_all.scss';
+@import './../bulma/sass/base/_all.sass';
+
+// @import './../bulma/sass/elements/_all.sass';
+// @import './../bulma/sass/elements/box.sass';
+@import './../bulma/sass/elements/button.sass';
+// @import './../bulma/sass/elements/container.sass';
+// @import './../bulma/sass/elements/content.sass';
+// @import './../bulma/sass/elements/icon.sass';
+// @import './../bulma/sass/elements/image.sass';
+// @import './../bulma/sass/elements/notification.sass';
+// @import './../bulma/sass/elements/progress.sass';
+@import './../bulma/sass/elements/table.sass';
+@import './../bulma/sass/elements/tag.sass';
+@import './../bulma/sass/elements/title.sass';
+@import './../bulma/sass/elements/other.sass';
+
+// @import './../bulma/sass/form/_all.sass';
+@import './../bulma/sass/form/shared.sass';
+@import './../bulma/sass/form/input-textarea.sass';
+// @import './../bulma/sass/form/checkbox-radio.sass';
+// @import './../bulma/sass/form/select.sass';
+// @import './../bulma/sass/form/file.sass';
+@import './../bulma/sass/form/tools.sass';
+
+// @import './../bulma/sass/components/_all.sass';
+// @import './../bulma/sass/components/breadcrumb.sass';
+// @import './../bulma/sass/components/card.sass';
+// @import './../bulma/sass/components/dropdown.sass';
+// @import './../bulma/sass/components/level.sass';
+// @import './../bulma/sass/components/media.sass';
+// @import './../bulma/sass/components/menu.sass';
+// @import './../bulma/sass/components/message.sass';
+// @import './../bulma/sass/components/modal.sass';
+// @import './../bulma/sass/components/navbar.sass';
+// @import './../bulma/sass/components/pagination.sass';
+// @import './../bulma/sass/components/panel.sass';
+@import './../bulma/sass/components/tabs.sass';
+
+// @import './../bulma/sass/grid/_all.sass';
+@import './../bulma/sass/grid/columns.sass';
+// @import './../bulma/sass/grid/tiles.sass';
+
+// @import './../bulma/sass/helpers/_all.sass';
+@import './../bulma/sass/helpers/color.sass';
+@import './../bulma/sass/helpers/flexbox.sass';
+@import './../bulma/sass/helpers/float.sass';
+@import './../bulma/sass/helpers/other.sass';
+@import './../bulma/sass/helpers/overflow.sass';
+@import './../bulma/sass/helpers/position.sass';
+@import './../bulma/sass/helpers/spacing.sass';
+@import './../bulma/sass/helpers/typography.sass';
+@import './../bulma/sass/helpers/visibility.sass';
+
+// @import './../bulma/sass/layout/_all.sass';
+// @import './../bulma/sass/layout/hero.sass';
+@import './../bulma/sass/layout/section.sass';
+// @import './../bulma/sass/layout/footer.sass';
+
+
+// Customizations ..
 
 @import './extensions/helpers';
 

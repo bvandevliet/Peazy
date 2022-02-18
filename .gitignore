@@ -13,3 +13,5 @@ package-lock.json
 favicon*.ico
 favicon*.png
 favicon*.svg
+
+**/assets/bulma/
