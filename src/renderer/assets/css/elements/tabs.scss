@@ -13,8 +13,10 @@
       }
 
       &:not(:first-child) {
-        &:hover {
-          background-color: tomato;
+        color: var(--text) !important;
+
+        &.close-btn:hover {
+          background-color: var(--orange);
         }
       }
 

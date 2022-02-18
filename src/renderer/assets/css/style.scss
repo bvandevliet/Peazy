@@ -31,74 +31,60 @@ $table-cell-padding: $control-padding-vertical $control-padding-horizontal;
 $tabs-link-padding: $table-cell-padding;
 
 
+// Colors
+
+$orange:    rgb(255, 71, 15);
+$yellow:    rgb(255, 224, 138);
+$green:     rgb(72, 199, 142);
+$turquoise: rgb(0, 209, 178);
+$cyan:      rgb(173, 222, 255);
+$blue:      rgb(0, 96, 158);
+$purple:    rgb(184, 107, 255);
+$red:       rgb(241, 70, 104);
+
+
+// Import themes before utilities/_all
+@import './themes/dark.scss';
+@import './themes/light.scss';
+
+// Override active table row colors to be more appropriate.
+$table-row-active-background-color: var(--link);
+$table-row-active-color:            var(--link-invert);
+
 // Bulma ..
 
 @import './../bulma/sass/utilities/_all.scss';
 @import './../bulma/sass/base/_all.sass';
 
-// @import './../bulma/sass/elements/_all.sass';
-// @import './../bulma/sass/elements/box.sass';
-@import './../bulma/sass/elements/button.sass';
-// @import './../bulma/sass/elements/container.sass';
 // @import './../bulma/sass/elements/content.sass';
-// @import './../bulma/sass/elements/icon.sass';
-// @import './../bulma/sass/elements/image.sass';
-// @import './../bulma/sass/elements/notification.sass';
-// @import './../bulma/sass/elements/progress.sass';
+@import './../bulma/sass/elements/box.sass';
+@import './../bulma/sass/elements/button.sass';
+@import './../bulma/sass/elements/notification.sass';
+@import './../bulma/sass/elements/progress.sass';
 @import './../bulma/sass/elements/table.sass';
 @import './../bulma/sass/elements/tag.sass';
-@import './../bulma/sass/elements/title.sass';
 @import './../bulma/sass/elements/other.sass';
 
-// @import './../bulma/sass/form/_all.sass';
-@import './../bulma/sass/form/shared.sass';
-@import './../bulma/sass/form/input-textarea.sass';
-// @import './../bulma/sass/form/checkbox-radio.sass';
-// @import './../bulma/sass/form/select.sass';
-// @import './../bulma/sass/form/file.sass';
-@import './../bulma/sass/form/tools.sass';
+@import './../bulma/sass/form/_all.sass';
 
-// @import './../bulma/sass/components/_all.sass';
-// @import './../bulma/sass/components/breadcrumb.sass';
-// @import './../bulma/sass/components/card.sass';
-// @import './../bulma/sass/components/dropdown.sass';
-// @import './../bulma/sass/components/level.sass';
-// @import './../bulma/sass/components/media.sass';
-// @import './../bulma/sass/components/menu.sass';
-// @import './../bulma/sass/components/message.sass';
-// @import './../bulma/sass/components/modal.sass';
-// @import './../bulma/sass/components/navbar.sass';
-// @import './../bulma/sass/components/pagination.sass';
-// @import './../bulma/sass/components/panel.sass';
+@import './../bulma/sass/components/breadcrumb.sass';
 @import './../bulma/sass/components/tabs.sass';
+// @import './../bulma/sass/components/panel.sass';
+// @import './../bulma/sass/components/pagination.sass';
+@import './../bulma/sass/components/message.sass';
 
-// @import './../bulma/sass/grid/_all.sass';
 @import './../bulma/sass/grid/columns.sass';
-// @import './../bulma/sass/grid/tiles.sass';
 
-// @import './../bulma/sass/helpers/_all.sass';
-@import './../bulma/sass/helpers/color.sass';
-@import './../bulma/sass/helpers/flexbox.sass';
-@import './../bulma/sass/helpers/float.sass';
-@import './../bulma/sass/helpers/other.sass';
-@import './../bulma/sass/helpers/overflow.sass';
-@import './../bulma/sass/helpers/position.sass';
-@import './../bulma/sass/helpers/spacing.sass';
-@import './../bulma/sass/helpers/typography.sass';
-@import './../bulma/sass/helpers/visibility.sass';
-
-// @import './../bulma/sass/layout/_all.sass';
-// @import './../bulma/sass/layout/hero.sass';
-@import './../bulma/sass/layout/section.sass';
-// @import './../bulma/sass/layout/footer.sass';
+@import './../bulma/sass/helpers/_all.sass';
 
 
 // Customizations ..
 
-@import './extensions/helpers';
+@import './helpers/helpers';
+@import './helpers/sticky-table';
 
 @import './elements/base';
-@import './elements/content';
+@import './elements/content'; // replacement for bulma/elements/content.sass
 @import './elements/loader';
 @import './elements/tabs';
 @import './elements/columns';

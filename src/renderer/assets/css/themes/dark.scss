@@ -1,0 +1,105 @@
+// Dark theme
+
+@mixin dark-theme {
+  color-scheme: dark;
+
+  // Colors
+
+  --orange:             #{$orange};
+  --yellow:             #{$yellow};
+  --green:              #{$green};
+  --turquoise:          #{$turquoise};
+  --cyan:               #{$cyan};
+  --blue:               #{$blue};
+  --purple:             #{$purple};
+  --red:                #{$red};
+
+  // Derived colors
+
+  --primary:            var(--cyan);
+
+  --info:               var(--blue);
+  --success:            var(--green);
+  --warning:            var(--yellow);
+  --danger:             var(--red);
+
+  --light:              var(--black-ter);
+  --dark:               var(--grey-darker);
+
+  // Invert colors
+
+  --orange-invert:      #{$orange-invert};
+  --yellow-invert:      #{$yellow-invert};
+  --green-invert:       #{$green-invert};
+  --turquoise-invert:   #{$turquoise-invert};
+  --cyan-invert:        #{$cyan-invert};
+  --blue-invert:        #{$blue-invert};
+  --purple-invert:      #{$purple-invert};
+  --red-invert:         #{$red-invert};
+  
+  --primary-invert:     #{$primary-invert};
+  --primary-light:      #{$primary-light};
+  --primary-dark:       #{$primary-dark};
+  --info-invert:        #{$info-invert};
+  --info-light:         #{$info-light};
+  --info-dark:          #{$info-dark};
+  --success-invert:     #{$success-invert};
+  --success-light:      #{$success-light};
+  --success-dark:       #{$success-dark};
+  --warning-invert:     #{$warning-invert};
+  --warning-light:      #{$warning-light};
+  --warning-dark:       #{$warning-dark};
+  --danger-invert:      #{$danger-invert};
+  --danger-light:       #{$danger-light};
+  --danger-dark:        #{$danger-dark};
+  --light-invert:       #{$light-invert};
+  --dark-invert:        #{$dark-invert};
+
+  // General colors
+
+  --scheme-main:        var(--black);
+  --scheme-main-bis:    var(--black-bis);
+  --scheme-main-ter:    var(--black-ter);
+  --scheme-invert:      var(--white);
+  --scheme-invert-bis:  var(--white-bis);
+  --scheme-invert-ter:  var(--white-ter);
+
+  --background:         var(--black-ter);
+
+  --border:             var(--grey-darker);
+  --border-hover:       var(--grey-dark);
+  --border-light:       var(--black-ter);
+  --border-light-hover: var(--grey-dark);
+
+  // Text colors
+
+  --text:               var(--grey-light);
+  --text-invert:        var(--grey-dark);
+  --text-light:         var(--grey);
+  --text-strong:        var(--grey-lighter);
+
+  // Code colors
+
+  --code:               var(--grey);
+  --code-background:    var(--background);
+
+  --pre:                var(--text);
+  --pre-background:     var(--background);
+
+  // Link colors
+
+  --link:               var(--cyan);
+  --link-invert:        var(--cyan-invert);
+  --link-light:         #fff;
+  --link-dark:          var(--blue);
+  --link-visited:       var(--purple);
+
+  --link-hover:         var(--grey-lighter);
+  --link-hover-border:  var(--grey-dark);
+
+  --link-focus:         var(--grey-lighter);
+  --link-focus-border:  var(--cyan);
+
+  --link-active:        var(--grey-lighter);
+  --link-active-border: var(--grey-light);
+}

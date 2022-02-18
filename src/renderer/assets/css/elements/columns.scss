@@ -44,6 +44,6 @@
   }
 
   .column.status-bar {
-    border-top: 1px solid $border !important;
+    border-top: 1px solid var(--border) !important;
   }
 }

@@ -75,7 +75,7 @@ export default class docsTab implements tabPage
       const $tr = this._docsTable.appendItem([
         {
           html: '<img draggable="false" />',
-          classes: ['file-icon'],
+          classes: ['is-file-icon'],
         },
         {
           text: doc.title,
@@ -103,7 +103,7 @@ export default class docsTab implements tabPage
 
       // Get the file icon.
       window.api.fs.getFileIcon(doc.path)
-        .then(dataUrl => (console.log(dataUrl), $tr.find('>td.file-icon>img').first().attr('src', dataUrl)));
+        .then(dataUrl => (console.log(dataUrl), $tr.find('>td.is-file-icon>img').first().attr('src', dataUrl)));
     });
   }
 
