@@ -153,7 +153,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
   if (!window.api.core.isEmpty(args.project_id))
   {
     const existingTab = activateTabIfExists(`project-${args.project_id}`);
-    if (existingTab.$li.length) return existingTab.promise.then(() => false);
+    if (existingTab.$li.length) return existingTab.promise;
   }
   // If no ID and no project number was passed, bail anyway.
   else if (window.api.core.isEmpty(args.project_number)) return true;
@@ -166,7 +166,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
 
   // Check once again if tab already exists, if so, activate it and bail.
   const existingTab = activateTabIfExists(`project-${args.project_id}`);
-  if (existingTab.$li.length) return existingTab.promise.then(() => false);
+  if (existingTab.$li.length) return existingTab.promise;
 
   // Initiate project tab.
   let tabProject: projectTab;
