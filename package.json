@@ -30,6 +30,7 @@
       "publisherName": "Bob Vandevliet"
     },
     "nsis": {
+      "runAfterFinish": true,
       "createDesktopShortcut": false,
       "createStartMenuShortcut": false
     },
