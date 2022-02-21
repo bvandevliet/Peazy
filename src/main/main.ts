@@ -234,7 +234,7 @@ ipcMain.on('context-menu', (e, menuItems: Electron.MenuItem[]) =>
   menuItems.forEach(menuItem =>
   {
     menuItem.click = () => e.sender.send('context-menu-command', menuItem.id);
-    menuItem.icon = path.join(ABSPATH, menuItem.icon as string);
+    menuItem.icon = menuItem.icon ? path.join(ABSPATH, menuItem.icon as string) : null;
   });
 
   Menu.buildFromTemplate(menuItems).popup({ window: BrowserWindow.fromWebContents(e.sender) });
