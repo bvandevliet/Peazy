@@ -16,6 +16,12 @@ body {
   @extend .is-shadowless;
 }
 
+@media only screen and (prefers-color-scheme: dark) {
+  ::placeholder {
+    opacity: .6;
+  }
+}
+
 input {
   @extend .is-radiusless;
 
