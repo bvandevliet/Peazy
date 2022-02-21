@@ -9,7 +9,9 @@
 import path from 'path';
 
 import * as core from '../inc/functions-core';
+import * as fs from '../inc/functions-fs';
 import * as sql from '../inc/functions-sql';
+import * as project from '../inc/functions-project';
 
 /**
  * Application-wide configuration.

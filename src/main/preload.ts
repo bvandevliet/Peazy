@@ -1,3 +1,5 @@
+import path from 'path';
+
 import
 {
   contextBridge,
@@ -18,6 +20,7 @@ export const API =
 {
   gc: global.gc,
   core,
+  path,
   fs,
   sql,
   project,

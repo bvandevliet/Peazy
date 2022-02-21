@@ -52,6 +52,9 @@ export const getFileIcon = (filePath: string, options: Electron.FileIconOptions 
   });
 };
 
+export const existsSync = fs.existsSync;
+export const readdirSync = fs.readdirSync;
+
 /**
  * Show the given file or folder in a file manager. If possible, select the file.
  *
