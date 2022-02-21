@@ -175,3 +175,11 @@ export const contextMenu = (menuItems: Partial<Electron.MenuItem>[]) =>
   // Send IPC-safe menu items.
   ipcRenderer.send('context-menu', ipcSafeItems);
 };
+
+/**
+ * Shows a message box.
+ *
+ * @param options
+ */
+export const messageBox = (options: Electron.MessageBoxOptions) =>
+  ipcRenderer.invoke('message-box', options) as Promise<Electron.MessageBoxReturnValue>;

@@ -15,9 +15,13 @@ export const openProjectFolder = (number: ProjectAndInstallNumber): Partial<Elec
     {
       const projectPaths = window.api.project.getProjectPaths(number).projectPaths;
 
-      if (!projectPaths.length || window.api.fs.openNative(projectPaths[projectPaths.length - 1]))
+      if (!projectPaths.length || !window.api.fs.openNative(projectPaths[projectPaths.length - 1]))
       {
-        // SHOW DIALOG BOX "Not found" !!
+        window.api.core.messageBox({
+          type: 'warning',
+          title: 'Project folder',
+          message: `Project folder for "${number.project_number}" could not be found.`,
+        });
       }
     },
   };
@@ -39,7 +43,11 @@ export const copyProjectPath = (number: ProjectAndInstallNumber): Partial<Electr
       }
       else
       {
-        // SHOW DIALOG BOX "Not found" !!
+        window.api.core.messageBox({
+          type: 'warning',
+          title: 'Project folder',
+          message: `Project folder for "${number.project_number}" could not be found.`,
+        });
       }
     },
   };

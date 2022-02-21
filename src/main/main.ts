@@ -240,6 +240,12 @@ ipcMain.on('context-menu', (e, menuItems: Electron.MenuItem[]) =>
   Menu.buildFromTemplate(menuItems).popup({ window: BrowserWindow.fromWebContents(e.sender) });
 });
 
+/**
+ * Popup message box.
+ */
+ipcMain.handle('message-box', (e, options: Electron.MessageBoxOptions) =>
+  dialog.showMessageBox(BrowserWindow.fromWebContents(e.sender), options));
+
 /*
  * In this file you can include the rest of your app's specific main process code.
  * You can also put them in separate files and require them here.
