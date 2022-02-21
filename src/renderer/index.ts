@@ -73,7 +73,7 @@ const stopBrowsing = () =>
 /**
  * The project page tabs.
  */
-const mainTabs = new Tabs();
+const mainTabs = new Tabs(true);
 
 /**
  * Append main tabs to the main window.

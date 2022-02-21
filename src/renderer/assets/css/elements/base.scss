@@ -14,9 +14,6 @@ body {
 *::after,
 *::before {
   @extend .is-shadowless;
-
-  -webkit-user-drag: none;
-  -webkit-app-region: no-drag;
 }
 
 input {

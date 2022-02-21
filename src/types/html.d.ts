@@ -89,10 +89,6 @@ interface tabItem
    */
   onmiddleclick?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.MouseDownEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
   /**
-   * Called on dragstart.
-   */
-  ondragstart?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.DragStartEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
-  /**
    * Additional classes for the tab.
    */
   classes?: string[];

@@ -17,6 +17,16 @@ export default class Tabs
   readonly $ul: JQuery<HTMLUListElement>;
 
   /**
+   * Is drag & drop sortable?
+   */
+  readonly sortable;
+
+  /**
+   * The currently being dragged `li` element.
+   */
+  private _dragging: HTMLLIElement = null;
+
+  /**
    * The amount of tabs, i.e. `li` elements.
    */
   get tabCount ()
@@ -38,8 +48,14 @@ export default class Tabs
     };
   }
 
-  constructor ()
+  /**
+   *
+   * @param sortable Enable drag & drop sorting?
+   */
+  constructor (sortable = false)
   {
+    this.sortable = sortable;
+
     this.$container = $(html.getTemplateClone('tmpl-tabs-container') as HTMLDivElement);
     this.$ul = this.$container.find('div.tabs>ul').first() as JQuery<HTMLUListElement>;
   }
@@ -129,7 +145,8 @@ export default class Tabs
     // Create a new tab element.
     $li = (tab.template ? $(html.getTemplateClone(tab.template) as HTMLLIElement) : $(document.createElement('li')))
       .attr('tab-id', `${tab.id}`)
-      .addClass(tab.classes);
+      .addClass(tab.classes)
+      .attr('draggable', `${this.sortable}`);
 
     // Create a new tab page element ..
     $div = $(html.getTemplateClone('tmpl-tab-page') as HTMLDivElement).attr('tab-id', tab.id);
@@ -156,7 +173,7 @@ export default class Tabs
       .attr('title', tab.title)
       .on('click', (e, callback?: (promise: ReturnType<tabItem['onclick']>) => void) =>
       {
-        e.preventDefault();
+        // e.preventDefault();
 
         if (typeof tab.onclick === 'function')
         {
@@ -165,7 +182,8 @@ export default class Tabs
 
           if (typeof callback === 'function') callback(promise);
         }
-      });
+      })
+      .attr('draggable', 'false'); // to allow dragging the underlying `li` element
 
     // Render as disabled.
     if (typeof tab.onclick !== 'function') $li.css('opacity', '.6');
@@ -198,15 +216,37 @@ export default class Tabs
       });
     }
 
-    if (typeof tab.ondragstart === 'function')
+    if (this.sortable)
     {
-      $a
-        .attr('draggable', 'true')
+      $li
         .on('dragstart', e =>
+        {
+          e.originalEvent.dataTransfer.effectAllowed = 'move';
+
+          this._dragging = e.delegateTarget;
+        })
+        .on('dragend', () =>
+        {
+          this._dragging = null;
+        })
+        .on('dragover', e =>
         {
           e.preventDefault();
 
-          tab.ondragstart($li, $div, e);
+          e.originalEvent.dataTransfer.dropEffect = 'move';
+        })
+        .on('dragenter', e =>
+        {
+          const $target = $(e.delegateTarget);
+
+          if ($target.nextAll().index(this._dragging) >= 0)
+          {
+            $target.before(this._dragging);
+          }
+          else if (!$target.is(this._dragging))
+          {
+            $target.after(this._dragging);
+          }
         });
     }
 
