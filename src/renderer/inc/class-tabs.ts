@@ -233,7 +233,7 @@ export default class Tabs
         {
           e.preventDefault();
 
-          e.originalEvent.dataTransfer.dropEffect = 'move';
+          if (this._dragging) e.originalEvent.dataTransfer.dropEffect = 'move';
         })
         .on('dragenter', e =>
         {
