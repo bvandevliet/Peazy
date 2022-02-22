@@ -1,6 +1,4 @@
 .columns {
-  @extend .is-mobile;
-
   margin: 0 !important;
   padding: 0 !important;
 
@@ -10,6 +8,7 @@
   }
 
   &.wrapper {
+    @extend .is-mobile;
     @extend .is-flex-direction-column;
 
     position: relative;

@@ -6,30 +6,6 @@
   white-space: pre;
 }
 
-th.min-width,
-td.min-width {
-  width: 0;
-  white-space: pre;
-}
-
-table.has-separated-tbodies {
-  tbody::before {
-    content: '';
-    display: table-row;
-    height: .5em;
-  }
-}
-
-.is-sticky {
-  z-index: 9;
-  position: sticky;
-  top: 0;
-}
-
-.is-blurred {
-  opacity: .6;
-}
-
 .is-number {
   @extend .is-family-monospace;
   @extend .has-text-right;

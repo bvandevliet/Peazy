@@ -1,8 +1,18 @@
-/**
- * Copy of the below script with small changes, see comments below.
- *
- * https://github.com/cityssm/bulma-sticky-table/blob/f6cabf906f879e5ad888640164928a92a56a4122/_sticky-table.scss
- */
+th.min-width,
+td.min-width {
+  width: 0;
+  white-space: pre;
+}
+
+table.has-separated-tbodies {
+  tbody::before {
+    content: '';
+    display: table-row;
+    height: .5em;
+  }
+}
+
+/*! bulma-sticky-table v1.3.1 | MIT License | https://github.com/cityssm/bulma-sticky-table */
 
 /*
  * Fix borders
@@ -145,3 +155,5 @@
     }
   }
 }
+
+/*! END bulma-sticky-table */

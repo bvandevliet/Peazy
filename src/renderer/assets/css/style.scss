@@ -1,93 +1,46 @@
 @charset 'utf-8';
+/*! bulma.io | MIT License | https://github.com/jgthms/bulma */
 
 
-// Typography
+// Custom variables
 
-$family-sans-serif: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-$family-monospace:  monospace;
-$render-mode:       optimizeLegibility;
-
-$body-size: 14px;
-$size-1: 3rem;
-$size-2: 2.5rem;
-$size-3: 2rem;
-$size-4: 1.5rem;
-$size-5: 1.25rem;
-$size-6: 1rem;
-$size-7: 0.75rem;
-
-
-// Spacing
-
-$column-gap:    0.75rem;
-$block-spacing: 1.5rem;
-
-
-// Compensate and reset padding (also for input controls with respect to removal of borders).
-
-$control-padding-vertical: .2em;
-$control-padding-horizontal: .5em;
-$control-height: unset;
-$table-cell-padding: $control-padding-vertical $control-padding-horizontal;
-$tabs-link-padding: $table-cell-padding;
-
-
-// Colors
-
-$orange:    rgb(255, 71, 15);
-$yellow:    rgb(255, 224, 138);
-$green:     rgb(72, 199, 142);
-$turquoise: rgb(0, 209, 178);
-$cyan:      rgb(173, 222, 255);
-$blue:      rgb(0, 96, 158);
-$purple:    rgb(184, 107, 255);
-$red:       rgb(241, 70, 104);
+@import '_variables';
 
 
 // Import themes before utilities/_all
-@import './themes/dark.scss';
-@import './themes/light.scss';
 
-// Override active table row colors to be more appropriate.
-$table-row-active-background-color: var(--link);
-$table-row-active-color:            var(--link-invert);
+@import 'themes/dark';
+@import 'themes/light';
+
 
 // Bulma ..
 
-@import './../bulma/sass/utilities/_all.scss';
-@import './../bulma/sass/base/_all.sass';
+@import '../bulma/sass/utilities/_all';
+@import '../bulma/sass/base/_all';
+@import '../bulma/sass/grid/columns';
 
-// @import './../bulma/sass/elements/content.sass';
-@import './../bulma/sass/elements/box.sass';
-@import './../bulma/sass/elements/button.sass';
-@import './../bulma/sass/elements/notification.sass';
-@import './../bulma/sass/elements/progress.sass';
-@import './../bulma/sass/elements/table.sass';
-@import './../bulma/sass/elements/tag.sass';
-@import './../bulma/sass/elements/other.sass';
+@import '../bulma/sass/elements/content';
+@import '../bulma/sass/elements/table';
+// @import '../bulma/sass/elements/button';
+// @import '../bulma/sass/elements/box';
+// @import '../bulma/sass/elements/notification';
+// @import '../bulma/sass/elements/progress';
+// @import '../bulma/sass/elements/tag';
+// @import '../bulma/sass/elements/other';
 
-@import './../bulma/sass/form/_all.sass';
+// @import '../bulma/sass/components/tabs'; // replaced by own implementation ..
+// @import '../bulma/sass/components/panel';
+// @import '../bulma/sass/components/breadcrumb';
+// @import '../bulma/sass/components/pagination';
+// @import '../bulma/sass/components/message';
 
-@import './../bulma/sass/components/breadcrumb.sass';
-@import './../bulma/sass/components/tabs.sass';
-// @import './../bulma/sass/components/panel.sass';
-// @import './../bulma/sass/components/pagination.sass';
-@import './../bulma/sass/components/message.sass';
-
-@import './../bulma/sass/grid/columns.sass';
-
-@import './../bulma/sass/helpers/_all.sass';
+@import '../bulma/sass/form/_all';
+@import '../bulma/sass/helpers/_all';
 
 
-// Customizations ..
+// Peazy ..
 
-@import './helpers/helpers';
-@import './helpers/sticky-table';
-
-@import './elements/base';
-@import './elements/content'; // replacement for bulma/elements/content.sass
-@import './elements/loader';
-@import './elements/tabs';
-@import './elements/columns';
-@import './elements/table';
-@import './elements/sidebar';
+@import 'grid/_all';
+@import 'elements/_all';
+@import 'components/_all';
+@import 'helpers/_all';

@@ -1,0 +1,49 @@
+
+// Typography
+
+$family-sans-serif: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+$family-monospace:  monospace;
+$render-mode:       optimizeLegibility;
+
+$body-size: 14px;
+$size-1: 3rem;
+$size-2: 2.5rem;
+$size-3: 2rem;
+$size-4: 1.5rem;
+$size-5: 1.25rem;
+$size-6: 1rem;
+$size-7: 0.75rem;
+
+
+// Spacing
+
+$column-gap:    0.75rem;
+$block-spacing: 1.5rem;
+
+
+// Compensate and reset padding (also for input controls with respect to removal of borders).
+
+$control-padding-vertical:     .2em;
+$control-padding-horizontal:   .5em;
+$control-height:               unset;
+$table-cell-padding:           $control-padding-vertical $control-padding-horizontal;
+$tabs-link-padding-vertical:   $control-padding-vertical;
+$tabs-link-padding-horizontal: $control-padding-horizontal;
+
+
+// Colors
+
+$orange:    rgb(240, 90, 45);
+$yellow:    rgb(255, 225, 135);
+$green:     rgb(65, 190, 100);
+$turquoise: rgb(0, 210, 180);
+$cyan:      rgb(170, 220, 255);
+$blue:      rgb(0, 100, 160);
+$purple:    rgb(185, 100, 255);
+$red:       rgb(255, 70, 70);
+
+
+// Override active table row colors to be more appropriate.
+
+$table-row-active-background-color: var(--link);
+$table-row-active-color:            var(--link-invert);
