@@ -341,11 +341,19 @@ export default class projectTab implements tabPage
         },
         oncontextmenu: () =>
         {
-          return window.api.core.applyFilters('project_entry_contextmenu',
-            [
+          return window.api.core.applyFilters('project_item_tree_contextmenu',
+            (project.project_number === this.project.project_number ? [] : [
+              contextMenu.openProjectInNewTab(() =>
+              {
+                html.loading();
+                main.loadProject(project)
+                  .finally(() => html.loading(false));
+              }),
+              contextMenu.separator,
+            ]).concat([
               contextMenu.openProjectFolder(project),
               contextMenu.copyProjectPath(project),
-            ],
+            ]),
             project);
         },
       },

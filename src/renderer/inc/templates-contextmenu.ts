@@ -5,6 +5,16 @@ export const separator: Partial<Electron.MenuItem> =
   type: 'separator',
 };
 
+export const openProjectInNewTab = (click: () => void): Partial<Electron.MenuItem> =>
+{
+  return {
+    id: 'openProjectInNewTab',
+    label: 'Open in new tab',
+    icon: './src/renderer/assets/img/cm_add.png',
+    click: click,
+  };
+};
+
 export const openProjectFolder = (number: ProjectAndInstallNumber): Partial<Electron.MenuItem> =>
 {
   return {

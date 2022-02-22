@@ -250,12 +250,12 @@ const projectRow = (project: Project) =>
       },
       oncontextmenu: () =>
       {
-        return window.api.core.applyFilters('project_entry_contextmenu',
+        return window.api.core.applyFilters('project_item_browser_contextmenu',
           [
             contextMenu.openProjectFolder({ project_number: project.install_number }),
             contextMenu.copyProjectPath({ project_number: project.install_number }),
           ],
-          project);
+          { project_number: project.install_number });
       },
     },
     {
@@ -271,7 +271,7 @@ const projectRow = (project: Project) =>
       },
       oncontextmenu: () =>
       {
-        return window.api.core.applyFilters('project_entry_contextmenu',
+        return window.api.core.applyFilters('project_item_browser_contextmenu',
           [
             contextMenu.openProjectFolder(project),
             contextMenu.copyProjectPath(project),
