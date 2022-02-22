@@ -24,6 +24,8 @@ export default class projectTab implements tabPage
   private _projectsTable;
   private _projectSearch;
 
+  private _tabs: Record<string, tabPage> = {};
+
   /**
    * Current active project of this tab.
    */
@@ -68,10 +70,6 @@ export default class projectTab implements tabPage
     // Initiate the project tabs.
     this._projectTabs = new Tabs();
 
-    // Initiate the sub tabs.
-    let _workTab: workTab;
-    let _docsTab: docsTab;
-
     // Add project tabs and activate first.
     ([
       {
@@ -84,22 +82,22 @@ export default class projectTab implements tabPage
       {
         id: 'project-docs',
         template: 'tmpl-li-project-docs',
-        callback: ($div, $li) => _docsTab = new docsTab($div, $li),
+        callback: ($div, $li) => this._tabs.docsTab = new docsTab($div, $li),
         onclick: $li =>
         {
           html.loading();
-          return ($li.hasClass('is-active') ? _docsTab.init(this.project) : _docsTab.onactivate(this.project))
+          return ($li.hasClass('is-active') ? this._tabs.docsTab.init(this.project) : this._tabs.docsTab.onactivate(this.project))
             .finally(() => html.loading(false));
         },
       },
       {
         id: 'project-work',
         template: 'tmpl-li-project-work',
-        callback: ($div, $li) => _workTab = new workTab($div, $li),
+        callback: ($div, $li) => this._tabs.workTab = new workTab($div, $li),
         onclick: $li =>
         {
           html.loading();
-          return ($li.hasClass('is-active') ? _workTab.init(this.project) : _workTab.onactivate(this.project))
+          return ($li.hasClass('is-active') ? this._tabs.workTab.init(this.project) : this._tabs.workTab.onactivate(this.project))
             .finally(() => html.loading(false));
         },
       },
@@ -448,6 +446,12 @@ export default class projectTab implements tabPage
 
   dispose ()
   {
+    // Dispose all sub tabs.
+    for (const tab of Object.values(this._tabs))
+    {
+      tab.dispose();
+    }
+
     console.log(`disposed ${this._project.project_number}`);
   }
 }
