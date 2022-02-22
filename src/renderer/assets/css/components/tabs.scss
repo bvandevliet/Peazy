@@ -70,6 +70,14 @@ $tabs-toggle-link-active-color: var(--link-invert) !default;
       justify-content: flex-end;
       padding-left: 0.75em;
     }
+
+    &.main-tabs {
+      li {
+        a:first-child {
+          font-weight: $weight-semibold;
+        }
+      }
+    }
   }
 
   li {

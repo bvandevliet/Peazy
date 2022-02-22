@@ -78,6 +78,7 @@ const mainTabs = new Tabs(true);
 /**
  * Append main tabs to the main window.
  */
+mainTabs.$ul.addClass('main-tabs');
 $('#main').append(mainTabs.$container);
 
 /**
