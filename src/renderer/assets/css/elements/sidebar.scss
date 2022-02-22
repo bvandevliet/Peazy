@@ -5,6 +5,10 @@
 
   box-sizing: content-box;
   border-right: 1px solid var(--border) !important;
+
+  &.full-width {
+    width: 100% !important;
+  }
 }
 
 @media screen and (max-width: 960px) {
