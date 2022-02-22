@@ -50,7 +50,7 @@ export default class workTab implements tabPage
     const thisClass = this;
     (this.$div.find('input.search-hours') as JQuery<HTMLInputElement>).on('input', function ()
     {
-      thisClass._workSearch.search(this.value, true);
+      thisClass._workSearch.search(this.value);
     });
   }
 
