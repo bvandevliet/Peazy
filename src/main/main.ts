@@ -212,8 +212,8 @@ app.whenReady().then(() =>
 ipcMain.on('ondragstart', (e, filePath: string) =>
 {
   e.sender.startDrag({
-    file: path.join(__dirname, filePath),
-    icon: path.join(__dirname, '../../src/renderer/assets/img/empty.ico'),
+    file: path.join(filePath),
+    icon: path.join(ABSPATH, './src/renderer/assets/img/empty.ico'),
   });
 });
 
