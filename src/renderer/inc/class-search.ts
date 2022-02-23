@@ -113,7 +113,7 @@ export default class Search
    * Perform a search action on this instance.
    *
    * @param queryStr The search query string.
-   * @param blurOnly When `true`, the element will not be hidden
+   * @param blurOnly When `true`, the element will not be hidden, only blurred.
    */
   search (queryStr: string, blurOnly = false)
   {
