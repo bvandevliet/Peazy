@@ -104,19 +104,26 @@ export default class docsTab implements tabPage
       // Get the file icon.
       window.api.fs.getFileIcon(doc.path)
         .then(dataUrl => $tr.find('>td.is-file-icon>img').first().attr('src', dataUrl));
-    });
+    })
+      // Make sure search is up-to-date.
+      .finally(() => this.$div.find('input.search-docs').trigger('input'));
   }
 
   init (project: Project)
   {
-    return this.loadProject(project).then(() => true);
+    // Load project, make sure search is focussed and return `true`.
+    return this.loadProject(project)
+      .then(() => (setTimeout(() => this.$div.find('input.search-docs').trigger('focus'), 5), true));
   }
 
   onactivate (project: Project): Promise<boolean>
   {
-    return this._project && project.project_id === this._project.project_id
-      ? new Promise(resolve => resolve(true))
-      : this.loadProject(project).then(() => true);
+    return new Promise(resolve =>
+      resolve(!this._project || project.project_id !== this._project.project_id))
+      // Load when needed.
+      .then(load => load ? this.loadProject(project) : null)
+      // Make sure search is focussed and return `true`.
+      .then(() => (setTimeout(() => this.$div.find('input.search-docs').trigger('focus'), 5), true));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

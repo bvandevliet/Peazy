@@ -37,10 +37,10 @@ export default class workTab implements tabPage
     this.$li = $li;
 
     // Load the tab page template.
-    this.$div.append(html.getTemplateClone('tmpl-tab-page-project-hours'));
+    this.$div.append(html.getTemplateClone('tmpl-tab-page-project-workhours'));
 
     // Create a `TableList` wrapper for the table.
-    this._workHours = new TableList(this.$div.find('table.table-hours') as JQuery<HTMLTableElement>);
+    this._workHours = new TableList(this.$div.find('table.table-workhours') as JQuery<HTMLTableElement>);
 
     // Initiate the search handler.
     this._workSearch = new Search(this._workHours.$table, '>tbody>tr', tr =>
@@ -48,7 +48,7 @@ export default class workTab implements tabPage
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisClass = this;
-    (this.$div.find('input.search-hours') as JQuery<HTMLInputElement>).on('input', function ()
+    (this.$div.find('input.search-workhours') as JQuery<HTMLInputElement>).on('input', function ()
     {
       thisClass._workSearch.search(this.value);
     });
@@ -99,19 +99,26 @@ export default class workTab implements tabPage
           // empty cell to fill remaining space ..
         },
       ]);
-    });
+    })
+      // Make sure search is up-to-date.
+      .finally(() => this.$div.find('input.search-workhours').trigger('input'));
   }
 
   init (project: Project)
   {
-    return this.loadProject(project).then(() => true);
+    // Load project, make sure search is focussed and return `true`.
+    return this.loadProject(project)
+      .then(() => (setTimeout(() => this.$div.find('input.search-workhours').trigger('focus'), 5), true));
   }
 
   onactivate (project: Project): Promise<boolean>
   {
-    return this._project && project.project_id === this._project.project_id
-      ? new Promise(resolve => resolve(true))
-      : this.loadProject(project).then(() => true);
+    return new Promise(resolve =>
+      resolve(!this._project || project.project_id !== this._project.project_id))
+      // Load when needed.
+      .then(load => load ? this.loadProject(project) : null)
+      // Make sure search is focussed and return `true`.
+      .then(() => (setTimeout(() => this.$div.find('input.search-workhours').trigger('focus'), 5), true));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
