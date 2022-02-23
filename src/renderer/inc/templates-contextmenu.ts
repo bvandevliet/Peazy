@@ -72,3 +72,33 @@ export const openFileNative = (filePath: string): Partial<Electron.MenuItem> =>
     click: () => window.api.fs.openNative(filePath),
   };
 };
+
+export const showInExplorer = (filePath: string): Partial<Electron.MenuItem> =>
+{
+  return {
+    id: 'showInExplorer',
+    label: 'Show in Explorer',
+    icon: './src/renderer/assets/img/cm_folder.png',
+    click: () => window.api.fs.showInFolder(filePath),
+  };
+};
+
+export const openFolderNative = (filePath: string): Partial<Electron.MenuItem> =>
+{
+  return {
+    id: 'openFolderNative',
+    label: 'Open in Explorer',
+    icon: './src/renderer/assets/img/cm_folder.png',
+    click: () => window.api.fs.openNative(filePath),
+  };
+};
+
+export const copyPath = (filePath: string): Partial<Electron.MenuItem> =>
+{
+  return {
+    id: 'copyPath',
+    label: 'Copy path',
+    icon: './src/renderer/assets/img/cm_copypath.png',
+    click: () => html.copyText(filePath),
+  };
+};

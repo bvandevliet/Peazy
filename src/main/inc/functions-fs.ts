@@ -1,3 +1,5 @@
+import { userConfig } from '../_config';
+
 import path from 'path';
 import fs from 'fs';
 
@@ -6,6 +8,8 @@ import
   shell, ipcRenderer,
 }
   from 'electron';
+
+import FileInfo from './class-file-info';
 
 // import * as core from './functions-core';
 
@@ -52,8 +56,22 @@ export const getFileIcon = (filePath: string, options: Electron.FileIconOptions 
   });
 };
 
+/**
+ * A regex pattern to test if a file should be ignored.
+ */
+export const ignoreFiles = userConfig.filesystem.ignoreFiles;
+
 export const existsSync = fs.existsSync;
 export const readdirSync = fs.readdirSync;
+
+/**
+ * Get file or directory information.
+ *
+ * @param filePath Full path to the file or directory.
+ *
+ * @returns FileInfo
+ */
+export const getFileInfo = (filePath: string) => new FileInfo(filePath);
 
 /**
  * Show the given file or folder in a file manager. If possible, select the file.

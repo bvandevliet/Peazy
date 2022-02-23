@@ -7,6 +7,7 @@ import * as html from '../../inc/functions-html.js';
 import * as contextMenu from '../../inc/templates-contextmenu.js';
 import workTab from './work.js';
 import docsTab from './docs.js';
+import filesTab from './files.js';
 
 /**
  * A wrapper class to handle html for tabs.
@@ -114,7 +115,12 @@ export default class projectTab implements tabPage
       {
         id: 'project-files',
         template: 'tmpl-li-project-files',
-        callback: () => null,
+        callback: ($div, $li) => this._tabs.filesTab = new filesTab($div, $li),
+        onclick: $li =>
+        {
+          // html.loading();
+          return ($li.hasClass('is-active') ? this._tabs.filesTab.init(this.project) : this._tabs.filesTab.onactivate(this.project));
+        },
       },
     ] as tabItem[]).forEach((projectSubTab, index) =>
     {
