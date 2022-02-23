@@ -50,7 +50,7 @@ export default class docsTab implements tabPage
     const thisClass = this;
     (this.$div.find('input.search-docs') as JQuery<HTMLInputElement>).on('input', function ()
     {
-      thisClass._docsSearch.search(this.value, true);
+      thisClass._docsSearch.search(this.value);
     });
   }
 
