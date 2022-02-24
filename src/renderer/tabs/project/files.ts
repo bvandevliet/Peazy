@@ -83,7 +83,8 @@ export default class filesTab implements tabPage
             // contextMenu.separator,
             contextMenu.copyPath(dirPath),
           ],
-        classes: ['min-width', isRoot ? 'ignore-search' : null],
+        ondblclick: () => window.api.fs.openNative(dirPath),
+        classes: ['min-width', 'cursor-default', isRoot ? 'ignore-search' : null],
       },
     ])
       .addClass(isRoot ? 'is-root-folder-row' : 'is-folder-row');
@@ -111,10 +112,12 @@ export default class filesTab implements tabPage
             // contextMenu.separator,
             contextMenu.copyPath(fileInfo.fullPath),
           ],
+        ondblclick: () => window.api.fs.openNative(fileInfo.fullPath),
         ondragstart: () =>
         {
           window.api.fs.startDrag(fileInfo.fullPath);
         },
+        classes: ['cursor-default'],
       },
       {
         text: `${Math.ceil((fileInfo.size as number) / 1000).toLocaleString()} kB`,
