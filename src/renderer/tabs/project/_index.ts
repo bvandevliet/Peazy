@@ -447,17 +447,18 @@ export default class projectTab implements tabPage
     // Make sure rows are activated in the main window.
     main.updateActiveStates(this.$li);
 
-    return new Promise(resolve => resolve(true));
+    // Find the active sub tab.
+    const activeTab = Object.values(this._tabs).find(tab => tab.$li.hasClass('is-active'));
+
+    // Trigger `onactivate` of the current active sub tab if any (the "info" tab is technically not a sub tab).
+    return (new Promise(resolve =>
+      resolve(activeTab)) as Promise<tabPage>)
+      .then(tab => tab?.onactivate(this.project) || true);
   }
 
   dispose ()
   {
     // Dispose all sub tabs.
-    for (const tab of Object.values(this._tabs))
-    {
-      tab.dispose();
-    }
-
-    console.log(`disposed ${this._project.project_number}`);
+    Object.values(this._tabs).forEach(tab => tab.dispose());
   }
 }
