@@ -1,0 +1,35 @@
+::-webkit-scrollbar,
+::-webkit-scrollbar-corner {
+  background-color: var(--scheme-main);
+}
+
+// ::-webkit-scrollbar-button,
+::-webkit-scrollbar:vertical {
+  width: 12px;
+}
+
+// ::-webkit-scrollbar-button,
+::-webkit-scrollbar:horizontal {
+  height: 12px;
+}
+
+// ::-webkit-scrollbar-button:vertical:decrement {
+//   border-bottom: var(--border) 1px solid;
+// }
+
+// ::-webkit-scrollbar-button:vertical:increment {
+//   border-top: var(--border) 1px solid;
+// }
+
+// ::-webkit-scrollbar-button:horizontal:decrement {
+//   border-right: var(--border) 1px solid;
+// }
+
+// ::-webkit-scrollbar-button:horizontal:increment {
+//   border-left: var(--border) 1px solid;
+// }
+
+// ::-webkit-scrollbar-button:hover,
+::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+}
