@@ -75,7 +75,7 @@ export default class docsTab implements tabPage
       const $tr = this._docsTable.appendItem([
         {
           html: '<img draggable="false" />',
-          classes: ['is-file-icon'],
+          classes: ['is-file-icon', 'ignore-search'],
         },
         {
           text: doc.title,
@@ -90,11 +90,11 @@ export default class docsTab implements tabPage
         },
         {
           text: doc.version.toFixed(1),
-          classes: ['min-width', 'is-number'],
+          classes: ['min-width', 'is-number', 'ignore-search'],
         },
         {
           text: new DateTime(doc.date_modified).getDate(),
-          classes: ['min-width', 'is-number'],
+          classes: ['min-width', 'is-number', 'ignore-search'],
         },
         {
           // empty cell to fill remaining space ..

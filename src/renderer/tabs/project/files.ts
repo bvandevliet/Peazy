@@ -100,7 +100,7 @@ export default class filesTab implements tabPage
     const $tr = TableList.buildRow([
       {
         html: '<img draggable="false" />',
-        classes: ['is-file-icon'],
+        classes: ['is-file-icon', 'ignore-search'],
       },
       {
         text: window.api.path.basename(fileInfo.fullPath),
@@ -121,11 +121,11 @@ export default class filesTab implements tabPage
       },
       {
         text: `${Math.ceil((fileInfo.size as number) / 1000).toLocaleString()} kB`,
-        classes: ['min-width', 'is-number'],
+        classes: ['min-width', 'is-number', 'ignore-search'],
       },
       {
         text: new DateTime(fileInfo.modified).getTimestamp(),
-        classes: ['min-width', 'is-number'],
+        classes: ['min-width', 'is-number', 'ignore-search'],
       },
     ]);
 
