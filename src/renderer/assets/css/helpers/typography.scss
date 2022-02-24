@@ -18,3 +18,14 @@ td {
     padding-bottom: calc($control-padding-vertical - .125em);
   }
 }
+
+.cursor-default {
+
+  &,
+  & * {
+    @extend %unselectable;
+    cursor: default !important;
+
+    color: inherit;
+  }
+}
