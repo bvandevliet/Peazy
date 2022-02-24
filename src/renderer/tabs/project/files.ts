@@ -44,19 +44,20 @@ export default class filesTab implements tabPage
     this._filesTable = new TableList(this.$div.find('table.table-files') as JQuery<HTMLTableElement>);
 
     // Initiate the search handler.
-    this._filesSearch = new Search(this._filesTable.$table, '>tbody>tr:not(.ignore-search)', tr =>
+    // * First `tbody` is the root directory and should always be visible.
+    // * First `tr` is a directory row so ignore it as its value is added to each file row value.
+    this._filesSearch = new Search(this._filesTable.$table, '>tbody:not(:first-child), >tbody>tr:not(:first-child)', elem =>
     {
-      const $tr = $(tr);
+      const $elem = $(elem);
 
       // Allow cross-searching directory- and file names.
-      return (
-        $tr.is(':first-child')
-          // Always show the first row (dir) in a `tbody` if another row (file) is a match.
-          ? $tr.add($tr.siblings())
-          // Allow searching by directory name.
-          : $tr.add($tr.prevAll(':first-child'))
-      )
-        .find('>*:not(.ignore-search)').toArray().map(td => td.textContent);
+      return ($elem.is('tbody')
+        // Hide whole `tbody` if none of its rows match the search query.
+        ? $elem.find('>tr>*:not(.ignore-search)')
+        // Allow searching by directory name.
+        : $elem.add($elem.prevAll(':first-child')).find('>*:not(.ignore-search)'))
+        // Return the strings to search in.
+        .toArray().map(td => td.textContent);
     });
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -85,7 +86,7 @@ export default class filesTab implements tabPage
         classes: ['min-width', 'cursor-default'],
       },
     ])
-      .addClass(isRoot ? 'ignore-search' : 'is-folder-row');
+      .addClass(isRoot ? null : 'is-folder-row');
 
     // Span folder row full width.
     $tr.find('>td').first().attr('colspan', '99');
