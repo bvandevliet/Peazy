@@ -117,7 +117,7 @@ export default class filesTab implements tabPage
         },
       },
       {
-        text: `${Math.ceil((fileInfo.size as number) / 1024).toLocaleString()} kB`,
+        text: `${Math.ceil((fileInfo.size as number) / 1000).toLocaleString()} kB`,
         classes: ['min-width', 'is-number'],
       },
       {
