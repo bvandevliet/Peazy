@@ -67,10 +67,8 @@ export default class filesTab implements tabPage
     });
   }
 
-  private buildFolderRow = (fileInfo: ReturnType<Window['api']['fs']['getFileInfo']>, rootPath: string) =>
+  private buildFolderRow = (dirPath: string, rootPath: string) =>
   {
-    const dirPath = window.api.path.dirname(fileInfo.fullPath);
-
     const isRoot = dirPath === rootPath;
 
     const $tr = TableList.buildRow([
@@ -84,10 +82,10 @@ export default class filesTab implements tabPage
             contextMenu.copyPath(dirPath),
           ],
         ondblclick: () => window.api.fs.openNative(dirPath),
-        classes: ['min-width', 'cursor-default', isRoot ? 'ignore-search' : null],
+        classes: ['min-width', 'cursor-default'],
       },
     ])
-      .addClass(isRoot ? 'is-root-folder-row' : 'is-folder-row');
+      .addClass(isRoot ? 'ignore-search' : 'is-folder-row');
 
     // Span folder row full width.
     $tr.find('>td').first().attr('colspan', '99');
@@ -160,12 +158,14 @@ export default class filesTab implements tabPage
       /**
        * Recursively read a directory and print its contents.
        *
-       * @param dirPath           Full path of the parent directory.
-       * @param printParentDirRow Print parent folder row?
+       * @param dirPath Full path of the parent directory.
        */
-      const readdirWalker = (dirPath: string, printParentDirRow = true) =>
+      const readdirWalker = (dirPath: string) =>
       {
         if (!window.api.fs.existsSync(dirPath)) return;
+
+        // Print folder row.
+        this._filesTable.tbody(tbodyIndex).prepend(this.buildFolderRow(dirPath, rootPath));
 
         const contents = window.api.fs.readdirSync(dirPath)
           .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
@@ -179,16 +179,6 @@ export default class filesTab implements tabPage
         {
           if (!new RegExp(window.api.fs.ignoreFiles, 'iu').test(fileInfo.fullPath))
           {
-            // Only print parent folder row if folder contains files.
-            if (printParentDirRow)
-            {
-              // .. and only once.
-              printParentDirRow = false;
-
-              // Print folder row.
-              this._filesTable.tbody(tbodyIndex).prepend(this.buildFolderRow(fileInfo, rootPath));
-            }
-
             // Print file row.
             this._filesTable.tbody(tbodyIndex).append(this.buildFileRow(fileInfo));
           }
@@ -206,7 +196,7 @@ export default class filesTab implements tabPage
       };
 
       // Initiate the recursive directory read.
-      readdirWalker(rootPath, false);
+      readdirWalker(rootPath);
 
       // Make sure search is up-to-date.
       this.$div.find('input.search-files').trigger('input');

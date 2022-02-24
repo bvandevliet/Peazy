@@ -1,7 +1,7 @@
 {
   "name": "peazy",
   "productName": "Peazy",
-  "version": "1.5.0-alpha.1",
+  "version": "1.5.1-alpha.1",
   "description": "A simple PDM tool.",
   "main": "dist/main/main.js",
   "scripts": {
