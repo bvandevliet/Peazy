@@ -68,4 +68,16 @@ table {
       max-width: unset;
     }
   }
+
+  tr.is-folder-row {
+
+    th,
+    td {
+
+      &,
+      & * {
+        color: var(--text-light) !important;
+      }
+    }
+  }
 }
