@@ -345,7 +345,7 @@ export default class projectTab implements tabPage
         },
         oncontextmenu: () =>
         {
-          return window.api.core.applyFilters('project_item_tree_contextmenu',
+          return window.api.core.applyFilters('contextmenu_project_item_tree',
             (project.project_number === this.project.project_number ? [] : [
               contextMenu.openProjectInNewTab(() =>
               {

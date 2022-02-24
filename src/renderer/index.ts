@@ -186,7 +186,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
     onmiddleclick: $li => $li.find('>a.close-btn').first().trigger('click'),
     oncontextmenu: () =>
     {
-      return window.api.core.applyFilters('project_tab_contextmenu',
+      return window.api.core.applyFilters('contextmenu_project_tab',
         [
           contextMenu.openProjectFolder(tabProject.project),
           contextMenu.copyProjectPath(tabProject.project),
@@ -251,7 +251,7 @@ const projectRow = (project: Project) =>
       },
       oncontextmenu: () =>
       {
-        return window.api.core.applyFilters('project_item_browser_contextmenu',
+        return window.api.core.applyFilters('contextmenu_project_item_browser',
           [
             contextMenu.openProjectFolder({ project_number: project.install_number }),
             contextMenu.copyProjectPath({ project_number: project.install_number }),
@@ -272,7 +272,7 @@ const projectRow = (project: Project) =>
       },
       oncontextmenu: () =>
       {
-        return window.api.core.applyFilters('project_item_browser_contextmenu',
+        return window.api.core.applyFilters('contextmenu_project_item_browser',
           [
             contextMenu.openProjectFolder(project),
             contextMenu.copyProjectPath(project),

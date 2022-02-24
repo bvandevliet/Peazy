@@ -76,12 +76,14 @@ export default class filesTab implements tabPage
       {
         text: isRoot ? rootPath : dirPath.replace(rootPath, '.'),
         onclick: () => new Promise(resolve => resolve(false)),
-        oncontextmenu: () =>
+        oncontextmenu: () => window.api.core.applyFilters('contextmenu_folder',
           [
             contextMenu.openFolderNative(dirPath),
             // contextMenu.separator,
             contextMenu.copyPath(dirPath),
           ],
+          dirPath,
+          isRoot),
         ondblclick: () => window.api.fs.openNative(dirPath),
         classes: ['min-width', 'cursor-default'],
       },
@@ -104,13 +106,14 @@ export default class filesTab implements tabPage
       {
         text: window.api.path.basename(fileInfo.fullPath),
         onclick: () => new Promise(resolve => resolve(false)),
-        oncontextmenu: () =>
+        oncontextmenu: () => window.api.core.applyFilters('contextmenu_file',
           [
             contextMenu.openFileNative(fileInfo.fullPath),
             contextMenu.showInExplorer(fileInfo.fullPath),
             // contextMenu.separator,
             contextMenu.copyPath(fileInfo.fullPath),
           ],
+          fileInfo),
         ondblclick: () => window.api.fs.openNative(fileInfo.fullPath),
         ondragstart: () =>
         {
