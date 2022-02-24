@@ -340,6 +340,10 @@ const deepsearch = (queryStr: string) =>
       matches++;
     }
   })
+    // Make sure table header sort indicator is up-to-date.
+    .then(rowCount => (projectsTable.$table.find('th')
+      .removeClass(['is-sorted-asc', 'is-sorted-desc'])
+      .filter('.project-date').addClass('is-sorted-desc'), rowCount))
     // Make sure the active states are up-to-date.
     .then(rowCount => (updateActiveStates(), rowCount))
     // Make sure search is up-to-date.
