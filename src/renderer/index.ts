@@ -231,7 +231,7 @@ const projectRow = (project: Project) =>
   return TableList.buildRow([
     {
       template: 'tmpl-td-project-date',
-      text: new DateTime(project.date_created).getDate(),
+      text: new DateTime(project.date_start).getDate(),
     },
     {
       template: 'tmpl-td-project-status',

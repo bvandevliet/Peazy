@@ -201,7 +201,7 @@ export default class projectTab implements tabPage
           text: 'Date created',
         },
         {
-          text: new DateTime(project.date_created).getDate(),
+          text: new DateTime(project.date_start).getDate(),
         },
       ],
       [
@@ -210,7 +210,7 @@ export default class projectTab implements tabPage
           text: 'Date delivery',
         },
         {
-          text: new DateTime(project.date_delivery).getDate(),
+          text: new DateTime(project.date_finish).getDate(),
         },
       ]],
       [[
@@ -288,8 +288,8 @@ export default class projectTab implements tabPage
     const $tr = TableList.buildRow([
       {
         template: 'tmpl-td-project-date',
-        text: project.date_created ? new DateTime(project.date_created).getYearMonth() : '-',
-        title: project.date_created ? new DateTime(project.date_created).getDate() : null,
+        text: project.date_start ? new DateTime(project.date_start).getYearMonth() : '-',
+        title: project.date_start ? new DateTime(project.date_start).getDate() : null,
       },
       {
         template: 'tmpl-td-project-status',

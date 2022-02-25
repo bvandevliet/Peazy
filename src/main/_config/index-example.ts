@@ -176,11 +176,11 @@ core.addFilter('sql_get_projects', (query: string, args: getProjectArgs) =>
   query += '\nORDER BY';
   query += args.orderBy !== 'DESC'
     ? `
-  [date_created],
+  [date_start],
   [project_number],
   [install_number]`
     : `
-  [date_created] DESC,
+  [date_start] DESC,
   [project_number] DESC,
   [install_number] DESC`;
 
