@@ -1,3 +1,5 @@
+.reference
+
 node_modules/
 ext_modules/
 dist/
