@@ -73,6 +73,37 @@ interface getProjectArgs
   orderBy?: Order;
 }
 
+interface PlanningTask
+{
+  [x: string]: any;
+  /* eslint-disable camelcase */
+  task_id: any;
+  parent_id: any;
+  project_number: string;
+  task_description: string;
+  date_start: string;
+  date_start_actual: string;
+  date_finish: string;
+  date_finish_actual: string;
+  date_delivery: string;
+}
+
+interface getPlanningArgs
+{
+  /**
+   * The project number this query is for.
+   */
+  project_number?: Project['project_number'];
+  /**
+   * The parent task ID, default is `NULL` and results in top level tasks, i.e. project records.
+   */
+  parent_id?: string;
+  /**
+   * Order `ASC` or `DESC`, default is `ASC`.
+   */
+  orderBy?: Order;
+}
+
 interface AttachedDocument
 {
   title: string;
