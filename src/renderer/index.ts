@@ -228,6 +228,7 @@ const projectRow = (project: Project) =>
   const isChild = window.api.core.applyFilters('project_is_child', !window.api.core.isEmpty(install_number) && install_number !== project_number, project);
 
   // Table cells definition for a project browser row.
+  // FILTER, BUT THINK ABOUT THEAD TOO !!
   return TableList.buildRow([
     {
       template: 'tmpl-td-project-date',
@@ -327,7 +328,7 @@ const deepsearch = (queryStr: string) =>
   {
     if (matches <= window.api.project.maxSelect
       &&
-      // Test returned projects against the regex array before appending it to the
+      // Test returned projects against the regex array.
       Search.isMatch([
         window.api.core.applyFilters('project_project_number', project.project_number, project),
         window.api.core.applyFilters('project_project_description', project.project_description, project),
