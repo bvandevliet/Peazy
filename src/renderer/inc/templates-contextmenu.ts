@@ -5,7 +5,7 @@ export const separator: Partial<Electron.MenuItem> =
   type: 'separator',
 };
 
-export const openProjectInNewTab = (click: () => void): Partial<Electron.MenuItem> =>
+export const openProjectInNewTab = (click: () => void) =>
 {
   return {
     id: 'openProjectInNewTab',
@@ -15,7 +15,7 @@ export const openProjectInNewTab = (click: () => void): Partial<Electron.MenuIte
   };
 };
 
-export const openProjectFolder = (number: ProjectAndInstallNumber): Partial<Electron.MenuItem> =>
+export const openProjectFolder = (number: ProjectAndInstallNumber) =>
 {
   return {
     id: 'openProjectFolder',
@@ -23,21 +23,33 @@ export const openProjectFolder = (number: ProjectAndInstallNumber): Partial<Elec
     icon: './src/renderer/assets/img/cm_folder.png',
     click: () =>
     {
-      const projectPaths = window.api.project.getProjectPaths(number).projectPaths;
+      const projectPaths = window.api.project.getProjectPaths(number);
 
-      if (!projectPaths.length || !window.api.fs.openNative(projectPaths[projectPaths.length - 1]))
+      if (!projectPaths.projectPaths.length || !window.api.fs.openNative(projectPaths.projectPaths[projectPaths.projectPaths.length - 1]))
       {
         window.api.core.messageBox({
           type: 'warning',
           title: 'Project folder',
           message: `Project folder for "${number.project_number}" could not be found.`,
-        });
+          buttons: ['OK', 'Create'], // add permission check !!
+        })
+          .then(messageBoxReturnValue =>
+          {
+            if (messageBoxReturnValue.response === 1)
+            {
+              window.api.core.applyFilters('create_project_folder',
+                new Promise(resolve => resolve(false)) as Promise<boolean>,
+                number,
+                projectPaths)
+                .then(created => created ? openProjectFolder(number).click() : null);
+            }
+          });
       }
     },
   };
 };
 
-export const copyProjectPath = (number: ProjectAndInstallNumber): Partial<Electron.MenuItem> =>
+export const copyProjectPath = (number: ProjectAndInstallNumber) =>
 {
   return {
     id: 'copyProjectPath',
@@ -63,7 +75,7 @@ export const copyProjectPath = (number: ProjectAndInstallNumber): Partial<Electr
   };
 };
 
-export const openFileNative = (filePath: string): Partial<Electron.MenuItem> =>
+export const openFileNative = (filePath: string) =>
 {
   return {
     id: 'openFileNative',
@@ -73,7 +85,7 @@ export const openFileNative = (filePath: string): Partial<Electron.MenuItem> =>
   };
 };
 
-export const showInExplorer = (filePath: string): Partial<Electron.MenuItem> =>
+export const showInExplorer = (filePath: string) =>
 {
   return {
     id: 'showInExplorer',
@@ -83,7 +95,7 @@ export const showInExplorer = (filePath: string): Partial<Electron.MenuItem> =>
   };
 };
 
-export const openFolderNative = (filePath: string): Partial<Electron.MenuItem> =>
+export const openFolderNative = (filePath: string) =>
 {
   return {
     id: 'openFolderNative',
@@ -93,7 +105,7 @@ export const openFolderNative = (filePath: string): Partial<Electron.MenuItem> =
   };
 };
 
-export const copyPath = (filePath: string): Partial<Electron.MenuItem> =>
+export const copyPath = (filePath: string) =>
 {
   return {
     id: 'copyPath',
