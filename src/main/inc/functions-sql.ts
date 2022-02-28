@@ -35,3 +35,52 @@ export const sanitizeSqlValue = (input: any, escLike = false) =>
       return !isNaN(input) ? parseFloat(input) : `'${sanitizeSql(input, escLike)}'`;
   }
 };
+
+/**
+ * Client-side alternative to the sql JOIN clause.
+ *
+ * This can be useful in case we need to combine datasets from different sources.
+ *
+ * @param tableJoin The recordset to JOIN.
+ * @param tableMain The main recordset.
+ * @param lookupKey The key in the lookup records to join ON.
+ * @param mainKey   The key in the main records to join ON.
+ *
+ * @link http://learnjsdata.com/combine_data.html
+ *
+ * @returns Combined recordset.
+ */
+export const join = (tableJoin: Record<string, any>[], tableMain: Record<string, any>[], lookupKey: string, mainKey: string) =>
+{
+  const
+    lookupIndex: Record<any, Record<string, any>> = {},
+    lengthMain = tableMain.length,
+    lengthLookup = tableJoin.length;
+
+  // Create a record collection indexed by the lookup value.
+  for (let i = 0; i < lengthLookup; i++)
+  {
+    const recordLookup = tableJoin[i];
+
+    if (!core.isEmpty(recordLookup[lookupKey]))
+    {
+      lookupIndex[recordLookup[lookupKey]] = recordLookup;
+    }
+  }
+
+  // Find the associated lookup record for each main record and merge them together.
+  for (let i = 0; i < lengthMain; i++)
+  {
+    const recordMain = tableMain[i];
+
+    if (!core.isEmpty(lookupIndex[recordMain[mainKey]]))
+    {
+      const recordLookup = lookupIndex[recordMain[mainKey]];
+
+      tableMain[i] = core.parseArgs(recordMain, recordLookup);
+    }
+  }
+
+  // Combined recordset.
+  return tableMain;
+};
