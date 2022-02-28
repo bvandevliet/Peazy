@@ -34,12 +34,17 @@ table {
     }
   }
 
+  &,
   &.is-hoverable,
   &.is-striped {
 
     th,
     td {
       border: none;
+
+      >* {
+        z-index: 2;
+      }
 
       >span.indent {
         border-left: 1px solid var(--grey);
