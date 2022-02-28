@@ -151,8 +151,10 @@ export default class filesTab implements tabPage
     // Find the project folder.
     this._projectPaths = window.api.project.getProjectPaths(this._project);
 
-    // Fully remove all `tbody` elements to reinstate the index, then print.
+    // Fully remove all `tbody` elements to reinstate the index.
     this._filesTable.$table.find('>tbody').remove();
+
+    // Then print files if project folder exists.
     if (this._projectPaths.projectPaths.length)
     {
       const rootPath = this._projectPaths.projectPaths[this._projectPaths.projectPaths.length - 1];
@@ -204,6 +206,27 @@ export default class filesTab implements tabPage
 
       // Make sure search is up-to-date.
       this.$div.find('input.search-files').trigger('input');
+    }
+
+    else
+    {
+      // Project folder was not found, offer to create it.
+      this._filesTable.appendItem([
+        {
+          text: `Create project folder for "${this._project.project_number}".`,
+          onclick: () =>
+          {
+            html.loading();
+            return window.api.core.applyFilters('create_project_folder',
+              new Promise(resolve => resolve(false)) as Promise<boolean>,
+              this._project,
+              this._projectPaths)
+              .then(created => created ? this.loadProject(this._project) : null)
+              .finally(() => html.loading(false)).then(() => false);
+          },
+          classes: ['ignore-search'],
+        },
+      ]);
     }
   }
 

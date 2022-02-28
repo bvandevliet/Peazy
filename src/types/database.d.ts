@@ -49,6 +49,10 @@ interface getProjectArgs
   project_numbers?: Project['project_number'][];
   /**
    * Search for projects that contain these search queries.
+   *
+   * `maxSelect` is handled by the application and should not be included in this db query,
+   * since the original search query may contain regexes, which are extracted from this argument
+   * to be handled by the app instead.
    */
   search_for?: string[];
   /**

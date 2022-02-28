@@ -19,7 +19,6 @@
   "build": {
     "productName": "Peazy",
     "appId": "com.electron.peazy",
-    "artifactName": "${productName}.${ext}",
     "copyright": "Copyright © 2022 Bob Vandevliet",
     "directories": {
       "output": "./out"

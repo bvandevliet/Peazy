@@ -80,6 +80,20 @@ core.addFilter('project_path_is_match', (_isMatch: boolean, potentialProjectPath
 });
 
 /**
+ * Logic to create a project folder and return a `Promise<boolean>` whether the folder was created or not.
+ */
+core.addFilter('create_project_folder', (_promise: Promise<boolean>, project: Project, projectPaths: ReturnType<Window['api']['project']['getProjectPaths']>) =>
+{
+  return new Promise(resolve =>
+  {
+    // check permission, then do something ..
+    const created = false;
+
+    resolve(created);
+  }) as Promise<boolean>;
+});
+
+/**
  * Static WHERE clause to fetch projects from the database.
  */
 core.addFilter('sql_where_get_projects', (query: string) =>
