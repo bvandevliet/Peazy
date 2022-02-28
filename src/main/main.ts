@@ -90,7 +90,52 @@ const applicationMenu = Menu.buildFromTemplate([
   },
   {
     label: 'View',
-    role: 'viewMenu',
+    submenu: [
+      {
+        label: 'Reload',
+        role: 'reload',
+        // accelerator: 'Ctrl+R',
+      },
+      {
+        label: 'Force Reload',
+        // role: 'forceReload',
+        accelerator: 'Ctrl+Shift+R',
+        click: () =>
+        {
+          mainWindow.setEnabled(false);
+          process.argv[2] === '--dev'
+            ? exec('npm run dist', err => err ? null : mainWindow.webContents.reloadIgnoringCache())
+            : mainWindow.webContents.reloadIgnoringCache();
+          mainWindow.setEnabled(true);
+        },
+      },
+      {
+        label: 'DevTools',
+        role: 'toggleDevTools',
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Reset Zoom',
+        role: 'resetZoom',
+      },
+      {
+        label: 'Zoom In',
+        role: 'zoomIn',
+      },
+      {
+        label: 'Zoom Out',
+        role: 'zoomOut',
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Full Screen',
+        role: 'togglefullscreen',
+      },
+    ],
   },
   {
     label: 'Window',
@@ -130,7 +175,7 @@ const createWindow = () =>
     autoHideMenuBar: true,
     minWidth: 768,
     minHeight: 768,
-    icon: path.join(__dirname, '../../src/renderer/assets/img/favicon.ico'),
+    icon: path.join(ABSPATH, './src/renderer/assets/img/favicon.ico'),
     webPreferences: {
       spellcheck: false,
       devTools: true,
@@ -166,19 +211,7 @@ const createWindow = () =>
     });
 
   // Then render the page.
-  mainWindow.loadFile(path.join(__dirname, '../../dist/renderer/index.html'));
-
-  // Watch for file changes in development mode for live reload.
-  if (process.argv[2] === '--dev')
-  {
-    let reloading = false;
-    fs.watch(path.join(ABSPATH, './src/renderer/'), { recursive: true, persistent: true }, () =>
-    {
-      if (reloading) return;
-      reloading = true;
-      exec('npm run dist', err => { reloading = false; if (err) return; mainWindow.webContents.reloadIgnoringCache(); });
-    });
-  }
+  mainWindow.loadFile(path.join(ABSPATH, './dist/renderer/index.html'));
 };
 
 /**
@@ -192,7 +225,7 @@ app.whenReady().then(() =>
   Menu.setApplicationMenu(applicationMenu);
 
   // Create the tray icon.
-  tray = new Tray(path.join(__dirname, '../../src/renderer/assets/img/favicon.ico'));
+  tray = new Tray(path.join(ABSPATH, './src/renderer/assets/img/favicon.ico'));
 
   // Set the tray menu.
   tray.setContextMenu(contextMenu);
