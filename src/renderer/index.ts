@@ -166,7 +166,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
   if (project === null) return false;
 
   // Check once again if tab already exists, if so, activate it and bail.
-  const existingTab = activateTabIfExists(`project-${args.project_id}`);
+  const existingTab = activateTabIfExists(`project-${project.project_id}`);
   if (existingTab.$li.length) return existingTab.promise;
 
   // Initiate project tab.
