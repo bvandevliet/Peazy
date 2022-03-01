@@ -229,7 +229,7 @@ const projectRow = (project: Project) =>
 
   // Table cells definition for a project browser row.
   // FILTER, BUT THINK ABOUT THEAD TOO !!
-  return TableList.buildRow([
+  const $tr = TableList.buildRow([
     {
       template: 'tmpl-td-project-date',
       text: new DateTime(project.date_start).getDate(),
@@ -297,6 +297,25 @@ const projectRow = (project: Project) =>
     .attr('row-id', `project-${project.project_id}`)
     // If is a child of an install number, then add class attribute for selective styling.
     .addClass(isChild ? 'has-install' : null);
+
+  // Set the overall progress indicator (DRY!!).
+  $tr
+    .find('>th.project-number')
+    .prepend($(document.createElement('span')).addClass('progress-line')
+      .css('width', (() =>
+      {
+        const
+          timeStart = (new Date(project.date_start)).getTime(),
+          timeFinish = (new Date(project.date_finish)).getTime();
+
+        const
+          timelineSpan = Math.max(0, timeFinish - timeStart),
+          progress = timelineSpan !== 0 ? Math.max(0, Date.now() - timeStart) / timelineSpan * 100 : 0;
+
+        return `${Math.min(100, progress)}%`;
+      })()));
+
+  return $tr;
 };
 
 /**

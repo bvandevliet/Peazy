@@ -34,12 +34,17 @@ table {
     }
   }
 
+  &,
   &.is-hoverable,
   &.is-striped {
 
     th,
     td {
       border: none;
+
+      >* {
+        z-index: 2;
+      }
 
       >span.indent {
         border-left: 1px solid var(--grey);
@@ -56,7 +61,7 @@ table {
   td {
     &.is-file-icon {
       @extend .min-width;
-      width: 16px;
+      width: 16px !important;
 
       padding-right: 0;
 

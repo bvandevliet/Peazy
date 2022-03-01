@@ -69,8 +69,7 @@ export default class TableList
       const $td = (column.template ? $(html.getTemplateClone(column.template) as HTMLTableCellElement) : $(document.createElement('td')))
         .addClass(column.classes);
 
-      // JQuery<HTMLAnchorElement> | typeof $td
-      let $a: JQuery<HTMLElement> = $td;
+      let $a: JQuery<HTMLElement>;
 
       const activateRow = () =>
       {
@@ -93,6 +92,10 @@ export default class TableList
 
             column.onclick($td, $tr, e).then(activate => activate ? (activateRow(), true) : false);
           });
+      }
+      else
+      {
+        $a = $(document.createElement('div')).prependTo($td);
       }
 
       $a

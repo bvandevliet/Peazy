@@ -67,7 +67,7 @@ table.has-separated-tbodies {
 
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 3;
   }
 }
 
@@ -88,7 +88,7 @@ table.has-separated-tbodies {
 
     position: sticky;
     bottom: 0;
-    z-index: 1;
+    z-index: 3;
   }
 }
 
@@ -112,7 +112,7 @@ table.has-separated-tbodies {
 
     position: sticky;
     left: 0;
-    z-index: 2;
+    z-index: 4;
   }
 
   // REPLACED `:first-child` WITH `:first-of-type` !!
@@ -123,7 +123,7 @@ table.has-separated-tbodies {
 
     position: sticky;
     left: 0;
-    z-index: 1;
+    z-index: 2;
   }
 
   // REPLACED `:first-child` WITH `:first-of-type` !!

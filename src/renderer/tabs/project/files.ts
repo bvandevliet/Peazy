@@ -133,7 +133,7 @@ export default class filesTab implements tabPage
 
     // Get the file icon.
     window.api.fs.getFileIcon(fileInfo.fullPath)
-      .then(dataUrl => $tr.find('>td.is-file-icon>img').first().attr('src', dataUrl));
+      .then(dataUrl => $tr.find('>td.is-file-icon img').first().attr('src', dataUrl));
 
     return $tr;
   };
