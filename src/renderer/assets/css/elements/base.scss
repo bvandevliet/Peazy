@@ -19,6 +19,11 @@ body {
   @extend .is-shadowless;
 }
 
+::selection {
+  color: var(info-invert) !important;
+  background-color: var(--info);
+}
+
 ::placeholder {
   opacity: .6;
 }
