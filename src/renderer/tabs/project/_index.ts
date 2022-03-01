@@ -386,8 +386,6 @@ export default class projectTab implements tabPage
    * starting from the given project and its children up to the top-most install project.
    *
    * And loads the clicked project when it passes by in the tree build.
-   *
-   * @param project Entry project.
    */
   private async rebuildProjectTreeAndLoad ()
   {
@@ -433,8 +431,9 @@ export default class projectTab implements tabPage
     // Make sure search is up-to-date.
     this.$div.find('input.search-projects').trigger('input');
 
-    // Load the clicked project.
-    if (null !== clickedProject) await this.loadProject(clickedProject);
+    // Load the clicked project,
+    // with fallback to the project initially set in constructor, but should never occur.
+    await this.loadProject(clickedProject ?? this._project);
   }
 
   init ()
