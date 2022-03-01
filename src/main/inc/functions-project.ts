@@ -54,7 +54,7 @@ export const getProjects = (args: getProjectArgs, onRow: (project: Project) => v
 
   return database.execSql(query, columns =>
   {
-    onRow(core.mapObject(columns, column => typeof column.value === 'string' ? column.value.trim() : column.value) as Project);
+    onRow(core.mapObject(columns, column => column.value) as Project);
   });
 };
 

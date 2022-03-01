@@ -25,7 +25,7 @@ export const openProjectFolder = (number: ProjectAndInstallNumber) =>
     {
       const projectPaths = window.api.project.getProjectPaths(number);
 
-      if (!projectPaths.projectPaths.length || !window.api.fs.openNative(projectPaths.projectPaths[projectPaths.projectPaths.length - 1]))
+      if (!projectPaths.projectPaths.length || !window.api.fs.openNative(projectPaths.projectPaths[0]))
       {
         window.api.core.messageBox({
           type: 'warning',
@@ -61,7 +61,7 @@ export const copyProjectPath = (number: ProjectAndInstallNumber) =>
 
       if (projectPaths.length)
       {
-        html.copyText(projectPaths[projectPaths.length - 1]);
+        html.copyText(projectPaths[0]);
       }
       else
       {

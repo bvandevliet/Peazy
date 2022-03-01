@@ -130,7 +130,7 @@ core.addFilter('sql_get_projects', (query: string, args: getProjectArgs) =>
   else if (Array.isArray(args.project_numbers))
   {
     query += `
-  AND upper([projects].[project_number]) IN (${args.project_numbers.map(nr => `'${sql.sanitizeSql(nr.trim().toUpperCase())}'`).join(', ')})`;
+  AND upper(trim([projects].[project_number])) IN (${args.project_numbers.map(nr => `'${sql.sanitizeSql(nr.trim().toUpperCase())}'`).join(', ')})`;
   }
 
   // children of ..
@@ -140,8 +140,8 @@ core.addFilter('sql_get_projects', (query: string, args: getProjectArgs) =>
 
     query += `
   AND (
-    upper([projects].[project_number]) = '${install_number}'
-    OR upper([installations].[install_number]) LIKE '${install_number}%'
+    upper(trim([projects].[project_number])) = '${install_number}'
+    OR upper(trim([installations].[install_number])) LIKE '${install_number}%'
   )`;
   }
 

@@ -157,7 +157,7 @@ export default class filesTab implements tabPage
     // Then print files if project folder exists.
     if (this._projectPaths.projectPaths.length)
     {
-      const rootPath = this._projectPaths.projectPaths[this._projectPaths.projectPaths.length - 1];
+      const rootPath = this._projectPaths.projectPaths[0];
 
       let tbodyIndex = 0;
 
