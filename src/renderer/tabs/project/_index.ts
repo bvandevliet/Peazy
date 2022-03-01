@@ -198,7 +198,7 @@ export default class projectTab implements tabPage
       [
         {
           template: 'tmpl-th-no-wrap',
-          text: 'Date created',
+          text: 'Date start',
         },
         {
           text: new DateTime(project.date_start).getDate(),
