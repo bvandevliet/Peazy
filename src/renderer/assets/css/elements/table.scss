@@ -61,7 +61,7 @@ table {
   td {
     &.is-file-icon {
       @extend .min-width;
-      width: 16px;
+      width: 16px !important;
 
       padding-right: 0;
 
