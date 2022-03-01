@@ -298,7 +298,7 @@ const projectRow = (project: Project) =>
     // If is a child of an install number, then add class attribute for selective styling.
     .addClass(isChild ? 'has-install' : null);
 
-  // Set the overall progress indicator.
+  // Set the overall progress indicator (DRY!!).
   $tr
     .find('>th.project-number')
     .prepend($(document.createElement('span')).addClass('progress-line')
