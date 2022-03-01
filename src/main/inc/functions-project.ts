@@ -294,6 +294,30 @@ export const getProjectPaths = (number: ProjectAndInstallNumber) =>
 };
 
 /**
+ * Fetch planning tasks from the database.
+ *
+ * @param args  An object providing arguments, passed and handled by the query filter.
+ * @param onRow Called on each returned row.
+ */
+export const getProjectPlanningTasks = (args: getPlanningArgs, onRow: (planning: PlanningTask) => void) =>
+{
+  args = core.parseArgs(args,
+    {
+      orderBy: 'ASC',
+    });
+
+  /**
+   * Filters the SQL query string for this request.
+   */
+  const query = core.applyFilters('sql_get_planning', '' as string, args);
+
+  return database.execSql(query, columns =>
+  {
+    onRow(core.mapObject(columns, column => typeof column.value === 'string' ? column.value.trim() : column.value) as PlanningTask);
+  });
+};
+
+/**
  * Fetch documents that are attached to this `Project` instance.
  *
  * @param onRow Called on each returned row.

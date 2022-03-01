@@ -201,6 +201,57 @@ core.addFilter('sql_get_projects', (query: string, args: getProjectArgs) =>
   return query;
 });
 
+core.addFilter('sql_get_planning', (query: string, args: getPlanningArgs) =>
+{
+  query += `SELECT
+  * AS [task_id],
+  * AS [parent_id],
+  * AS [project_number],
+  * AS [task_description],
+  * AS [date_start],
+  * AS [date_start_actual],
+  * AS [date_finish],
+  * AS [date_finish_actual],
+  * AS [date_delivery]
+FROM
+  *
+WHERE`;
+
+  // project number ..
+  query += window.api.core.isEmpty(args.project_number)
+    ? `
+  AND [planning].[project_number] IS NOT NULL`
+    : `
+  AND [planning].[project_number] = '${args.project_number}'`;
+
+  // parent id ..
+  query += window.api.core.isEmpty(args.parent_id)
+    ? `
+  AND [planning].[parent_id] IS NULL`
+    : `
+  AND [planning].[parent_id] = ${args.parent_id}`;
+
+  // order ..
+  query += '\nORDER BY';
+  query += args.orderBy !== 'DESC'
+    ? `
+  [project_number],
+  [date_start],
+  [date_start_actual],
+  [date_finish],
+  [date_finish_actual],
+  [date_delivery]`
+    : `
+  [project_number] DESC,
+  [date_start] DESC,
+  [date_start_actual] DESC,
+  [date_finish] DESC,
+  [date_finish_actual] DESC,
+  [date_delivery] DESC`;
+
+  return query;
+});
+
 /**
  * SQL query to fetch documents that are attached to a project.
  */
