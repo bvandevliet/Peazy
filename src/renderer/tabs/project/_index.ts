@@ -118,8 +118,9 @@ export default class projectTab implements tabPage
         callback: ($div, $li) => this._tabs.filesTab = new filesTab($div, $li),
         onclick: $li =>
         {
-          // html.loading();
-          return ($li.hasClass('is-active') ? this._tabs.filesTab.init(this.project) : this._tabs.filesTab.onactivate(this.project));
+          html.loading();
+          return ($li.hasClass('is-active') ? this._tabs.filesTab.init(this.project) : this._tabs.filesTab.onactivate(this.project))
+            .finally(() => html.loading(false));
         },
       },
     ] as tabItem[]).forEach((projectSubTab, index) =>

@@ -106,8 +106,9 @@ export default class workTab implements tabPage
 
   init (project: Project)
   {
-    // Load project, make sure search is focussed and return `true`.
+    // Load project.
     return this.loadProject(project)
+      // Make sure search is focussed and return `true`.
       .then(() => (setTimeout(() => this.$div.find('input.search-workhours').trigger('focus'), 5), true));
   }
 

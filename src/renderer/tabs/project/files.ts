@@ -232,9 +232,10 @@ export default class filesTab implements tabPage
 
   init (project: Project): Promise<boolean>
   {
-    // Load project, make sure search is focussed and return `true`.
-    return new Promise(resolve => (this.loadProject(project),
-    resolve((setTimeout(() => this.$div.find('input.search-files').trigger('focus'), 5), true))));
+    // Load project.
+    return new Promise(resolve => resolve(this.loadProject(project)))
+      // Make sure search is focussed and return `true`.
+      .then(() => (setTimeout(() => this.$div.find('input.search-files').trigger('focus'), 5), true));
   }
 
   onactivate (project: Project): Promise<boolean>

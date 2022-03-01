@@ -111,8 +111,9 @@ export default class docsTab implements tabPage
 
   init (project: Project)
   {
-    // Load project, make sure search is focussed and return `true`.
+    // Load project.
     return this.loadProject(project)
+      // Make sure search is focussed and return `true`.
       .then(() => (setTimeout(() => this.$div.find('input.search-docs').trigger('focus'), 5), true));
   }
 
