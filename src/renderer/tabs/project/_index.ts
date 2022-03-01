@@ -198,6 +198,15 @@ export default class projectTab implements tabPage
       [
         {
           template: 'tmpl-th-no-wrap',
+          text: 'Price',
+        },
+        {
+          text: window.api.core.applyFilters('project_price', project.price, project),
+        },
+      ],
+      [
+        {
+          template: 'tmpl-th-no-wrap',
           text: 'Date start',
         },
         {
@@ -214,15 +223,6 @@ export default class projectTab implements tabPage
         },
       ]],
       [[
-        {
-          template: 'tmpl-th-no-wrap',
-          text: 'Price',
-        },
-        {
-          text: window.api.core.applyFilters('project_price', project.price, project),
-        },
-      ],
-      [
         {
           template: 'tmpl-th-no-wrap',
           text: 'Notes',
