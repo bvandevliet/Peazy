@@ -450,9 +450,8 @@ export default class projectTab implements tabPage
     // Make sure search is up-to-date.
     this.$div.find('input.search-projects').trigger('input');
 
-    // Load the clicked project,
-    // with fallback to the project initially set in constructor, but should never occur.
-    await this.loadProject(clickedProject ?? this._project);
+    // Load the clicked project when valid, else fallback to the project initially set in the tab constructor.
+    await this.loadProject(!window.api.core.isEmpty(clickedProject?.project_id) ? clickedProject : this._project);
   }
 
   init ()

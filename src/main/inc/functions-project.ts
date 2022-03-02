@@ -108,74 +108,106 @@ export const getProjectAndChildren = (project_number: Project['project_number'],
  */
 export const getProjectTree = async (entryProject: Project) =>
 {
-  // Start iteration from the project number so we also fetch these children instead of only building up the tree.
-  let install_number = core.applyFilters('project_project_number', entryProject.project_number);
+  /**
+   * Start iteration from the project number so we also fetch these children instead of only building up the tree.
+   * However since the first install number is an actual project number,
+   * it does not need to be filtered here, which also decreases the fail-chance of not finding the project.
+   */
+  let firstIteration = true;
+  let install_project = entryProject.project_number;
 
-  // Holds the previous install project.
-  let prevChild = entryProject;
+  /**
+   * Holds the previous install project.
+   */
+  let prevProject = entryProject;
 
-  // Start iteration.
-  while (!core.isEmpty(install_number))
+  // The tree walker loop.
+  while (!core.isEmpty(install_project))
   {
-    let currentInstall: Project = null;
+    let currentProject: Project = null;
 
     const children: Project[] = [];
 
-    await getProjectAndChildren(install_number, project =>
+    const prev_project_number = core.applyFilters('project_project_number', prevProject.project_number);
+
+    await getProjectAndChildren(install_project, project =>
     {
-      const prev_project_number = core.applyFilters('project_project_number', prevChild.project_number);
       const this_project_number = core.applyFilters('project_project_number', project.project_number);
 
-      if (this_project_number === install_number)
+      // Make sure further tests are performed on filtered values.
+      if (firstIteration) { install_project = core.applyFilters('project_project_number', install_project); }
+
+      // If given project passes by.
+      if (this_project_number === install_project)
       {
         // Set current project.
-        currentInstall = project;
+        currentProject = project;
 
+        // Filter the next parent project number.
         const this_install_number = core.applyFilters('project_project_number', project.install_number);
 
         const isChild = core.applyFilters('project_is_child', !core.isEmpty(this_install_number) && this_install_number !== this_project_number, project);
 
         // Define next interation.
-        install_number = isChild ? this_install_number : null;
+        install_project = isChild ? this_install_number : null;
       }
-      else if (this_project_number === prev_project_number)
+
+      // Don't define (entry) project as its own infinite child.
+      else if (install_project !== prev_project_number)
       {
-        // Push previous project as child.
-        children.push(prevChild);
-      }
-      else
-      {
-        // Push child.
-        children.push(project);
+        if (project.project_id !== prevProject.project_id)
+        {
+          // Push child.
+          children.push(project);
+        }
+        else
+        {
+          // Push previous project as child to keep the tree intact.
+          children.push(prevProject);
+        }
       }
     });
 
-    // If install project does not exist.
-    if (currentInstall === null)
+    // If parent project does not exist.
+    if (currentProject === null)
     {
-      // Set top-most install project as "non-existing".
-      currentInstall =
+      // If is first iteration, previous project is entry project, use it as is.
+      if (firstIteration)
       {
-        project_id: null, // `null` indicates it doesn't exist.
-        project_number: install_number, // prevChild
-        project_description: prevChild.install_description,
-        customer_id: prevChild.customer_id,
-        customer_name: prevChild.customer_name,
-        status_id: '!EXISTS',
-        status_name: 'This project doesn\'t exist',
-      };
+        currentProject = prevProject;
+      }
+      else
+      {
+        // Fallback to the previous project's installation values.
+        // And set top-most install project as "non-existing".
+        currentProject =
+        {
+          project_id: null, // `null` indicates it doesn't exist.
+          project_number: prevProject.install_number, // prevChild
+          project_description: prevProject.install_description,
+          customer_id: prevProject.customer_id,
+          customer_name: prevProject.customer_name,
+          status_id: '!EXISTS',
+          status_name: 'This project doesn\'t exist',
+        };
+      }
 
       // Force stop the loop.
-      install_number = null;
+      install_project = null;
     }
 
-    // Set children and previous child.
-    currentInstall.children = children;
-    prevChild = currentInstall;
+    // Set child projects.
+    currentProject.children = children;
+
+    // Set previous project.
+    prevProject = currentProject;
+
+    // Not the first iteration anymore.
+    firstIteration = false;
   }
 
-  // The last / top-most install project including the `children` property.
-  return prevChild;
+  // Return the last / top-most install project including the `children` property.
+  return prevProject;
 };
 
 /**

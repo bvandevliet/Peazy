@@ -136,12 +136,12 @@ core.addFilter('sql_get_projects', (query: string, args: getProjectArgs) =>
   // children of ..
   else if (!core.isEmpty(args.children_of))
   {
-    const install_number = sql.sanitizeSql(args.children_of.trim().toUpperCase());
+    const install_project = sql.sanitizeSql(args.children_of.trim().toUpperCase());
 
     query += `
   AND (
-    upper(trim([projects].[project_number])) = '${install_number}'
-    OR upper(trim([installations].[install_number])) LIKE '${install_number}%'
+    upper(trim([projects].[project_number])) = '${install_project}'
+    OR upper(trim([installations].[install_number])) LIKE '${core.applyFilters('project_project_number', install_project)}%'
   )`;
   }
 
