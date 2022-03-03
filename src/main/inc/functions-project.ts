@@ -211,11 +211,42 @@ export const getProjectTree = async (entryProject: Project) =>
 };
 
 /**
+ * Find the locations where project folders are stored.
+ */
+export const getProjectPathLocations = () =>
+{
+  let projectLocations: string[] = [];
+
+  // Define the initial lookup dirs and start the lookup.
+  userConfig.filesystem.lookupPaths.forEach(lookupPath =>
+  {
+    let lookupPaths = [lookupPath];
+
+    // Support one wildcard level.
+    if (lookupPath.endsWith('*'))
+    {
+      lookupPath = path.dirname(lookupPath);
+
+      if (!fs.existsSync(lookupPath)) return;
+      if (!fs.statSync(lookupPath).isDirectory()) return;
+
+      lookupPaths = fs.readdirSync(lookupPath)
+        .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
+        .map(lookupSubDir => path.join(lookupPath, lookupSubDir));
+    }
+
+    projectLocations = projectLocations.concat(lookupPaths);
+  });
+
+  return projectLocations;
+};
+
+/**
  * Find project directories.
  *
  * @param number Install- and/or project number.
  */
-export const getProjectPaths = (number: ProjectAndInstallNumber) =>
+export const getProjectPaths = (number: ProjectAndInstallNumber, projectLocations = getProjectPathLocations()) =>
 {
   const validPaths =
   {
@@ -301,27 +332,9 @@ export const getProjectPaths = (number: ProjectAndInstallNumber) =>
   };
 
   // Define the initial lookup dirs and start the lookup.
-  userConfig.filesystem.lookupPaths.forEach(lookupPath =>
-  {
-    let lookupPaths = [lookupPath];
+  projectLocations.forEach(lookupPath => dirLookupWalker(lookupPath));
 
-    // Support one wildcard level.
-    if (lookupPath.endsWith('*'))
-    {
-      lookupPath = path.dirname(lookupPath);
-
-      if (!fs.existsSync(lookupPath)) return;
-      if (!fs.statSync(lookupPath).isDirectory()) return;
-
-      lookupPaths = fs.readdirSync(lookupPath)
-        .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
-        .map(lookupSubDir => path.join(lookupPath, lookupSubDir));
-    }
-
-    // eslint-disable-next-line no-shadow
-    lookupPaths.forEach(lookupPath => dirLookupWalker(lookupPath));
-  });
-
+  // Found project paths.
   return validPaths;
 };
 
