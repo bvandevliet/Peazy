@@ -61,12 +61,16 @@ table {
   td {
     &.is-file-icon {
       @extend .min-width;
-      width: 16px !important;
 
       padding-right: 0;
 
       padding-top: calc($control-padding-vertical + .15em);
       padding-bottom: calc($control-padding-vertical - .15em);
+
+      &,
+      * {
+        width: 16px !important;
+      }
     }
 
     >img {

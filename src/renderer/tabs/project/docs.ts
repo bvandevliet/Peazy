@@ -103,7 +103,7 @@ export default class docsTab implements tabPage
 
       // Get the file icon.
       window.api.fs.getFileIcon(doc.path)
-        .then(dataUrl => $tr.find('>td.is-file-icon>img').first().attr('src', dataUrl));
+        .then(dataUrl => $tr.find('>td.is-file-icon img').first().attr('src', dataUrl));
     })
       // Make sure search is up-to-date.
       .finally(() => this.$div.find('input.search-docs').trigger('input'));
