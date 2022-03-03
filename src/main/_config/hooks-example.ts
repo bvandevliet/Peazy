@@ -63,6 +63,12 @@ const initHooks = () =>
   });
 
   /**
+   * Test if a dirname is a valid project folder location.
+   */
+  hooks._addFilter('is_valid_project_location', (_bool: boolean, lookupSubDir: string) =>
+    /^\d{4}$/u.test(lookupSubDir));
+
+  /**
    * Logic to create a project folder and return a `Promise<boolean>` whether the folder was created or not.
    */
   hooks._addFilter('create_project_folder', (_promise: Promise<boolean>, project: Project, projectPaths: ReturnType<Window['api']['project']['getProjectPaths']>) =>
@@ -72,7 +78,7 @@ const initHooks = () =>
     const project_number = hooks.applyFilters('project_project_number', project.project_number);
 
     const newLocation = proj.getProjectPathLocations()
-      .filter(lookupSubDir => /^\d{4}$/u.test(lookupSubDir) && lookupSubDir.slice(-2) === project_number.match(/\d{2}/u)[0])[0];
+      .filter(lookupSubDir => lookupSubDir.slice(-2) === project_number.match(/\d{2}/u)[0])[0];
 
     const newProjectPath = path.join(newLocation, project_number);
 

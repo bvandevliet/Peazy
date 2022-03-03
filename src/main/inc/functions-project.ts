@@ -233,6 +233,7 @@ export const getProjectPathLocations = () =>
       if (!fs.statSync(lookupPath).isDirectory()) return;
 
       lookupPaths = fs.readdirSync(lookupPath)
+        .filter(lookupSubDir => hooks.applyFilters('is_valid_project_location', true, lookupSubDir))
         .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
         .map(lookupSubDir => path.join(lookupPath, lookupSubDir));
     }
@@ -240,7 +241,9 @@ export const getProjectPathLocations = () =>
     projectLocations = projectLocations.concat(lookupPaths);
   });
 
-  return projectLocations;
+  return projectLocations
+    // Sort Z to A.
+    .sort((b, a) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 };
 
 /**
