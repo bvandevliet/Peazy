@@ -1,7 +1,9 @@
+// Load user configuration.
 import { userConfig } from './_config';
 
 import path from 'path';
-import fs from 'fs';
+// import fs from 'fs';
+
 import { exec, execSync } from 'child_process';
 
 import

@@ -76,7 +76,7 @@ export default class filesTab implements tabPage
       {
         text: isRoot ? rootPath : dirPath.replace(rootPath, '.'),
         onclick: () => new Promise(resolve => resolve(false)),
-        oncontextmenu: () => window.api.core.applyFilters('contextmenu_folder',
+        oncontextmenu: () => window.api.hooks.applyFilters('contextmenu_folder',
           [
             contextMenu.openFolderNative(dirPath),
             // contextMenu.separator,
@@ -106,7 +106,7 @@ export default class filesTab implements tabPage
       {
         text: window.api.path.basename(fileInfo.fullPath),
         onclick: () => new Promise(resolve => resolve(false)),
-        oncontextmenu: () => window.api.core.applyFilters('contextmenu_file',
+        oncontextmenu: () => window.api.hooks.applyFilters('contextmenu_file',
           [
             contextMenu.openFileNative(fileInfo.fullPath),
             contextMenu.showInExplorer(fileInfo.fullPath),
@@ -217,7 +217,7 @@ export default class filesTab implements tabPage
           onclick: () =>
           {
             html.loading();
-            return window.api.core.applyFilters('create_project_folder',
+            return window.api.hooks.applyFilters('create_project_folder',
               new Promise(resolve => resolve(false)) as Promise<boolean>,
               this._project,
               this._projectPaths)

@@ -186,7 +186,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
     onmiddleclick: $li => $li.find('>a.close-btn').first().trigger('click'),
     oncontextmenu: () =>
     {
-      return window.api.core.applyFilters('contextmenu_project_tab',
+      return window.api.hooks.applyFilters('contextmenu_project_tab',
         [
           contextMenu.openProjectFolder(tabProject.project),
           contextMenu.copyProjectPath(tabProject.project),
@@ -222,10 +222,10 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
  */
 const projectRow = (project: Project) =>
 {
-  const project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
-  const install_number = window.api.core.applyFilters('project_install_number', project.install_number, project);
+  const project_number = window.api.hooks.applyFilters('project_project_number', project.project_number, project);
+  const install_number = window.api.hooks.applyFilters('project_install_number', project.install_number, project);
 
-  const isChild = window.api.core.applyFilters('project_is_child', !window.api.core.isEmpty(install_number) && install_number !== project_number, project);
+  const isChild = window.api.hooks.applyFilters('project_is_child', !window.api.core.isEmpty(install_number) && install_number !== project_number, project);
 
   // Table cells definition for a project browser row.
   // FILTER, BUT THINK ABOUT THEAD TOO !!
@@ -236,23 +236,23 @@ const projectRow = (project: Project) =>
     },
     {
       template: 'tmpl-td-project-status',
-      text: window.api.core.applyFilters('project_status_id', project.status_id, project),
-      title: window.api.core.applyFilters('project_status_id_title', project.status_name, project),
+      text: window.api.hooks.applyFilters('project_status_id', project.status_id, project),
+      title: window.api.hooks.applyFilters('project_status_id_title', project.status_name, project),
     },
     {
       template: 'tmpl-td-install-number',
       text: isChild ? install_number : null,
-      title: window.api.core.applyFilters('project_install_number_title', project.install_id ? `${project.install_description}  •  ${project.customer_name}` : null, project),
+      title: window.api.hooks.applyFilters('project_install_number_title', project.install_id ? `${project.install_description}  •  ${project.customer_name}` : null, project),
       onclick: () =>
       {
         html.loading();
-        return loadProject({ project_number: window.api.core.applyFilters('project_project_number', install_number) })
+        return loadProject({ project_number: window.api.hooks.applyFilters('project_project_number', install_number) })
           .then(found => found ? (stopBrowsing(), false) : false) // if found, still return false /  don't activate row since install number was clicked
           .finally(() => html.loading(false));
       },
       oncontextmenu: () =>
       {
-        return window.api.core.applyFilters('contextmenu_project_item_browser',
+        return window.api.hooks.applyFilters('contextmenu_project_item_browser',
           [
             contextMenu.openProjectFolder({ project_number: project.install_number }),
             contextMenu.copyProjectPath({ project_number: project.install_number }),
@@ -263,7 +263,7 @@ const projectRow = (project: Project) =>
     {
       template: 'tmpl-td-project-number',
       text: project_number,
-      title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
+      title: window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
       onclick: () =>
       {
         html.loading();
@@ -273,7 +273,7 @@ const projectRow = (project: Project) =>
       },
       oncontextmenu: () =>
       {
-        return window.api.core.applyFilters('contextmenu_project_item_browser',
+        return window.api.hooks.applyFilters('contextmenu_project_item_browser',
           [
             contextMenu.openProjectFolder(project),
             contextMenu.copyProjectPath(project),
@@ -283,14 +283,14 @@ const projectRow = (project: Project) =>
     },
     {
       template: 'tmpl-td-project-description',
-      text: window.api.core.applyFilters('project_project_description', project.project_description, project),
-      title: window.api.core.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),
+      text: window.api.hooks.applyFilters('project_project_description', project.project_description, project),
+      title: window.api.hooks.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),
       classes: ['min-width'], // not `min-width` by default but in this case not the last column, so set it here
     },
     {
       template: 'tmpl-td-project-customer',
-      text: window.api.core.applyFilters('project_customer_name', project.customer_name, project),
-      title: window.api.core.applyFilters('project_customer_name_title', `${project.customer_name}`, project),
+      text: window.api.hooks.applyFilters('project_customer_name', project.customer_name, project),
+      title: window.api.hooks.applyFilters('project_customer_name_title', `${project.customer_name}`, project),
     },
   ])
     // Add an ID to the project row to target it when updating active tab.
@@ -349,9 +349,9 @@ const deepsearch = (queryStr: string) =>
       &&
       // Test returned projects against the regex array.
       Search.isMatch([
-        window.api.core.applyFilters('project_project_number', project.project_number, project),
-        window.api.core.applyFilters('project_project_description', project.project_description, project),
-        window.api.core.applyFilters('project_customer_name', project.customer_name, project),
+        window.api.hooks.applyFilters('project_project_number', project.project_number, project),
+        window.api.hooks.applyFilters('project_project_description', project.project_description, project),
+        window.api.hooks.applyFilters('project_customer_name', project.customer_name, project),
       ],
       searchedByApp))
     {

@@ -26,7 +26,7 @@ cd ../../../
 ```
 
 ### Configure to your needs
-Rename the `index-example.ts` file in `./src/main/_config` and in `./src/renderer/_config` to `index.ts`.  
+Remove the `-example` parts from the filenames in `./src/main/_config/`.  
 In these files you can write code to configure Peazy for your situation.
 
 Further documentation on filter hooks etc. will follow soon ..

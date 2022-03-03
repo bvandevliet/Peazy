@@ -37,7 +37,7 @@ export const openProjectFolder = (number: ProjectAndInstallNumber) =>
           {
             if (messageBoxReturnValue.response === 1)
             {
-              window.api.core.applyFilters('create_project_folder',
+              window.api.hooks.applyFilters('create_project_folder',
                 new Promise(resolve => resolve(false)) as Promise<boolean>,
                 number,
                 projectPaths)

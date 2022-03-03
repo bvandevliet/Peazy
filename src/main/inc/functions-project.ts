@@ -1,3 +1,4 @@
+// Load user configuration.
 import { userConfig } from '../_config';
 
 import path from 'path';
@@ -5,6 +6,7 @@ import fs from 'fs';
 
 import Database from './class-database';
 import * as core from './functions-core';
+import * as hooks from './functions-hooks';
 
 /* eslint-disable camelcase */
 
@@ -50,7 +52,7 @@ export const getProjects = (args: getProjectArgs, onRow: (project: Project) => v
   /**
    * Filters the SQL query string for this request.
    */
-  const query = core.applyFilters('sql_get_projects', '' as string, args);
+  const query = hooks.applyFilters('sql_get_projects', '' as string, args);
 
   return database.execSql(query, columns =>
   {
@@ -128,14 +130,14 @@ export const getProjectTree = async (entryProject: Project) =>
 
     const children: Project[] = [];
 
-    const prev_project_number = core.applyFilters('project_project_number', prevProject.project_number);
+    const prev_project_number = hooks.applyFilters('project_project_number', prevProject.project_number);
 
     await getProjectAndChildren(install_project, project =>
     {
-      const this_project_number = core.applyFilters('project_project_number', project.project_number);
+      const this_project_number = hooks.applyFilters('project_project_number', project.project_number);
 
       // Make sure further tests are performed on filtered values.
-      if (firstIteration) { install_project = core.applyFilters('project_project_number', install_project); }
+      if (firstIteration) { install_project = hooks.applyFilters('project_project_number', install_project); }
 
       // If given project passes by.
       if (this_project_number === install_project)
@@ -144,9 +146,9 @@ export const getProjectTree = async (entryProject: Project) =>
         currentProject = project;
 
         // Filter the next parent project number.
-        const this_install_number = core.applyFilters('project_project_number', project.install_number);
+        const this_install_number = hooks.applyFilters('project_project_number', project.install_number);
 
-        const isChild = core.applyFilters('project_is_child', !core.isEmpty(this_install_number) && this_install_number !== this_project_number, project);
+        const isChild = hooks.applyFilters('project_is_child', !core.isEmpty(this_install_number) && this_install_number !== this_project_number, project);
 
         // Define next interation.
         install_project = isChild ? this_install_number : null;
@@ -258,9 +260,9 @@ export const getProjectPaths = (number: ProjectAndInstallNumber, projectLocation
   if (core.isEmpty(number.install_number)) number.install_number = number.project_number;
 
   const validProjectPathBasenames =
-    core.applyFilters('project_path_basenames', [number.project_number], number).filter(basename => !core.isEmpty(basename));
+    hooks.applyFilters('project_path_basenames', [number.project_number], number).filter(basename => !core.isEmpty(basename));
   const validInstallPathBasenames =
-    core.applyFilters('install_path_basenames', [number.install_number], number).filter(basename => !core.isEmpty(basename));
+    hooks.applyFilters('install_path_basenames', [number.install_number], number).filter(basename => !core.isEmpty(basename));
 
   /**
    * Performs the lookup for project folders, recursive for install folders.
@@ -312,7 +314,7 @@ export const getProjectPaths = (number: ProjectAndInstallNumber, projectLocation
 
       if (
         !core.isEmpty(number.project_number) && fs.statSync(potentialPath).isDirectory() &&
-        core.applyFilters('project_path_is_match', false, potentialPath, validProjectPathBasenames)
+        hooks.applyFilters('project_path_is_match', false, potentialPath, validProjectPathBasenames)
       )
       {
         validPaths.projectPaths.push(potentialPath);
@@ -320,7 +322,7 @@ export const getProjectPaths = (number: ProjectAndInstallNumber, projectLocation
 
       if (
         !core.isEmpty(number.install_number) && fs.statSync(potentialPath).isDirectory() &&
-        core.applyFilters('install_path_is_match', false, potentialPath, validInstallPathBasenames)
+        hooks.applyFilters('install_path_is_match', false, potentialPath, validInstallPathBasenames)
       )
       {
         validPaths.installPaths.push(potentialPath);
@@ -354,7 +356,7 @@ export const getProjectPlanningTasks = (args: getPlanningArgs, onRow: (planning:
   /**
    * Filters the SQL query string for this request.
    */
-  const query = core.applyFilters('sql_get_planning', '' as string, args);
+  const query = hooks.applyFilters('sql_get_planning', '' as string, args);
 
   return database.execSql(query, columns =>
   {
@@ -372,7 +374,7 @@ export const getAttachedDocuments = (args: ProjectId, onRow: (doc: AttachedDocum
   /**
    * Filters the SQL query string for this request.
    */
-  const query = core.applyFilters('sql_get_attached_documents', '' as string, args);
+  const query = hooks.applyFilters('sql_get_attached_documents', '' as string, args);
 
   return database.execSql(query, columns => onRow(core.mapObject(columns, column => column.value) as AttachedDocument));
 };
@@ -387,7 +389,7 @@ export const getWorkHours = (args: ProjectId, onRow: (hours: WorkHours) => void)
   /**
    * Filters the SQL query string for this request.
    */
-  const query = core.applyFilters('sql_get_work_hours', '' as string, args);
+  const query = hooks.applyFilters('sql_get_work_hours', '' as string, args);
 
   return database.execSql(query, columns => onRow(core.mapObject(columns, column => column.value) as WorkHours));
 };

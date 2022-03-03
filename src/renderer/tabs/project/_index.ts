@@ -150,15 +150,15 @@ export default class projectTab implements tabPage
     // Overwrite tab text and title.
     this.$li
       .find('>a').first()
-      .text(window.api.core.applyFilters('project_project_number', project.project_number, project))
-      .attr('title', window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project));
+      .text(window.api.hooks.applyFilters('project_project_number', project.project_number, project))
+      .attr('title', window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project));
 
     // Make sure rows are activated in the main window.
     main.updateActiveStates(this.$li);
 
     // Print project info.
     this._projectInfo.empty();
-    (window.api.core.applyFilters('project_info_tbodies', [
+    (window.api.hooks.applyFilters('project_info_tbodies', [
       [[
         {
           template: 'tmpl-th-no-wrap',
@@ -202,7 +202,7 @@ export default class projectTab implements tabPage
           text: 'Price',
         },
         {
-          text: window.api.core.applyFilters('project_price', project.price, project),
+          text: window.api.hooks.applyFilters('project_price', project.price, project),
         },
       ],
       [
@@ -282,8 +282,8 @@ export default class projectTab implements tabPage
    */
   projectRow (project: Project, depth = 0)
   {
-    const project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
-    // const install_number = window.api.core.applyFilters('project_install_number', project.install_number, project);
+    const project_number = window.api.hooks.applyFilters('project_project_number', project.project_number, project);
+    // const install_number = window.api.hooks.applyFilters('project_install_number', project.install_number, project);
 
     // Table cells definition for a project tree row.
     const $tr = TableList.buildRow([
@@ -294,13 +294,13 @@ export default class projectTab implements tabPage
       },
       {
         template: 'tmpl-td-project-status',
-        text: window.api.core.applyFilters('project_status_id', project.status_id, project),
-        title: window.api.core.applyFilters('project_status_id_title', project.status_name, project),
+        text: window.api.hooks.applyFilters('project_status_id', project.status_id, project),
+        title: window.api.hooks.applyFilters('project_status_id_title', project.status_name, project),
       },
       {
         template: 'tmpl-td-project-number',
         text: project_number,
-        title: window.api.core.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
+        title: window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
         onclick: (_$td, $tr) =>
         {
           html.loading();
@@ -319,7 +319,7 @@ export default class projectTab implements tabPage
           let clickedProject: Project = null;
           return window.api.project.getProjects({ children_of: project.project_number, orderBy: 'DESC' }, project =>
           {
-            const this_project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
+            const this_project_number = window.api.hooks.applyFilters('project_project_number', project.project_number, project);
 
             if (this_project_number === project_number)
             {
@@ -346,7 +346,7 @@ export default class projectTab implements tabPage
         },
         oncontextmenu: () =>
         {
-          return window.api.core.applyFilters('contextmenu_project_item_tree',
+          return window.api.hooks.applyFilters('contextmenu_project_item_tree',
             (project.project_number === this.project.project_number ? [] : [
               contextMenu.openProjectInNewTab(() =>
               {
@@ -364,8 +364,8 @@ export default class projectTab implements tabPage
       },
       {
         template: 'tmpl-td-project-description',
-        text: window.api.core.applyFilters('project_project_description', project.project_description, project),
-        title: window.api.core.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),
+        text: window.api.hooks.applyFilters('project_project_description', project.project_description, project),
+        title: window.api.hooks.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),
       },
     ])
       // Add an ID to the project row to target it when updating active tab.
@@ -410,7 +410,7 @@ export default class projectTab implements tabPage
   {
     this._projectsTable.empty();
 
-    const tab_project_number = window.api.core.applyFilters('project_project_number', this._project.project_number, this._project);
+    const tab_project_number = window.api.hooks.applyFilters('project_project_number', this._project.project_number, this._project);
 
     let clickedProject: Project = null;
 
@@ -423,7 +423,7 @@ export default class projectTab implements tabPage
      */
     const projectWalker = (project: Project, depth = 0) =>
     {
-      const this_project_number = window.api.core.applyFilters('project_project_number', project.project_number, project);
+      const this_project_number = window.api.hooks.applyFilters('project_project_number', project.project_number, project);
 
       if (this_project_number === tab_project_number)
       {

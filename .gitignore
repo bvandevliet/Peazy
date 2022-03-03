@@ -10,7 +10,7 @@ package-lock.json
 *.tsbuildinfo
 
 **/_config/**/*
-!**/_config/index-example.ts
+!**/_config/*-example.*
 
 favicon*.ico
 favicon*.png

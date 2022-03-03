@@ -1,3 +1,4 @@
+// Load user configuration.
 import { userConfig } from '../_config';
 
 import path from 'path';
