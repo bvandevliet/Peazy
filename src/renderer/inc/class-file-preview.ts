@@ -61,12 +61,22 @@ export default class FilePreview
 
   private empty ()
   {
-    this._preview.$ul.find('>li>a').first().text('');
     this._$previewContent.empty();
+
+    this._preview.$ul.addClass('is-hidden');
 
     // Collect garbage.
     window.gc();
     window.api.gc();
+  }
+
+  close ()
+  {
+    this._file = null;
+
+    this.empty();
+
+    this._preview.$ul.find('>li>a').first().text('');
   }
 
   /**
@@ -76,18 +86,25 @@ export default class FilePreview
   {
     this.empty();
 
-    if (window.api.fs.existsSync(this._file))
-    {
-      this._appendContent();
+    if (!window.api.fs.existsSync(this._file)) return false;
 
-      return true;
-    }
-    else
+    this._preview.$ul.removeClass('is-hidden');
+
+    // Get the file icon. // !!
+    // window.api.fs.getFileIcon(this._file)
+    //   .then(dataUrl => {});
+
+    this._preview.$ul.removeClass('is-hidden')
+      .find('>li>a').first().text(window.api.path.basename(this._file));
+
+    if (this._appendContent() === null)
     {
-      // messageBox !!
+      this._$previewContent.html('<div class="content"><p>Preview not available.</p></div>');
 
       return false;
     }
+
+    return true;
   }
 
   /**
@@ -108,31 +125,33 @@ export default class FilePreview
       this._appendContent = () =>
       {
         this._$previewContent.append($(document.createElement('img'))
-          .attr('src', window.api.path.join('file:///', this._file)));
+          .attr('src', (new URL(this._file)).href));
       };
     }
     else
     {
       switch (ext)
       {
-        case 'txt':
+        case '.txt':
         {
           this._appendContent = () => null;
 
           break;
         }
-        case 'pdf':
+        case '.pdf':
         {
-          const pdfjsVersion = ''; // !!
+          const pdfjsVersion = '2.13.216'; // hardcoded !!
 
           const pdfjs = window.api.path.join(window.api.ABSPATH, `ext_modules/pdfjs-${pdfjsVersion}-dist/web/viewer.html`);
 
           const uriComponent = this.escapeURIComponent(this.file);
 
+          console.log(`${(new URL(pdfjs)).href}`);
+
           this._appendContent = () =>
           {
             this._$previewContent.append($(document.createElement('iframe'))
-              .attr('src', `${window.api.path.join('file:///', pdfjs)}?file=file:///${uriComponent}`));
+              .attr('src', `${(new URL(pdfjs)).href}?file=file:///${uriComponent}`));
           };
 
           break;
@@ -157,12 +176,14 @@ export default class FilePreview
     this._preview = new Tabs();
     this.$preview = this._preview.$container;
 
+    this._preview.$ul.addClass('is-hidden');
+
     // Create new tab.
     const { $li } = this._preview.addTab({
       id: null,
       template: 'tmpl-li-file-preview',
       title: 'Click to open file',
-      callback: $div => $div.append(this._$previewContent),
+      callback: $div => $div.append(this._$previewContent).removeClass('is-hidden'),
       onclick: () =>
       {
         // Never activate the tab, only perform an action.
@@ -182,9 +203,7 @@ export default class FilePreview
     // Configure the "close" button.
     $li.find('>a.close-btn').on('click', () =>
     {
-      this._file = null;
-
-      this.empty();
+      this.close();
 
       if (typeof onClose === 'function') onClose();
     });

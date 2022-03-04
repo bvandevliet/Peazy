@@ -1,3 +1,4 @@
+import FilePreview from '../../inc/class-file-preview.js';
 import DateTime from '../../inc/class-datetime.js';
 import TableList from '../../inc/class-html-table-list.js';
 import Search from '../../inc/class-search.js';
@@ -16,6 +17,8 @@ export default class docsTab implements tabPage
 
   private _docsTable;
   private _docsSearch;
+
+  private _docPreview;
 
   /**
    * Current active project of this tab.
@@ -52,6 +55,10 @@ export default class docsTab implements tabPage
     {
       thisClass._docsSearch.search(this.value);
     });
+
+    // Initiate File Preview.
+    this._docPreview = new FilePreview(() => this._docsTable.$table.find('>tbody>tr').removeClass('is-selected'));
+    this.$div.find('div.project-docs-content').append(this._docPreview.$preview);
   }
 
   /**
@@ -63,6 +70,9 @@ export default class docsTab implements tabPage
   {
     // Set the current project for this tab.
     this._project = project;
+
+    // Close the File Preview.
+    this._docPreview.close();
 
     // Print.
     this._docsTable.empty();
@@ -79,7 +89,8 @@ export default class docsTab implements tabPage
         },
         {
           text: doc.title,
-          onclick: () => new Promise(resolve => resolve(false)),
+          // Always activate.
+          onclick: () => new Promise(resolve => (this._docPreview.preview(doc.path), resolve(true))),
           oncontextmenu: () =>
           {
             return [

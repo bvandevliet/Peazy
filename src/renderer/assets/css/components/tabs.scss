@@ -81,7 +81,7 @@ $tabs-toggle-link-active-color: var(--link-invert) !default;
   }
 
   li {
-    display: block;
+    display: flex;
 
     margin-bottom: -#{$tabs-border-bottom-width};
     border-bottom-color: $tabs-border-bottom-color;
@@ -115,17 +115,28 @@ $tabs-toggle-link-active-color: var(--link-invert) !default;
 
       &:not(:first-child) {
         margin: $tabs-link-padding-vertical .25em;
+        margin-left: -.15em;
         padding: 0 calc($tabs-link-padding-horizontal - .25em);
+
         color: var(--text);
+
+        &:hover {
+          color: var(--cyan-invert);
+          background-color: var(--cyan);
+        }
 
         &.close-btn:hover {
           color: var(--background);
           background-color: var(--red);
         }
       }
+    }
 
-      &:nth-child(2) {
-        margin-left: -.15em !important;
+    &.li-file-preview {
+      width: 100%;
+
+      >a:first-child {
+        margin-right: auto;
       }
     }
   }
