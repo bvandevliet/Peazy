@@ -5,7 +5,7 @@ import path from 'path';
 
 import
 {
-  app, contextBridge,
+  contextBridge,
 }
   from 'electron';
 
@@ -21,7 +21,7 @@ import * as project from './inc/functions-project';
 export const API =
 {
   gc: global.gc,
-  ABSPATH: path.resolve('.'),
+  ABSPATH: path.resolve(path.join(__dirname, '../../')),
   path,
   hooks: {
     doActions: _hooks.doActions,
