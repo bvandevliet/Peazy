@@ -86,7 +86,8 @@ export default class docsTab implements tabPage
               contextMenu.openFileNative(doc.path),
             ];
           },
-          classes: ['min-width'],
+          ondblclick: () => window.api.fs.openNative(doc.path),
+          classes: ['min-width', 'cursor-default'],
         },
         {
           text: doc.version.toFixed(1),
