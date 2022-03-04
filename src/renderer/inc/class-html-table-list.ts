@@ -58,7 +58,7 @@ export default class TableList
   /**
    * Build a row.
    *
-   *@param columns An array of `tableRowColumns` objects.
+   * @param columns An array of `tableRowColumns` objects.
    */
   static buildRow (columns: tableCellItem[])
   {
