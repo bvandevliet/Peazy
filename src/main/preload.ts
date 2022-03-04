@@ -5,15 +5,15 @@ import path from 'path';
 
 import
 {
-  contextBridge,
+  app, contextBridge,
 }
   from 'electron';
 
+import * as _hooks from './inc/functions-hooks';
 import * as core from './inc/functions-core';
 import * as fs from './inc/functions-fs';
 import * as sql from './inc/functions-sql';
 import * as project from './inc/functions-project';
-import * as _hooks from './inc/functions-hooks';
 
 /**
  * The APIs to expose to the global Window object.
@@ -21,12 +21,13 @@ import * as _hooks from './inc/functions-hooks';
 export const API =
 {
   gc: global.gc,
+  ABSPATH: path.resolve('.'),
+  path,
   hooks: {
     doActions: _hooks.doActions,
     applyFilters: _hooks.applyFilters,
   },
   core,
-  path,
   fs,
   sql,
   project,
