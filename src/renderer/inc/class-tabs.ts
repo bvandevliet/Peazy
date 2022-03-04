@@ -50,7 +50,7 @@ export default class Tabs
 
   /**
    *
-   * @param sortable Enable drag & drop sorting?
+   * @param sortable Enable drag & drop sorting? Default is `false`.
    */
   constructor (sortable = false)
   {
@@ -127,7 +127,8 @@ export default class Tabs
   /**
    * Add a tab and page.
    *
-   * @param id The unique ID of the tab to add.
+   * @param tab      The tab item to add.
+   * @param activate Whether to activate the tab. Default is `true`.
    */
   addTab (tab: tabItem, activate = true)
   {
