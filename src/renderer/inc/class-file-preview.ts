@@ -61,21 +61,29 @@ export default class FilePreview
   {
     this.empty();
 
-    if (!window.api.fs.existsSync(this._file)) return false;
-
-    // Get the file icon. // !!
-    // window.api.fs.getFileIcon(this._file)
-    //   .then(dataUrl => {});
-
     this._preview.$ul.removeClass('is-hidden')
       .find('>li>a').first().text(window.api.path.basename(this._file));
 
     const $content = this._content();
 
-    this._$previewContent
-      .append($content ?? '<div class="content"><p>Preview not available.</p></div>');
+    if (window.api.fs.existsSync(this._file))
+    {
+      // Get the file icon. // !!
+      // window.api.fs.getFileIcon(this._file)
+      //   .then(dataUrl => {});
 
-    return $content !== null;
+      this._$previewContent
+        .append($content ?? '<div class="content"><p>Preview not available.</p></div>');
+
+      return $content !== null;
+    }
+    else
+    {
+      this._$previewContent
+        .append('<div class="content"><p>File does not exist.</p></div>');
+
+      return false;
+    }
   }
 
   /**
