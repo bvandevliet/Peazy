@@ -23,6 +23,42 @@ export const regexEscape = (input: string) =>
   input?.replace(/([\\*+?|{[(,)^$.#])/gu, '\\$1').replace(/\s/gu, '\\s');
 
 /**
+ * Escape a string and optional query arguments to use as URL in `src` or `href` attributes.
+ *
+ * @param url       The base URL including the protocol, e.g. `https://`.
+ * @param queryArgs Query arguments. Optional.
+ */
+export const escapeURI = (url: string, queryArgs: Record<string, string> = {}) =>
+{
+  /**
+   * Encodes a text string as a valid component of a Uniform Resource Identifier (URI).
+   *
+   * @param uriComponent A value representing an encoded URI component.
+   */
+  const escapeComponent = (uriComponent: string) =>
+  {
+    return encodeURIComponent(
+      uriComponent
+        .replace(/\\/gu, '/')
+        .replace(/%/gu, '%25'),
+    );
+  };
+
+  const queryArr: string[] = [];
+
+  for (const [key, value] of Object.entries(queryArgs))
+  {
+    queryArr.push(`${escapeComponent(key)}=${escapeComponent(value)}`);
+  }
+
+  const queryStr = queryArr.length ? `?${queryArr.join('&')}` : '';
+
+  const [protocol, ...rest] = url.split(/($.*:\/*)/u);
+
+  return `${protocol}${rest.join().split(/[\\/]/gu).map(escapeComponent).join('/')}${queryStr}`;
+};
+
+/**
  * Natively load another script.
  *
  * @param           url           Url to the script, relative to the root directory.
