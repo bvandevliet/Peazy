@@ -172,6 +172,7 @@ export default class filesTab implements tabPage
 
     // Close the File Preview.
     this._filePreview.close();
+    this.$div.find('.column.sidebar').addClass('full-width');
 
     // Find the project folder.
     this._projectPaths = window.api.project.getProjectPaths(this._project);
