@@ -1,3 +1,4 @@
+import FilePreview from '../../inc/class-file-preview.js';
 import DateTime from '../../inc/class-datetime.js';
 import TableList from '../../inc/class-html-table-list.js';
 import Search from '../../inc/class-search.js';
@@ -17,6 +18,8 @@ export default class filesTab implements tabPage
 
   private _filesTable;
   private _filesSearch;
+
+  private _filePreview;
 
   /**
    * Current active project of this tab.
@@ -66,6 +69,14 @@ export default class filesTab implements tabPage
     {
       thisClass._filesSearch.search(this.value);
     });
+
+    // Initiate File Preview.
+    this._filePreview = new FilePreview(() =>
+    {
+      this._filesTable.$table.find('>tbody>tr').removeClass('is-selected');
+      this.$div.find('.column.sidebar').addClass('full-width');
+    });
+    this.$div.find('div.project-files-content').append(this._filePreview.$preview);
   }
 
   private buildFolderRow = (dirPath: string, rootPath: string) =>
@@ -105,7 +116,12 @@ export default class filesTab implements tabPage
       },
       {
         text: window.api.path.basename(fileInfo.fullPath),
-        onclick: () => new Promise(resolve => resolve(false)),
+        onclick: () =>
+        {
+          this.$div.find('.column.sidebar').removeClass('full-width');
+
+          return new Promise(resolve => (this._filePreview.preview(fileInfo.fullPath), resolve(true)));
+        },
         oncontextmenu: () => window.api.hooks.applyFilters('contextmenu_file',
           [
             contextMenu.openFileNative(fileInfo.fullPath),
@@ -147,6 +163,9 @@ export default class filesTab implements tabPage
   {
     // Set the current project for this tab.
     this._project = project;
+
+    // Close the File Preview.
+    this._filePreview.close();
 
     // Find the project folder.
     this._projectPaths = window.api.project.getProjectPaths(this._project);
