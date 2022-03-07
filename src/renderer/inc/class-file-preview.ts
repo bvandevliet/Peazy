@@ -113,7 +113,7 @@ export default class FilePreview
 
     this.empty();
 
-    const ext = window.api.path.extname(this._file);
+    const ext = window.api.path.extname(this._file).toLowerCase();
 
     switch (ext)
     {
