@@ -32,8 +32,7 @@ export default class FilePreview
     return this._file;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private _appendContent = () => {};
+  private _content = (): JQuery<any> => null;
 
   /**
    * Escape a string to use in a URI query argument.
@@ -88,8 +87,6 @@ export default class FilePreview
 
     if (!window.api.fs.existsSync(this._file)) return false;
 
-    this._preview.$ul.removeClass('is-hidden');
-
     // Get the file icon. // !!
     // window.api.fs.getFileIcon(this._file)
     //   .then(dataUrl => {});
@@ -97,14 +94,12 @@ export default class FilePreview
     this._preview.$ul.removeClass('is-hidden')
       .find('>li>a').first().text(window.api.path.basename(this._file));
 
-    if (this._appendContent() === null)
-    {
-      this._$previewContent.html('<div class="content"><p>Preview not available.</p></div>');
+    const $content = this._content();
 
-      return false;
-    }
+    this._$previewContent
+      .append($content ?? '<div class="content"><p>Preview not available.</p></div>');
 
-    return true;
+    return $content !== null;
   }
 
   /**
@@ -122,10 +117,10 @@ export default class FilePreview
 
     if (/\.(jpe?g|png|gif|bmp)$/iu.test(ext))
     {
-      this._appendContent = () =>
+      this._content = () =>
       {
-        this._$previewContent.append($(document.createElement('img'))
-          .attr('src', (new URL(this._file)).href));
+        return $(document.createElement('img'))
+          .attr('src', (new URL(this._file)).href);
       };
     }
     else
@@ -134,7 +129,7 @@ export default class FilePreview
       {
         case '.txt':
         {
-          this._appendContent = () => null;
+          this._content = () => null;
 
           break;
         }
@@ -148,10 +143,10 @@ export default class FilePreview
 
           console.log(`${(new URL(pdfjs)).href}`);
 
-          this._appendContent = () =>
+          this._content = () =>
           {
-            this._$previewContent.append($(document.createElement('iframe'))
-              .attr('src', `${(new URL(pdfjs)).href}?file=file:///${uriComponent}`));
+            return $(document.createElement('iframe'))
+              .attr('src', `${(new URL(pdfjs)).href}?file=file:///${uriComponent}`);
           };
 
           break;
@@ -159,7 +154,7 @@ export default class FilePreview
         default:
         {
           // custom filter !!
-          this._appendContent = () => null;
+          this._content = () => null;
         }
       }
     }
