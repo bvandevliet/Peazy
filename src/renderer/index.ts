@@ -301,7 +301,7 @@ const projectRow = (project: Project) =>
   // Set the overall progress indicator (DRY!!).
   $tr
     .find('>th.project-number')
-    .prepend($(document.createElement('span')).addClass('progress-line')
+    .prepend($(document.createElement('div')).addClass('progress-line')
       .css('width', (() =>
       {
         const

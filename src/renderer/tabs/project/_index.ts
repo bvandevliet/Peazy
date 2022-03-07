@@ -383,7 +383,7 @@ export default class projectTab implements tabPage
 
     // Set the overall progress indicator (DRY!!).
     $td_project_number
-      .prepend($(document.createElement('span')).addClass('progress-line')
+      .prepend($(document.createElement('div')).addClass('progress-line')
         .css('width', (() =>
         {
           const
