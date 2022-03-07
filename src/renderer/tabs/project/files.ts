@@ -83,9 +83,12 @@ export default class filesTab implements tabPage
   {
     const isRoot = dirPath === rootPath;
 
+    const semiBasename = isRoot ? rootPath : dirPath.replace(rootPath, '.');
+
     const $tr = TableList.buildRow([
       {
-        text: isRoot ? rootPath : dirPath.replace(rootPath, '.'),
+        text: semiBasename,
+        title: semiBasename,
         onclick: () => new Promise(resolve => resolve(false)),
         oncontextmenu: () => window.api.hooks.applyFilters('contextmenu_folder',
           [
@@ -109,13 +112,16 @@ export default class filesTab implements tabPage
 
   private buildFileRow = (fileInfo: ReturnType<Window['api']['fs']['getFileInfo']>) =>
   {
+    const basename = window.api.path.basename(fileInfo.fullPath);
+
     const $tr = TableList.buildRow([
       {
         html: '<img draggable="false" />',
         classes: ['is-file-icon', 'ignore-search'],
       },
       {
-        text: window.api.path.basename(fileInfo.fullPath),
+        text: basename,
+        title: basename,
         onclick: () =>
         {
           this.$div.find('.column.sidebar').removeClass('full-width');
