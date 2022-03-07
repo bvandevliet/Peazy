@@ -115,47 +115,77 @@ export default class FilePreview
 
     const ext = window.api.path.extname(this._file);
 
-    if (/\.(jpe?g|png|gif|bmp)$/iu.test(ext))
+    switch (ext)
     {
-      this._content = () =>
+      case '.jpg':
+      case '.jpeg':
+      case '.png':
+      case '.gif':
+      case '.bmp':
       {
-        return $(document.createElement('img'))
-          .attr('src', (new URL(this._file)).href);
-      };
-    }
-    else
-    {
-      switch (ext)
+        this._content = () =>
+        {
+          return $(document.createElement('img'))
+            .attr('src', (new URL(this._file)).href);
+        };
+
+        break;
+      }
+      case '.txt':
+      case '.log':
+      case '.cmd':
+      case '.bat':
+      case '.ps1':
+      case '.psd1':
+      case '.psm1':
       {
-        case '.txt':
+        const $contentElem = $(document.createElement('p')).addClass('pre-wrap');
+
+        this._content = () =>
         {
-          this._content = () => null;
+          (new File([this._file], window.api.path.basename(this._file)))
+            .text()
+            .then(result => $contentElem.text(result));
 
-          break;
-        }
-        case '.pdf':
+          return $contentElem;
+        };
+
+        break;
+      }
+      case '.json':
+      case '.xml':
+      case '.html':
+      {
+        const $iframe = $(document.createElement('iframe'));
+
+        this._content = () =>
         {
-          const pdfjsVersion = '2.13.216'; // hardcoded !!
+          return $iframe.attr('src', (new URL(this.file)).href);
+        };
 
-          const pdfjs = window.api.path.join(window.api.ABSPATH, `ext_modules/pdfjs-${pdfjsVersion}-dist/web/viewer.html`);
+        break;
+      }
+      case '.pdf':
+      {
+        const pdfjsVersion = '2.13.216'; // hardcoded !!
 
+        const pdfjs = window.api.path.join(window.api.ABSPATH, `ext_modules/pdfjs-${pdfjsVersion}-dist/web/viewer.html`);
+
+        const $iframe = $(document.createElement('iframe'));
+
+        this._content = () =>
+        {
           const uriComponent = this.escapeURIComponent(this.file);
 
-          console.log(`${(new URL(pdfjs)).href}`);
+          return $iframe.attr('src', `${(new URL(pdfjs)).href}?file=file:///${uriComponent}`);
+        };
 
-          this._content = () =>
-          {
-            return $(document.createElement('iframe'))
-              .attr('src', `${(new URL(pdfjs)).href}?file=file:///${uriComponent}`);
-          };
-
-          break;
-        }
-        default:
-        {
-          // custom filter !!
-          this._content = () => null;
-        }
+        break;
+      }
+      default:
+      {
+        // Filter for custom file preview support.
+        this._content = () => window.api.hooks.applyFilters('file_preview_content', null, this._file, ext);
       }
     }
 
