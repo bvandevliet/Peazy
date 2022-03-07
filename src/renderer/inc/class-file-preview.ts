@@ -34,30 +34,6 @@ export default class FilePreview
 
   private _content = (): JQuery<any> => null;
 
-  /**
-   * Escape a string to use in a URI query argument.
-   *
-   * @param input The string.
-   */
-  escapeURIComponent = (input: string) =>
-  {
-    return encodeURIComponent(
-      input
-        .replace(/\\/gu, '/')
-        .replace(/%/gu, '%25')
-        // .replace(/\//g, '%2F')
-        // .replace(/ /g, '%20')
-        .replace(/\?/gu, '%3F')
-        .replace(/:/gu, '%3A')
-        .replace(/@/gu, '%40')
-        .replace(/&/gu, '%26')
-        .replace(/=/gu, '%3D')
-        .replace(/\+/gu, '%2B')
-        .replace(/\$/gu, '%24')
-        .replace(/#/gu, '%23'),
-    );
-  };
-
   private empty ()
   {
     this._$previewContent.empty();
@@ -126,7 +102,7 @@ export default class FilePreview
         this._content = () =>
         {
           return $(document.createElement('img'))
-            .attr('src', (new URL(this._file)).href);
+            .attr('src', window.api.core.escapeURI(`file:///${this.file}`));
         };
 
         break;
@@ -138,20 +114,6 @@ export default class FilePreview
       case '.ps1':
       case '.psd1':
       case '.psm1':
-      {
-        const $contentElem = $(document.createElement('p')).addClass('pre-wrap');
-
-        this._content = () =>
-        {
-          (new File([this._file], window.api.path.basename(this._file)))
-            .text()
-            .then(result => $contentElem.text(result));
-
-          return $contentElem;
-        };
-
-        break;
-      }
       case '.json':
       case '.xml':
       case '.html':
@@ -160,7 +122,7 @@ export default class FilePreview
 
         this._content = () =>
         {
-          return $iframe.attr('src', (new URL(this.file)).href);
+          return $iframe.attr('src', window.api.core.escapeURI(`file:///${this.file}`));
         };
 
         break;
@@ -175,9 +137,7 @@ export default class FilePreview
 
         this._content = () =>
         {
-          const uriComponent = this.escapeURIComponent(this.file);
-
-          return $iframe.attr('src', `${(new URL(pdfjs)).href}?file=file:///${uriComponent}`);
+          return $iframe.attr('src', window.api.core.escapeURI(`file:///${pdfjs}`, { file: `file:///${this.file}` }));
         };
 
         break;
