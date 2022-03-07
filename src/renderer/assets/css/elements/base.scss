@@ -19,9 +19,10 @@ body {
   @extend .is-shadowless;
 }
 
-::selection {
+::selection,
+::-webkit-selection {
   color: var(info-invert) !important;
-  background-color: var(--info);
+  background-color: var(--info) !important;
 }
 
 ::placeholder {
