@@ -10,6 +10,7 @@
 import { userConfig } from '.';
 
 import path from 'path';
+import { exec, execSync } from 'child_process';
 
 import * as core from '../inc/functions-core';
 import * as hooks from '../inc/functions-hooks';
@@ -301,6 +302,14 @@ const initHooks = () =>
   hooks._addFilter('sql_get_work_hours', (query: string, project: Project) =>
   {
     return query;
+  });
+
+  /**
+   * Filter content of a file preview that is not supported by default.
+   */
+  hooks._addFilter('file_preview_content', (content: JQuery<any>, filePath: string, extension: string) =>
+  {
+    return content;
   });
 };
 
