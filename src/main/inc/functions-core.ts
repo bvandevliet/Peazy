@@ -1,4 +1,6 @@
 import path from 'path';
+import { exec, execSync } from 'child_process';
+
 import
 {
   app, ipcRenderer,
@@ -132,6 +134,14 @@ export const parseArgs = <T> (input: T, defaults: T): T =>
  */
 export const partitionArr = <T> (array: T[], predicate: (value: T, index: number) => boolean): [T[], T[]] =>
   array.reduce((prev, cur, index) => (prev[Number(!predicate(cur, index))].push(cur), prev), [[], []]);
+
+/**
+ * Get a user's friendly name within the current domain.
+ *
+ * @param username The user's non-friendly login name.
+ */
+export const getFriendlyUsername = (username: string) =>
+  execSync(`powershell -command "([adsi]"""WinNT://$env:userdomain/${username},user""").fullname"`).toString().trim();
 
 /**
  * Popup a context-menu.
