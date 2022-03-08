@@ -8,15 +8,12 @@
 
 // Load user configuration.
 import { userConfig } from '.';
+import { API } from '../preload';
 
 import path from 'path';
 import { exec, execSync } from 'child_process';
 
-import * as core from '../inc/functions-core';
 import * as hooks from '../inc/functions-hooks';
-import * as fs from '../inc/functions-fs';
-import * as sql from '../inc/functions-sql';
-import * as proj from '../inc/functions-project';
 
 /**
  * This function is called from the MAIN process and PRELOAD script once.
@@ -78,7 +75,7 @@ const initHooks = () =>
 
     const project_number = hooks.applyFilters('project_project_number', project.project_number);
 
-    const newLocation = proj.getProjectPathLocations()
+    const newLocation = API.project.getProjectPathLocations()
       .filter(lookupSubDir => lookupSubDir.slice(-2) === project_number.match(/\d{2}/u)[0])[0];
 
     const newProjectPath = path.join(newLocation, project_number);
@@ -93,7 +90,7 @@ const initHooks = () =>
     /**
      * Let the user decide what to do next.
      */
-    return core.messageBox({
+    return API.core.messageBox({
       type: 'warning',
       title: 'Create project folder',
       message: `Create a new project folder for "${project_number}":`,
@@ -159,20 +156,20 @@ const initHooks = () =>
     if (Array.isArray(args.project_ids))
     {
       query += `
-    AND [projects].[id] IN (${args.project_ids.map(id => `'${sql.sanitizeSql(id.trim())}'`).join(', ')})`;
+    AND [projects].[id] IN (${args.project_ids.map(id => `'${API.sql.sanitizeSql(id.trim())}'`).join(', ')})`;
     }
 
     // project number ..
     else if (Array.isArray(args.project_numbers))
     {
       query += `
-    AND upper(trim([projects].[project_number])) IN (${args.project_numbers.map(nr => `'${sql.sanitizeSql(nr.trim().toUpperCase())}'`).join(', ')})`;
+    AND upper(trim([projects].[project_number])) IN (${args.project_numbers.map(nr => `'${API.sql.sanitizeSql(nr.trim().toUpperCase())}'`).join(', ')})`;
     }
 
     // children of ..
-    else if (!core.isEmpty(args.children_of))
+    else if (!API.core.isEmpty(args.children_of))
     {
-      const install_project = sql.sanitizeSql(args.children_of.trim().toUpperCase());
+      const install_project = API.sql.sanitizeSql(args.children_of.trim().toUpperCase());
 
       query += `
     AND (
@@ -191,7 +188,7 @@ const initHooks = () =>
 
         args.search_for.forEach((queryItem, index) =>
         {
-          queryItem = sql.sanitizeSql(queryItem).toLowerCase();
+          queryItem = API.sql.sanitizeSql(queryItem).toLowerCase();
 
           if (index > 0) query += `
       AND`;
@@ -219,7 +216,7 @@ const initHooks = () =>
     else if (Array.isArray(args.status))
     {
       query += `
-    AND [projects].[status] IN (${args.status.map(stat => `'${sql.sanitizeSql(stat.trim())}'`).join(', ')})`;
+    AND [projects].[status] IN (${args.status.map(stat => `'${API.sql.sanitizeSql(stat.trim())}'`).join(', ')})`;
     }
 
     // order ..
@@ -254,14 +251,14 @@ const initHooks = () =>
   WHERE`;
 
     // project number ..
-    query += core.isEmpty(args.project_number)
+    query += API.core.isEmpty(args.project_number)
       ? `
     AND [planning].[project_number] IS NOT NULL`
       : `
     AND [planning].[project_number] = '${args.project_number}'`;
 
     // parent id ..
-    query += core.isEmpty(args.parent_id)
+    query += API.core.isEmpty(args.parent_id)
       ? `
     AND [planning].[parent_id] IS NULL`
       : `
