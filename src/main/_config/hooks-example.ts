@@ -47,14 +47,6 @@ const initHooks = () =>
   });
 
   /**
-   * Determine if a path is a valid install path for a given install number.
-   */
-  hooks._addFilter('install_path_is_match', (_isMatch: boolean, potentialInstallPath: string, validInstallPathBasenames: string[]) =>
-  {
-    return validInstallPathBasenames.some(basename => path.basename(potentialInstallPath).endsWith(basename));
-  });
-
-  /**
    * Determine if a path is a valid project path for a given project number.
    */
   hooks._addFilter('project_path_is_match', (_isMatch: boolean, potentialProjectPath: string, validProjectPathBasenames: string[]) =>

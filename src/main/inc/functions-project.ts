@@ -234,7 +234,6 @@ export const getProjectPathLocations = () =>
 
       lookupPaths = fs.readdirSync(lookupPath)
         .filter(lookupSubDir => hooks.applyFilters('is_valid_project_location', true, lookupSubDir))
-        .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
         .map(lookupSubDir => path.join(lookupPath, lookupSubDir));
     }
 
@@ -299,41 +298,31 @@ export const getProjectPaths = (number: ProjectAndInstallNumber, projectLocation
           dirLookupWalker(potentialPath, true);
         }
       });
-
-      return;
     }
 
-    // else (deepValidation === true) { ..
-
-    if (!fs.existsSync(lookupPath)) return;
-    if (!fs.statSync(lookupPath).isDirectory()) return;
-
-    const potentialDirs = fs.readdirSync(lookupPath)
-      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
-
-    potentialDirs.forEach(potentialDir =>
+    // deepValidation === true
+    else
     {
-      const potentialPath = path.join(lookupPath, potentialDir);
+      if (!fs.existsSync(lookupPath)) return;
+      if (!fs.statSync(lookupPath).isDirectory()) return;
 
-      if (
-        !core.isEmpty(number.project_number) && fs.statSync(potentialPath).isDirectory() &&
+      const potentialDirs = fs.readdirSync(lookupPath)
+        // Sort Z to A.
+        .sort((b, a) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+
+      potentialDirs.forEach(potentialDir =>
+      {
+        const potentialPath = path.join(lookupPath, potentialDir);
+
+        if (
+          !core.isEmpty(number.project_number) && fs.statSync(potentialPath).isDirectory() &&
         hooks.applyFilters('project_path_is_match', false, potentialPath, validProjectPathBasenames)
-      )
-      {
-        validPaths.projectPaths.push(potentialPath);
-      }
-
-      if (
-        !core.isEmpty(number.install_number) && fs.statSync(potentialPath).isDirectory() &&
-        hooks.applyFilters('install_path_is_match', false, potentialPath, validInstallPathBasenames)
-      )
-      {
-        validPaths.installPaths.push(potentialPath);
-
-        // Recursive deep lookup install dir.
-        dirLookupWalker(potentialPath, true);
-      }
-    });
+        )
+        {
+          validPaths.projectPaths.push(potentialPath);
+        }
+      });
+    }
   };
 
   // Define the initial lookup dirs and start the lookup.
