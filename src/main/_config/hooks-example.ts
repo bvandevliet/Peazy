@@ -15,6 +15,8 @@ import { exec, execSync } from 'child_process';
 
 import * as hooks from '../inc/functions-hooks';
 
+import StreamZip from 'node-stream-zip';
+
 /**
  * This function is called from the MAIN process and PRELOAD script once.
  */
