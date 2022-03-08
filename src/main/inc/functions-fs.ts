@@ -11,6 +11,7 @@ import
   from 'electron';
 
 import FileInfo from './class-file-info';
+import * as hooks from './functions-hooks';
 
 // import * as core from './functions-core';
 
@@ -48,13 +49,15 @@ export const getFileIcon = (filePath: string, options: Electron.FileIconOptions 
 {
   filePath = path.normalize(filePath);
 
-  return new Promise(resolve =>
-  {
-    ipcRenderer
-      .once(`file-icon-data-${filePath}`, (_e, dataUrl: string) => resolve(dataUrl));
+  return hooks.applyFilters('file_icon',
+    new Promise(resolve =>
+    {
+      ipcRenderer
+        .once(`file-icon-data-${filePath}`, (_e, dataUrl: string) => resolve(dataUrl));
 
-    ipcRenderer.send('file-icon', filePath, options);
-  });
+      ipcRenderer.send('file-icon', filePath, options);
+    }),
+    filePath);
 };
 
 /**

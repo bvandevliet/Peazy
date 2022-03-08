@@ -305,6 +305,14 @@ const initHooks = () =>
   });
 
   /**
+   * Filter file icons.
+   */
+  hooks._addFilter('file_icon', (dataUrl: Promise<string>, filePath: string) =>
+  {
+    return dataUrl;
+  });
+
+  /**
    * Filter content of a file preview that is not supported by default.
    */
   hooks._addFilter('file_preview_content', (content: JQuery<any>, filePath: string, extension: string) =>
