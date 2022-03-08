@@ -306,9 +306,9 @@ const initHooks = () =>
   /**
    * Filter content of a file preview that is not supported by default.
    */
-  hooks._addFilter('file_preview_content', (content: JQuery<any>, filePath: string, extension: string) =>
+  hooks._addFilter('file_preview_content', (html: string, filePath: string, extension: string) =>
   {
-    return content;
+    return html;
   });
 };
 
