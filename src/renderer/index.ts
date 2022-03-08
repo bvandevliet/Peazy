@@ -42,6 +42,11 @@ const sidebarTabs = new Tabs();
     callback: () => null,
   },
   {
+    id: 'browser-resources',
+    template: 'tmpl-li-resources',
+    callback: () => null,
+  },
+  {
     id: 'browser-orders',
     template: 'tmpl-li-orders',
     callback: () => null,

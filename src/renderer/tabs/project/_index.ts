@@ -81,6 +81,11 @@ export default class projectTab implements tabPage
         onclick: () => new Promise(resolve => resolve(true)),
       },
       {
+        id: 'project-planning',
+        template: 'tmpl-li-project-planning',
+        callback: () => null,
+      },
+      {
         id: 'project-docs',
         template: 'tmpl-li-project-docs',
         callback: ($div, $li) => this._tabs.docsTab = new docsTab($div, $li),
