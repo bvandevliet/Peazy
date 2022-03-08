@@ -89,8 +89,14 @@ export default class docsTab implements tabPage
         },
         {
           text: doc.title,
-          // Always activate.
-          onclick: () => new Promise(resolve => (this._docPreview.preview(doc.path), resolve(true))),
+          onclick: () =>
+          {
+            // html.loading();
+            return this._docPreview.preview(doc.path)
+              // Always activate.
+              .then(() => true);
+            // .finally(() => html.loading(false));
+          },
           oncontextmenu: () =>
           {
             return [

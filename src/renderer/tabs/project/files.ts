@@ -126,7 +126,11 @@ export default class filesTab implements tabPage
         {
           this.$div.find('.column.sidebar').removeClass('full-width');
 
-          return new Promise(resolve => (this._filePreview.preview(fileInfo.fullPath), resolve(true)));
+          // html.loading();
+          return this._filePreview.preview(fileInfo.fullPath)
+            // Always activate.
+            .then(() => true);
+          // .finally(() => html.loading(false));
         },
         oncontextmenu: () => window.api.hooks.applyFilters('contextmenu_file',
           [

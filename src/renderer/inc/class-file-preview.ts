@@ -32,7 +32,7 @@ export default class FilePreview
     return this._file;
   }
 
-  private _content = (): JQuery<any> => null;
+  private _content = (): Promise<string|JQuery<any>> => null;
 
   private empty ()
   {
@@ -57,14 +57,14 @@ export default class FilePreview
   /**
    * Refresh the current preview.
    */
-  refresh (): boolean
+  async refresh (): Promise<boolean>
   {
     this.empty();
 
     this._preview.$ul.removeClass('is-hidden')
       .find('>li>a').first().text(window.api.path.basename(this._file));
 
-    const $content = this._content();
+    const $content = await this._content();
 
     if (window.api.fs.existsSync(this._file))
     {
@@ -72,18 +72,25 @@ export default class FilePreview
       // window.api.fs.getFileIcon(this._file)
       //   .then(dataUrl => {});
 
-      this._$previewContent
-        .append($content ?? '<div class="content"><p>Preview not available.</p></div>');
+      if ($content !== null)
+      {
+        typeof $content === 'string'
+          ? this._$previewContent.html($content)
+          : this._$previewContent.append($content);
 
-      return $content !== null;
+        return true;
+      }
+
+      this._$previewContent
+        .html('<div class="content"><p>Preview not available.</p></div>');
     }
     else
     {
       this._$previewContent
-        .append('<div class="content"><p>File does not exist.</p></div>');
-
-      return false;
+        .html('<div class="content"><p>File does not exist.</p></div>');
     }
+
+    return false;
   }
 
   /**
@@ -109,8 +116,9 @@ export default class FilePreview
       {
         this._content = () =>
         {
-          return $(document.createElement('img'))
-            .attr('src', window.api.core.escapeURI(`file:///${this.file}`));
+          return new Promise(resolve =>
+            resolve($(document.createElement('img'))
+              .attr('src', window.api.core.escapeURI(`file:///${this.file}`))));
         };
 
         break;
@@ -130,7 +138,8 @@ export default class FilePreview
 
         this._content = () =>
         {
-          return $iframe.attr('src', window.api.core.escapeURI(`file:///${this.file}`));
+          return new Promise(resolve =>
+            resolve($iframe.attr('src', window.api.core.escapeURI(`file:///${this.file}`))));
         };
 
         break;
@@ -145,7 +154,8 @@ export default class FilePreview
 
         this._content = () =>
         {
-          return $iframe.attr('src', window.api.core.escapeURI(`file:///${pdfjs}`, { file: `file:///${this.file}` }));
+          return new Promise(resolve =>
+            resolve($iframe.attr('src', window.api.core.escapeURI(`file:///${pdfjs}`, { file: `file:///${this.file}` }))));
         };
 
         break;
@@ -153,7 +163,7 @@ export default class FilePreview
       default:
       {
         // Filter for custom file preview support.
-        this._content = () => window.api.hooks.applyFilters('file_preview_content', null, this._file, ext);
+        this._content = () => window.api.hooks.applyFilters('file_preview_content', new Promise(resolve => resolve(null)) as Promise<JQuery<any>>, this._file, ext);
       }
     }
 
@@ -190,7 +200,9 @@ export default class FilePreview
     // Configure the "refresh" button.
     $li.find('>a.refresh-btn').on('click', () =>
     {
+      // html.loading();
       this.refresh();
+      // .finally(() => html.loading(false));
     });
 
     // Configure the "close" button.
