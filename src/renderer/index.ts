@@ -180,7 +180,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
   // Create new tab.
   const { $li } = mainTabs.addTab({
     id: null, // the projectTab instance will set the ID, text and title for this tab
-    template: 'tmpl-li-project-tab',
+    template: 'tmpl-li-main-tab',
     callback: ($div, $li) => tabProject = new projectTab($div, $li, project),
     onclick: $li =>
     {
@@ -198,6 +198,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
         ],
         tabProject.project);
     },
+    classes: ['li-project-tab'],
   });
 
   // Configure the "close" button.

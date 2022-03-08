@@ -139,6 +139,34 @@ $tabs-toggle-link-active-color: var(--link-invert) !default;
         margin-right: auto;
       }
     }
+
+    &.li-main-tab {
+      >a:first-child::before {
+        display: inline-block;
+        width: 1.25em;
+        font-weight: 400 !important;
+      }
+
+      &.li-project-tab>a:first-child::before {
+        content: '\2756';
+      }
+
+      &.li-customer-tab>a:first-child::before {
+        content: '\26B2';
+      }
+
+      &.li-resource-tab>a:first-child::before {
+        content: '\265F';
+      }
+
+      &.li-order-tab>a:first-child::before {
+        content: '\00A4';
+      }
+
+      &.li-article-tab>a:first-child::before {
+        content: '\26CF';
+      }
+    }
   }
 
   .icon {
