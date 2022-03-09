@@ -179,7 +179,7 @@ export default class FilePreview
     this._preview = new Tabs();
     this.$preview = this._preview.$container;
 
-    this._preview.$ul.addClass('is-hidden');
+    this._preview.$ul.addClass(['is-fullwidth', 'is-hidden']);
 
     // Create new tab.
     const { $li } = this._preview.addTab({
