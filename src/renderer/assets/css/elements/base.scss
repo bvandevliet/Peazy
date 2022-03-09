@@ -21,7 +21,7 @@ body {
 
 ::selection,
 ::-webkit-selection {
-  color: var(info-invert) !important;
+  color: var(--info-invert) !important;
   background-color: var(--info) !important;
 }
 
