@@ -1,7 +1,153 @@
-table {
+/*
+ * Own implementation of bulma/elements/table for more flexibility.
+ */
+
+$table-cell-padding-vertical: 0.5em !default;
+$table-cell-padding-horizontal: 0.75em !default;
+$table-cell-padding: $table-cell-padding-vertical $table-cell-padding-horizontal !default;
+
+$table-color: var(--text-strong) !default;
+$table-background-color: var(--scheme-main) !default;
+
+$table-cell-border: none !default;
+$table-cell-border-width: 0 !default;
+$table-cell-heading-color: var(--text-strong) !default;
+
+$table-head-cell-border-width: 0 !default;
+$table-head-cell-color: var(--text-strong) !default;
+$table-foot-cell-border-width: 0 !default;
+$table-foot-cell-color: var(--text-strong) !default;
+
+$table-head-background-color: transparent !default;
+$table-body-background-color: transparent !default;
+$table-foot-background-color: transparent !default;
+
+$table-row-hover-background-color: var(--scheme-main-bis) !default;
+$table-row-active-background-color: var(--primary) !default;
+$table-row-active-color: var(--primary-invert) !default;
+
+$table-striped-row-even-background-color: var(--scheme-main-bis) !default;
+$table-striped-row-even-hover-background-color: var(--scheme-main-ter) !default;
+
+$table-colors: $colors !default;
+
+table,
+.table {
+  @extend %block;
+
+  background-color: $table-background-color;
+  color: $table-color;
+
+  td,
+  th {
+    border: $table-cell-border;
+    border-width: $table-cell-border-width;
+    padding: $table-cell-padding;
+    vertical-align: top;
+
+    >* {
+      z-index: 2;
+    }
+
+    // Colors
+    @each $name,
+    $pair in $table-colors {
+      $color: nth($pair, 1);
+      $color-invert: nth($pair, 2);
+
+      &.is-#{$name} {
+        background-color: $color;
+        border-color: $color;
+        color: $color-invert;
+      }
+    }
+
+    // Modifiers
+    &.is-narrow {
+      width: 0;
+      white-space: pre;
+    }
+
+    &.is-selected {
+      background-color: $table-row-active-background-color;
+      color: $table-row-active-color;
+
+      a,
+      strong {
+        color: currentColor;
+      }
+    }
+
+    &.is-vcentered {
+      vertical-align: middle;
+    }
+
+    // Additions
+    tr:not(:hover) .hover-actions {
+      opacity: 0;
+    }
+
+    >span.indent {
+      border-left: 1px solid var(--grey);
+      padding: calc($table-cell-padding-vertical * 2) calc($table-cell-padding-horizontal / 2) $table-cell-padding-vertical;
+    }
+
+    &.is-file-icon {
+      @extend .is-narrow;
+
+      padding-right: 0;
+
+      padding-top: calc($table-cell-padding-vertical + .15em);
+      padding-bottom: calc($table-cell-padding-vertical - .15em);
+
+      img {
+        max-width: unset;
+      }
+
+      &,
+      * {
+        width: 16px !important;
+      }
+    }
+  }
 
   th {
     font-weight: $weight-semibold;
+    color: $table-cell-heading-color;
+
+    &:not([align]) {
+      text-align: inherit;
+    }
+  }
+
+  tr {
+    &.is-selected {
+      background-color: $table-row-active-background-color;
+      color: $table-row-active-color;
+
+      a,
+      strong {
+        color: currentColor;
+      }
+
+      td,
+      th {
+        border-color: $table-row-active-color;
+        color: currentColor;
+      }
+    }
+
+    &.is-folder-row {
+
+      th,
+      td {
+
+        &,
+        & * {
+          color: var(--text-light);
+        }
+      }
+    }
   }
 
   thead,
@@ -9,7 +155,7 @@ table {
 
     th,
     td {
-      @extend .is-unselectable;
+      @extend %unselectable;
 
       &.is-sortable {
         cursor: pointer;
@@ -34,59 +180,110 @@ table {
     }
   }
 
-  &,
-  &.is-hoverable,
+  thead {
+    background-color: $table-head-background-color;
+
+    td,
+    th {
+      border-width: $table-head-cell-border-width;
+      color: $table-head-cell-color;
+    }
+  }
+
+  tfoot {
+    background-color: $table-foot-background-color;
+
+    td,
+    th {
+      border-width: $table-foot-cell-border-width;
+      color: $table-foot-cell-color;
+    }
+  }
+
+  tbody {
+    background-color: $table-body-background-color;
+
+    tr {
+      &:last-child {
+
+        td,
+        th {
+          border-bottom-width: 0;
+        }
+      }
+    }
+  }
+
+  // Modifiers
+  &.has-separated-tbodies {
+
+    tbody::before {
+      content: '';
+      display: table-row;
+      height: $table-cell-padding-vertical;
+    }
+  }
+
+  &.is-bordered {
+
+    td,
+    th {
+      border-width: 1px;
+    }
+
+    tr {
+
+      &:last-child td,
+      th {
+        border-bottom-width: 1px;
+      }
+    }
+  }
+
+  &.is-fullwidth {
+    width: 100%;
+  }
+
+  &.is-hoverable {
+    tbody {
+      tr:not(.is-selected) {
+        &:hover {
+          background-color: $table-row-hover-background-color;
+        }
+      }
+    }
+
+    &.is-striped {
+      tbody {
+        tr:not(.is-selected) {
+          &:hover {
+            background-color: $table-row-hover-background-color;
+
+            &:nth-child(even) {
+              background-color: $table-striped-row-even-hover-background-color;
+            }
+          }
+        }
+      }
+    }
+  }
+
   &.is-striped {
-
-    th,
-    td {
-      border: none;
-
-      >* {
-        z-index: 2;
-      }
-
-      >span.indent {
-        border-left: 1px solid var(--grey);
-        padding: calc($control-padding-vertical * 2) calc($control-padding-horizontal / 2) $control-padding-vertical;
+    tbody {
+      tr:not(.is-selected) {
+        &:nth-child(even) {
+          background-color: $table-striped-row-even-background-color;
+        }
       }
     }
   }
+}
 
-  tr:not(:hover) .hover-actions {
-    opacity: 0;
-  }
+.table-container {
+  @extend %block;
+  @include overflow-touch;
 
-  th,
-  td {
-    &.is-file-icon {
-      @extend .min-width;
-
-      padding-right: 0;
-
-      padding-top: calc($control-padding-vertical + .15em);
-      padding-bottom: calc($control-padding-vertical - .15em);
-
-      &,
-      * {
-        width: 16px !important;
-      }
-    }
-
-    >img {
-      max-width: unset;
-    }
-  }
-
-  tr.is-folder-row {
-
-    th,
-    td {
-
-      &,
-      & * {
-        color: var(--text-light);
-      }
-    }
-  }
+  overflow: auto;
+  overflow-y: hidden;
+  max-width: 100%;
 }

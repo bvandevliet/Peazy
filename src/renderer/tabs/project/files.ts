@@ -99,7 +99,7 @@ export default class filesTab implements tabPage
           dirPath,
           isRoot),
         ondblclick: () => window.api.fs.openNative(dirPath),
-        classes: ['min-width', 'cursor-default'],
+        classes: ['is-narrow', 'cursor-default'],
       },
     ])
       .addClass(isRoot ? null : 'is-folder-row');
@@ -149,11 +149,11 @@ export default class filesTab implements tabPage
       },
       {
         text: `${Math.ceil((fileInfo.size as number) / 1000).toLocaleString()} kB`,
-        classes: ['min-width', 'is-number', 'ignore-search'],
+        classes: ['is-narrow', 'is-number', 'ignore-search'],
       },
       {
         text: new DateTime(fileInfo.modified).getTimestamp(),
-        classes: ['min-width', 'is-number', 'ignore-search'],
+        classes: ['is-narrow', 'is-number', 'ignore-search'],
       },
     ]);
 

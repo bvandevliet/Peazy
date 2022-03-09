@@ -73,27 +73,27 @@ export default class workTab implements tabPage
         {
           text: `${hours.resource_first_name} ${hours.resource_name}`,
           onclick: () => new Promise(resolve => resolve(false)),
-          classes: ['min-width'],
+          classes: ['is-narrow'],
         },
         {
           text: hours.worktype_code,
-          classes: ['min-width'],
+          classes: ['is-narrow'],
         },
         {
           text: hours.worktype_name,
-          classes: ['min-width'],
+          classes: ['is-narrow'],
         },
         {
           text: hours.amount.toFixed(2),
-          classes: ['min-width', 'is-number'],
+          classes: ['is-narrow', 'is-number'],
         },
         {
           text: new DateTime(hours.date_start).getDate(),
-          classes: ['min-width', 'is-number'],
+          classes: ['is-narrow', 'is-number'],
         },
         {
           text: new DateTime(hours.date_end).getDate(),
-          classes: ['min-width', 'is-number'],
+          classes: ['is-narrow', 'is-number'],
         },
         {
           // empty cell to fill remaining space ..

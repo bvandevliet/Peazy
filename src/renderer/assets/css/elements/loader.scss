@@ -1,5 +1,5 @@
 #loader {
-  @extend .is-unselectable;
+  @extend %unselectable;
   cursor: wait !important;
 
   z-index: 999;

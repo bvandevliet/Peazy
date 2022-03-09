@@ -2,6 +2,10 @@
  * Own implementation of bulma/components/tabs to migrate hover/active styles from `a` to `li` to allow for multiple `a` per `li`.
  */
 
+$tabs-link-padding-vertical: 0.5em !default;
+$tabs-link-padding-horizontal: 1em !default;
+$tabs-link-padding: $tabs-link-padding-vertical $tabs-link-padding-horizontal !default;
+
 $tabs-border-bottom-color: var(--border) !default;
 $tabs-border-bottom-style: solid !default;
 $tabs-border-bottom-width: 1px !default;
@@ -10,9 +14,6 @@ $tabs-link-hover-border-bottom-color: var(--text-strong) !default;
 $tabs-link-hover-color: var(--text-strong) !default;
 $tabs-link-active-border-bottom-color: var(--link) !default;
 $tabs-link-active-color: var(--link) !default;
-$tabs-link-padding-vertical: 0.5em !default;
-$tabs-link-padding-horizontal: 1em !default;
-$tabs-link-padding: $tabs-link-padding-vertical $tabs-link-padding-horizontal !default;
 
 $tabs-boxed-link-radius: $radius !default;
 $tabs-boxed-link-hover-background-color: var(--background) !default;
@@ -166,16 +167,6 @@ $tabs-toggle-link-active-color: var(--link-invert) !default;
       &.li-article-tab>a:first-child::before {
         content: '\26CF';
       }
-    }
-  }
-
-  .icon {
-    &:first-child {
-      @include ltr-property('margin', 0.5em);
-    }
-
-    &:last-child {
-      @include ltr-property('margin', 0.5em, false);
     }
   }
 
