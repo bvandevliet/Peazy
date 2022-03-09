@@ -474,6 +474,12 @@ document.addEventListener('keydown', e =>
   {
     $('#sidebar input[type=search]:visible').first().trigger('focus');
   }
+  else if (e.ctrlKey && e.key === 'f')
+  {
+    stopBrowsing();
+
+    mainTabs.activeTab.$div.find('input[type=search]:visible').last().trigger('focus');
+  }
   else if (e.key === 'Escape')
   {
     const $inputSearch = $('#sidebar input[type=search]:visible').first();
