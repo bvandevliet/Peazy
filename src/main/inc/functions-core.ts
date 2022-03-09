@@ -55,7 +55,8 @@ export const escapeURI = (url: string, queryArgs: Record<string, string> = {}) =
 
   const queryStr = queryArr.length ? `?${queryArr.join('&')}` : '';
 
-  const [protocol, ...rest] = url.split(/($.*:\/*)/u);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_empty, protocol, ...rest] = url.split(/(^[^:]*:\/*)/u);
 
   return `${protocol}${rest.join().split(/[\\/]/gu).map(escapeComponent).join('/')}${queryStr}`;
 };
