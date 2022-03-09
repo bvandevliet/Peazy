@@ -17,6 +17,7 @@
   // Derived colors
 
   --primary:            var(--blue);
+  --secondary:          var(--orange); // and see --secondary-invert !!
 
   --info:               var(--cyan);
   --success:            var(--green);
@@ -40,6 +41,7 @@
   --primary-invert:     #{$primary-invert};
   --primary-light:      #{$primary-light};
   --primary-dark:       #{$primary-dark};
+  --secondary-invert:   var(--orange-invert);
   --info-invert:        #{$info-invert};
   --info-light:         #{$info-light};
   --info-dark:          #{$info-dark};
@@ -90,7 +92,7 @@
 
   --link:               #{$link};
   --link-invert:        #{$link-invert};
-  --link-light:         #{$link-light};
+  --link-light:         #fff;
   --link-dark:          #{$link}; // #{$link-dark};
   --link-visited:       #{$link-visited};
 
