@@ -166,7 +166,7 @@ export default class projectTab implements tabPage
     (window.api.hooks.applyFilters('project_info_tbodies', [
       [[
         {
-          template: 'tmpl-th-no-wrap',
+          template: 'tmpl-th-narrow',
           text: '[Install-] Project number',
         },
         {
@@ -175,7 +175,7 @@ export default class projectTab implements tabPage
       ],
       [
         {
-          template: 'tmpl-th-no-wrap',
+          template: 'tmpl-th-narrow',
           text: 'Description',
         },
         {
@@ -184,7 +184,7 @@ export default class projectTab implements tabPage
       ],
       [
         {
-          template: 'tmpl-th-no-wrap',
+          template: 'tmpl-th-narrow',
           text: 'Customer (Country)',
         },
         {
@@ -194,7 +194,7 @@ export default class projectTab implements tabPage
       ]],
       [[
         {
-          template: 'tmpl-th-no-wrap',
+          template: 'tmpl-th-narrow',
           text: 'Status',
         },
         {
@@ -203,7 +203,7 @@ export default class projectTab implements tabPage
       ],
       [
         {
-          template: 'tmpl-th-no-wrap',
+          template: 'tmpl-th-narrow',
           text: 'Price',
         },
         {
@@ -212,7 +212,7 @@ export default class projectTab implements tabPage
       ],
       [
         {
-          template: 'tmpl-th-no-wrap',
+          template: 'tmpl-th-narrow',
           text: 'Date start',
         },
         {
@@ -221,7 +221,7 @@ export default class projectTab implements tabPage
       ],
       [
         {
-          template: 'tmpl-th-no-wrap',
+          template: 'tmpl-th-narrow',
           text: 'Date delivery',
         },
         {
@@ -230,7 +230,7 @@ export default class projectTab implements tabPage
       ]],
       [[
         {
-          template: 'tmpl-th-no-wrap',
+          template: 'tmpl-th-narrow',
           text: 'Notes',
         },
         {
@@ -239,7 +239,7 @@ export default class projectTab implements tabPage
       ]],
       [[
         {
-          template: 'tmpl-th-no-wrap',
+          template: 'tmpl-th-narrow',
           text: 'Sales manager',
         },
         {
@@ -249,7 +249,7 @@ export default class projectTab implements tabPage
       ],
       [
         {
-          template: 'tmpl-th-no-wrap',
+          template: 'tmpl-th-narrow',
           text: 'Project manager',
         },
         {
@@ -259,7 +259,7 @@ export default class projectTab implements tabPage
       ],
       [
         {
-          template: 'tmpl-th-no-wrap',
+          template: 'tmpl-th-narrow',
           text: 'Project engineer',
         },
         {
