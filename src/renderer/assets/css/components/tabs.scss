@@ -70,8 +70,8 @@ $tabs-link-active-color: var(--link) !default;
         color: var(--text);
 
         &:hover {
-          color: var(--cyan-invert);
-          background-color: var(--cyan);
+          color: var(--info-invert);
+          background-color: var(--info);
         }
 
         &.close-btn:hover {
