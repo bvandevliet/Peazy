@@ -91,7 +91,7 @@
   --link:               #{$link};
   --link-invert:        #{$link-invert};
   --link-light:         #{$link-light};
-  --link-dark:          #{$link-dark};
+  --link-dark:          #{$link}; // #{$link-dark};
   --link-visited:       #{$link-visited};
 
   --link-hover:         #{$link-hover};

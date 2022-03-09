@@ -43,9 +43,3 @@ $cyan:      rgb(170, 220, 255);
 $blue:      rgb(0, 100, 160);
 $purple:    rgb(185, 100, 255);
 $red:       rgb(255, 70, 70);
-
-
-// Override active table row colors to be more appropriate.
-
-$table-row-active-background-color: var(--link);
-$table-row-active-color:            var(--link-invert);

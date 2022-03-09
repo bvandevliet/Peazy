@@ -3,10 +3,9 @@
 /*
  * Fix borders
  */
-
-.table.has-sticky-column,
-.table.has-sticky-footer,
-.table.has-sticky-header {
+table.has-sticky-column,
+table.has-sticky-footer,
+table.has-sticky-header {
   border-collapse: separate;
 
   tbody,
@@ -44,58 +43,33 @@
 /*
  * Sticky Header
  */
-
-.table.has-sticky-header {
+table.has-sticky-header {
   thead th {
-    @if $table-head-background-color=='transparent'or $table-head-background-color==rgba(0, 0, 0, 0) {
-      background-color: $table-background-color;
-    }
-
     position: sticky;
     top: 0;
     z-index: 3;
   }
 }
 
-// .navbar.is-fixed-top~* .table.has-sticky-header thead th,
-// .navbar.is-fixed-top~.table.has-sticky-header thead th {
-//   top: $navbar-height;
-// }
-
 /*
  * Sticky Footer
  */
-
-.table.has-sticky-footer {
+table.has-sticky-footer {
   tfoot th {
-    @if $table-foot-background-color=='transparent'or $table-foot-background-color==rgba(0, 0, 0, 0) {
-      background-color: $table-background-color;
-    }
-
     position: sticky;
     bottom: 0;
     z-index: 3;
   }
 }
 
-// .navbar.is-fixed-bottom~* .table.has-sticky-footer tfoot th,
-// .navbar.is-fixed-bottom~.table.has-sticky-footer tfoot th {
-//   bottom: $navbar-height;
-// }
-
 /*
  * Sticky Column
  */
-
-.table.has-sticky-column {
+table.has-sticky-column {
 
   // REPLACED `:first-child` WITH `.is-sticky-column` !!
   tfoot th.is-sticky-column,
   thead th.is-sticky-column {
-    @if $table-head-background-color=='transparent'or $table-head-background-color==rgba(0, 0, 0, 0) {
-      background-color: $table-background-color;
-    }
-
     position: sticky;
     left: 0;
     z-index: 4;
@@ -103,42 +77,9 @@
 
   // REPLACED `:first-child` WITH `:first-of-type` !!
   tbody th:first-of-type {
-    @if $table-body-background-color=='transparent'or $table-body-background-color==rgba(0, 0, 0, 0) {
-      background-color: $table-background-color;
-    }
-
     position: sticky;
     left: 0;
     z-index: 2;
-  }
-
-  // REPLACED `:first-child` WITH `:first-of-type` !!
-  tbody tr.is-selected th:first-of-type {
-    background-color: $table-row-active-background-color;
-  }
-
-  &.is-hoverable {
-
-    // REPLACED `:first-child` WITH `:first-of-type` !!
-    tbody tr:not(.is-selected):hover th:first-of-type {
-      background-color: $table-row-hover-background-color;
-    }
-  }
-
-  &.is-striped {
-
-    // REPLACED `:first-child` WITH `:first-of-type` !!
-    tbody tr:not(.is-selected):nth-child(even) th:first-of-type {
-      background-color: $table-striped-row-even-background-color;
-    }
-  }
-
-  &.is-striped.is-hoverable {
-
-    // REPLACED `:first-child` WITH `:first-of-type` !!
-    tbody tr:not(.is-selected):nth-child(even):hover th:first-of-type {
-      background-color: $table-striped-row-even-hover-background-color;
-    }
   }
 }
 

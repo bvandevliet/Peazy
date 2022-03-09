@@ -18,16 +18,20 @@ $table-head-cell-color: var(--text-strong) !default;
 $table-foot-cell-border-width: 0 !default;
 $table-foot-cell-color: var(--text-strong) !default;
 
-$table-head-background-color: transparent !default;
-$table-body-background-color: transparent !default;
-$table-foot-background-color: transparent !default;
+$table-head-background-color: $table-background-color !default;
+$table-body-background-color: $table-background-color !default;
+$table-foot-background-color: $table-background-color !default;
 
 $table-row-hover-background-color: var(--scheme-main-bis) !default;
-$table-row-active-background-color: var(--link) !default;
-$table-row-active-color: var(--link-invert) !default;
+
+$table-row-active-background-color: var(--border) !default;
+$table-row-active-color: var(--text-strong) !default;
+
+$table-main-row-active-background-color: var(--link-dark) !default;
+$table-main-row-active-color: var(--link-light) !default;
 
 $table-striped-row-even-background-color: var(--scheme-main-bis) !default;
-$table-striped-row-even-hover-background-color: var(--scheme-main-ter) !default;
+$table-striped-row-even-hover-background-color: var(--scheme-main-bis) !default;
 
 $table-colors: $colors !default;
 
@@ -57,8 +61,8 @@ table,
 
       &.is-#{$name} {
         background-color: $color;
-        border-color: $color;
         color: $color-invert;
+        border-color: $color;
       }
     }
 
@@ -88,7 +92,7 @@ table,
     }
 
     >span.indent {
-      border-left: 1px solid var(--grey);
+      border-left: 1px solid var(--grey-light);
       padding: calc($table-cell-padding-vertical * 2) calc($table-cell-padding-horizontal / 2) $table-cell-padding-vertical;
     }
 
@@ -122,18 +126,18 @@ table,
 
   tr {
     &.is-selected {
-      background-color: $table-row-active-background-color;
-      color: $table-row-active-color;
-
-      a,
-      strong {
-        color: currentColor;
-      }
 
       td,
       th {
+        background-color: $table-row-active-background-color;
+        color: $table-row-active-color;
+
         border-color: $table-row-active-color;
-        color: currentColor;
+
+        a,
+        strong {
+          color: currentColor;
+        }
       }
     }
 
@@ -181,27 +185,33 @@ table,
   }
 
   thead {
-    background-color: $table-head-background-color;
 
     td,
     th {
-      border-width: $table-head-cell-border-width;
+      background-color: $table-head-background-color;
       color: $table-head-cell-color;
+
+      border-width: $table-head-cell-border-width;
     }
   }
 
   tfoot {
-    background-color: $table-foot-background-color;
 
     td,
     th {
-      border-width: $table-foot-cell-border-width;
+      background-color: $table-foot-background-color;
       color: $table-foot-cell-color;
+
+      border-width: $table-foot-cell-border-width;
     }
   }
 
   tbody {
-    background-color: $table-body-background-color;
+
+    td,
+    th {
+      background-color: $table-body-background-color;
+    }
 
     tr {
       &:last-child {
@@ -215,28 +225,27 @@ table,
   }
 
   // Modifiers
+  &.main-table {
+    tr {
+      &.is-selected {
+
+        td,
+        th {
+          background-color: $table-main-row-active-background-color;
+          color: $table-main-row-active-color;
+
+          border-color: $table-main-row-active-color;
+        }
+      }
+    }
+  }
+
   &.has-separated-tbodies {
 
     tbody::before {
       content: '';
       display: table-row;
       height: $table-cell-padding-vertical;
-    }
-  }
-
-  &.is-bordered {
-
-    td,
-    th {
-      border-width: 1px;
-    }
-
-    tr {
-
-      &:last-child td,
-      th {
-        border-bottom-width: 1px;
-      }
     }
   }
 
@@ -248,7 +257,11 @@ table,
     tbody {
       tr:not(.is-selected) {
         &:hover {
-          background-color: $table-row-hover-background-color;
+
+          td,
+          th {
+            background-color: $table-row-hover-background-color;
+          }
         }
       }
     }
@@ -257,10 +270,18 @@ table,
       tbody {
         tr:not(.is-selected) {
           &:hover {
-            background-color: $table-row-hover-background-color;
+
+            td,
+            th {
+              background-color: $table-row-hover-background-color;
+            }
 
             &:nth-child(even) {
-              background-color: $table-striped-row-even-hover-background-color;
+
+              td,
+              th {
+                background-color: $table-striped-row-even-hover-background-color;
+              }
             }
           }
         }
@@ -272,7 +293,11 @@ table,
     tbody {
       tr:not(.is-selected) {
         &:nth-child(even) {
-          background-color: $table-striped-row-even-background-color;
+
+          td,
+          th {
+            background-color: $table-striped-row-even-background-color;
+          }
         }
       }
     }
