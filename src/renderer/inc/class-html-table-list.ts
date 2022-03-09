@@ -105,12 +105,14 @@ export default class TableList
 
       if (typeof column.ondblclick === 'function')
       {
-        $a.on('dblclick', e =>
-        {
-          e.preventDefault();
+        $a
+          .addClass('is-unselectable')
+          .on('dblclick', e =>
+          {
+            e.preventDefault();
 
-          column.ondblclick($td, $tr, e);
-        });
+            column.ondblclick($td, $tr, e);
+          });
       }
 
       if (typeof column.oncontextmenu === 'function')

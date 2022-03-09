@@ -191,12 +191,14 @@ export default class Tabs
 
     if (typeof tab.ondblclick === 'function')
     {
-      $a.on('dblclick', e =>
-      {
-        e.preventDefault();
+      $a
+        .addClass('is-unselectable')
+        .on('dblclick', e =>
+        {
+          e.preventDefault();
 
-        tab.ondblclick($li, $div, e);
-      });
+          tab.ondblclick($li, $div, e);
+        });
     }
 
     if (typeof tab.oncontextmenu === 'function')

@@ -104,7 +104,7 @@ export default class docsTab implements tabPage
             ];
           },
           ondblclick: () => window.api.fs.openNative(doc.path),
-          classes: ['is-narrow', 'cursor-default'],
+          classes: ['reset-color'],
         },
         {
           text: doc.version.toFixed(1),

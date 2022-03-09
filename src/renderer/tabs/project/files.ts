@@ -99,7 +99,7 @@ export default class filesTab implements tabPage
           dirPath,
           isRoot),
         ondblclick: () => window.api.fs.openNative(dirPath),
-        classes: ['is-narrow', 'cursor-default'],
+        classes: ['cursor-default'],
       },
     ])
       .addClass(isRoot ? null : 'is-folder-row');
@@ -145,7 +145,7 @@ export default class filesTab implements tabPage
         {
           window.api.fs.startDrag(fileInfo.fullPath);
         },
-        classes: ['cursor-default'],
+        classes: ['reset-color'],
       },
       {
         text: `${Math.ceil((fileInfo.size as number) / 1000).toLocaleString()} kB`,

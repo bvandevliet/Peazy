@@ -19,13 +19,20 @@ td {
   }
 }
 
+.reset-color {
+
+  &,
+  & * {
+    color: inherit;
+  }
+}
+
 .cursor-default {
+  @extend .reset-color;
 
   &,
   & * {
     @extend %unselectable;
     cursor: default !important;
-
-    color: inherit;
   }
 }
