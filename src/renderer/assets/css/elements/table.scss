@@ -245,7 +245,7 @@ table,
     tbody::before {
       content: '';
       display: table-row;
-      height: $table-cell-padding-vertical;
+      height: $table-cell-padding-horizontal;
     }
   }
 
