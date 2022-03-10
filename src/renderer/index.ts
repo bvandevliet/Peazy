@@ -253,7 +253,7 @@ const projectRow = (project: Project) =>
       {
         html.loading();
         return loadProject({ project_number: window.api.hooks.applyFilters('project_project_number', install_number) })
-          .then(found => found ? (stopBrowsing(), false) : false) // if found, still return false /  don't activate row since install number was clicked
+          .then(found => found ? (stopBrowsing(), null) : null) // if found, still return `null` / don't (de)activate any rows / let the project tab handle this
           .finally(() => html.loading(false));
       },
       oncontextmenu: () =>
@@ -274,7 +274,7 @@ const projectRow = (project: Project) =>
       {
         html.loading();
         return loadProject(project)
-          .then(found => found ? (stopBrowsing(), /* true*/ false) : false) // if found, still return false / don't activate row since the tab will handle this
+          .then(found => found ? (stopBrowsing(), /* true*/ null) : null) // if found, still return `null` / don't (de)activate any rows / let the project tab handle this
           .finally(() => html.loading(false));
       },
       oncontextmenu: () =>

@@ -95,7 +95,21 @@ export default class TableList
           {
             e.preventDefault();
 
-            column.onclick($td, $tr, e).then(activate => (activate ? activateRow() : deactivateAll(), activate));
+            column.onclick($td, $tr, e).then(activate =>
+            {
+              if (activate)
+              {
+                activateRow();
+
+                return true;
+              }
+              else if (activate === false)
+              {
+                deactivateAll();
+              }
+
+              return false;
+            });
           });
       }
       else
