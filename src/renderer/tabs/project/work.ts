@@ -81,7 +81,7 @@ export default class workTab implements tabPage
         },
         {
           text: hours.worktype_name,
-          classes: ['is-narrow'],
+          // classes: ['is-narrow'],
         },
         {
           text: hours.amount.toFixed(2),
@@ -95,9 +95,7 @@ export default class workTab implements tabPage
           text: new DateTime(hours.date_end).getDate(),
           classes: ['is-narrow', 'is-number'],
         },
-        {
-          // empty cell to fill remaining space ..
-        },
+
       ]);
     })
       // Make sure search is up-to-date.

@@ -114,9 +114,6 @@ export default class docsTab implements tabPage
           text: new DateTime(doc.date_modified).getDate(),
           classes: ['is-narrow', 'is-number', 'ignore-search'],
         },
-        {
-          // empty cell to fill remaining space ..
-        },
       ]);
 
       // Get the file icon.
