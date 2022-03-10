@@ -177,7 +177,7 @@ const createWindow = () =>
     autoHideMenuBar: true,
     minWidth: 768,
     minHeight: 768,
-    icon: path.join(ABSPATH, './src/renderer/assets/img/favicon.ico'),
+    icon: path.join(ABSPATH, './src/main/_config/favicon.ico'),
     webPreferences: {
       spellcheck: false,
       devTools: true,
@@ -227,7 +227,7 @@ app.whenReady().then(() =>
   Menu.setApplicationMenu(applicationMenu);
 
   // Create the tray icon.
-  tray = new Tray(path.join(ABSPATH, './src/renderer/assets/img/favicon.ico'));
+  tray = new Tray(path.join(ABSPATH, './src/main/_config/favicon.ico'));
 
   // Set the tray menu.
   tray.setContextMenu(contextMenu);

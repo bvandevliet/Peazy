@@ -25,7 +25,7 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "./src/renderer/assets/img/favicon.ico",
+      "icon": "./src/main/_config/favicon.ico",
       "publisherName": "Bob Vandevliet"
     },
     "nsis": {

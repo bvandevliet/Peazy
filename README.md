@@ -26,6 +26,9 @@ cd ../../../
 ```
 
 ### Configure to your needs
+Place your company's logo as `favicon.ico` into `./src/main/_config/`.
+This will be used as app and tray icon.
+
 Remove the `-example` parts from the filenames in `./src/main/_config/`.  
 In these files you can write code to configure Peazy for your situation.
 

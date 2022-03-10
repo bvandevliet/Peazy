@@ -12,8 +12,4 @@ package-lock.json
 **/_config/**/*
 !**/_config/**/*-example.*
 
-favicon*.ico
-favicon*.png
-favicon*.svg
-
 **/assets/bulma/
