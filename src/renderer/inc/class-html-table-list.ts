@@ -71,11 +71,16 @@ export default class TableList
 
       let $a: JQuery<HTMLElement>;
 
-      const activateRow = () =>
+      const deactivateAll = () =>
       {
         const $table = $tr.parents('table').first();
 
         $table.find('>tbody>tr').removeClass('is-selected');
+      };
+
+      const activateRow = () =>
+      {
+        deactivateAll();
 
         $tr.addClass('is-selected');
       };
@@ -90,7 +95,7 @@ export default class TableList
           {
             e.preventDefault();
 
-            column.onclick($td, $tr, e).then(activate => activate ? (activateRow(), true) : false);
+            column.onclick($td, $tr, e).then(activate => (activate ? activateRow() : deactivateAll(), activate));
           });
       }
       else

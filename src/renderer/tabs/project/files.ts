@@ -120,15 +120,29 @@ export default class filesTab implements tabPage
       {
         text: basename,
         title: basename,
-        onclick: () =>
+        onclick: async (_$td, $tr) =>
         {
-          this.$div.find('.column.sidebar').removeClass('full-width');
-
           // html.loading();
-          return this._filePreview.preview(fileInfo.fullPath)
-            // Always activate.
-            .then(() => true);
-          // .finally(() => html.loading(false));
+
+          const activated = $tr.hasClass('is-selected');
+
+          if (!activated)
+          {
+            // Open File Preview.
+            await this._filePreview.preview(fileInfo.fullPath);
+            this.$div.find('.column.sidebar').removeClass('full-width');
+          }
+          else
+          {
+            // Close File Preview.
+            this._filePreview.close();
+            this.$div.find('.column.sidebar').addClass('full-width');
+          }
+
+          // html.loading(false);
+
+          // Toggle state.
+          return !activated;
         },
         oncontextmenu: () => window.api.hooks.applyFilters('contextmenu_file',
           [
