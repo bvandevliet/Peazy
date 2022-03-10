@@ -1,31 +1,38 @@
 .columns {
   @extend .is-mobile;
 
-  margin: 0 !important;
-  padding: 0 !important;
+  &,
+  .column {
+    position: relative;
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+    max-height: 100%;
+
+    @extend .m-0;
+    @extend .p-0;
+  }
 
   &.full-height {
+    @extend .is-flex-direction-row;
+
     height: 100%;
-    max-height: 100%;
+    overflow: hidden;
   }
 
   &.wrapper {
     @extend .is-flex-direction-column;
 
-    position: relative;
     height: 100%;
-    max-height: 100%;
     overflow: hidden;
 
     >.column {
-      flex-grow: unset;
-      flex-shrink: unset;
+      flex-grow: 0;
+      min-height: unset;
 
       &.wrapper-content,
       &.entry-content {
-        position: relative;
         flex-grow: 1;
-        overflow: hidden;
 
         >.entry-content {
           position: absolute;

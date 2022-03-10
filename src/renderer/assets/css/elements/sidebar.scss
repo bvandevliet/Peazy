@@ -1,19 +1,20 @@
 .sidebar {
-  flex: none;
-  width: 320px;
-  transition: width .25s ease;
+  flex-grow: 0;
+  flex-shrink: 0;
 
-  box-sizing: content-box;
+  flex-basis: 320px;
+  transition: flex-basis .25s ease;
+
   border-right: 1px solid var(--border) !important;
 
   &.full-width {
-    width: 100% !important;
+    flex-basis: 100% !important;
   }
 }
 
 @media screen and (max-width: 960px) {
   #sidebar {
-    width: 0;
+    flex-basis: 0;
   }
 }
 
@@ -21,7 +22,7 @@ body {
   &.browsing {
 
     #sidebar {
-      width: 100%;
+      flex-basis: 100%;
     }
   }
 
