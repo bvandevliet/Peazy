@@ -89,7 +89,6 @@ export default class filesTab implements tabPage
       {
         text: semiBasename,
         title: semiBasename,
-        onclick: () => new Promise(resolve => resolve(false)),
         oncontextmenu: () => window.api.hooks.applyFilters('contextmenu_folder',
           [
             contextMenu.openFolderNative(dirPath),
@@ -99,7 +98,6 @@ export default class filesTab implements tabPage
           dirPath,
           isRoot),
         ondblclick: () => window.api.fs.openNative(dirPath),
-        classes: ['cursor-default'],
       },
     ])
       .addClass(isRoot ? null : 'is-folder-row');
