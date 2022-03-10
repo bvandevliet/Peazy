@@ -146,7 +146,7 @@ export default class filesTab implements tabPage
         classes: ['reset-color'],
       },
       {
-        text: `${Math.ceil((fileInfo.size as number) / 1000).toLocaleString()} kB`,
+        text: `${Math.ceil((fileInfo.size as number) / 1024).toLocaleString()} kB`,
         classes: ['is-narrow', 'is-number', 'ignore-search'],
       },
       {
