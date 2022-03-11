@@ -103,39 +103,68 @@ const projectSearch = new Search(projectsTable.$table, '>tbody>tr', tr =>
 html.makeTableSortable($('table'));
 
 /**
- * Update app title and active rows in the browser according to current active tab.
+ * Update app title and active rows in the browser according to the current active tab.
  *
- * @param $li The current active tab.
+ * @param $li The tab being activated. Omit to only update states as is.
+ *
+ * @return The current active `li`.
  */
 export const updateActiveStates = ($li?: JQuery<HTMLLIElement>) =>
 {
-  const $tr = projectsTable.$table.find('>tbody>tr')
-    .removeClass('is-selected');
+  // First, deactivate all rows.
+  const $trAll = projectsTable.$table.find('>tbody>tr')
+    .removeClass(['is-opened', 'is-selected']);
 
-  $li = $li ?? mainTabs.activeTab.$li;
-
-  const id = $li.attr('tab-id');
-
-  if (window.api.core.isEmpty(id))
+  // Get an array of currently opened tab ID's.
+  const tabsOpened = mainTabs.$ul.find('>li').map(function ()
   {
-    document.title = 'Peazy'; return;
+    return $(this).attr('tab-id');
+  })
+    .toArray();
+
+  // Update opened rows.
+  if (tabsOpened.length)
+  {
+    $trAll.filter(function ()
+    {
+      return tabsOpened.includes($(this).attr('row-id'));
+    })
+      .addClass('is-opened');
   }
 
-  $tr.filter(function ()
-  {
-    return $(this).attr('row-id') === id;
-  })
-    .addClass('is-selected');
+  // The current active tab.
+  $li = $li ?? mainTabs.activeTab.$li;
 
-  document.title = $li.find('>a').first().text();
+  // The current active tab ID.
+  const tabActiveId = $li.attr('tab-id');
+
+  // Update current active row.
+  if (!window.api.core.isEmpty(tabActiveId))
+  {
+    $trAll.filter(function ()
+    {
+      return $(this).attr('row-id') === tabActiveId;
+    })
+      .addClass('is-selected');
+
+    // And set window title accordingly ..
+    document.title = $li.find('>a').first().text();
+  }
+  else
+  {
+    document.title = 'Peazy';
+  }
+
+  // Current active tab.
+  return $li;
 };
 
 /**
  * Activate a tab if it already exists.
  *
- * @param id The ID of the tab.
+ * @param id The ID of the tab to activate.
  *
- * @return The amount of existing tabs. Either `0` or `1`.
+ * @return The current active tab.
  */
 export const activateTabIfExists = (id: string) =>
 {
@@ -186,7 +215,8 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
     {
       html.loading();
       return ($li.hasClass('is-active') ? tabProject.init() : tabProject.onactivate())
-        .finally(() => html.loading(false));
+        // Project tabs are hierarchical so the tab itself will trigger to update active states.
+        .finally(() => (/* updateActiveStates($li), */html.loading(false)));
     },
     onmiddleclick: $li => $li.find('>a.close-btn').first().trigger('click'),
     oncontextmenu: () =>

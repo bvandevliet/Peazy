@@ -62,5 +62,19 @@ body {
         }
       }
     }
+
+    &.is-opened {
+
+      th,
+      td {
+        &.project-number>a::after {
+          display: inline-block;
+          width: .75em;
+          content: '\2022';
+          color: var(--secondary);
+          text-align: right;
+        }
+      }
+    }
   }
 }
