@@ -45,7 +45,7 @@ Compile and build the Peazy installer.
 ```
 npm run build
 ```
-The idea is to let users make a shortcut to your `Peazy.exe` installer to ensure they always use the latest version.  
+The idea is to let users make a shortcut to your `Peazy.exe` setup to ensure they always use the latest version.  
 But unfortunately `"artifactName": "${productName}.${ext}"` does not work properly, (see issue: [#6661](https://github.com/electron-userland/electron-builder/issues/6661)).  
-So you will need to build a launcher that finds and starts the installer named as default: `${productName}-${version}.${ext}`, and let users make a shortcut to the launcher instead.  
-I will soon publish another repo containing this launcher.
+So you will need a launcher that finds and starts the setup named as default: `${productName}-${version}.${ext}`, and let users make a shortcut to the launcher instead.  
+An example of this launcher can be found in [this](https://github.com/bvandevliet/PeazyLauncher) repository.
