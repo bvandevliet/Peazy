@@ -306,6 +306,8 @@ export default class projectTab implements tabPage
         template: 'tmpl-td-project-number',
         text: project_number,
         title: window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
+
+        // IMPROVE FOR READABILITY !!
         onclick: (_$td, $tr) =>
         {
           html.loading();
@@ -314,7 +316,7 @@ export default class projectTab implements tabPage
           if (!$tr.hasClass('is-selected'))
           {
             const existingTab = main.activateTabIfExists(`project-${project.project_id}`);
-            if (existingTab.$li.length) return existingTab.promise.finally(() => html.loading(false)).then(() => false);
+            if (existingTab.$li.length) return existingTab.promise.finally(() => html.loading(false)).then(() => null);
           }
 
           // Length of next-level project rows.
