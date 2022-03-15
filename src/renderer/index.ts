@@ -327,6 +327,7 @@ const projectRow = (project: Project) =>
       template: 'tmpl-td-project-customer',
       text: window.api.hooks.applyFilters('project_customer_name', project.customer_name, project),
       title: window.api.hooks.applyFilters('project_customer_name_title', `${project.customer_name}`, project),
+      onclick: () => null,
     },
   ])
     // Add an ID to the project row to target it when updating active tab.

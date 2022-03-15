@@ -189,7 +189,7 @@ export default class projectTab implements tabPage
         },
         {
           text: `${project.customer_name} (${project.customer_country_name})`,
-          onclick: () => new Promise(resolve => resolve(false)),
+          onclick: () => null,
         },
       ]],
       [[
@@ -244,7 +244,7 @@ export default class projectTab implements tabPage
         },
         {
           text: project.sales_manager_name,
-          onclick: () => new Promise(resolve => resolve(false)),
+          onclick: () => null,
         },
       ],
       [
@@ -254,7 +254,7 @@ export default class projectTab implements tabPage
         },
         {
           text: project.project_manager_name,
-          onclick: () => new Promise(resolve => resolve(false)),
+          onclick: () => null,
         },
       ],
       [
@@ -264,7 +264,7 @@ export default class projectTab implements tabPage
         },
         {
           text: project.project_engineer_name,
-          onclick: () => new Promise(resolve => resolve(false)),
+          onclick: () => null,
         },
       ]],
     ], project) as tableCellItem[][][]).forEach((tbody, index) =>

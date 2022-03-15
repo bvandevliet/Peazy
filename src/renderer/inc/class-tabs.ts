@@ -179,7 +179,7 @@ export default class Tabs
         if (typeof tab.onclick === 'function')
         {
           // eslint-disable-next-line no-shadow
-          const promise = tab.onclick($li, $div, e).then(activate => activate ? (activateTab(), true) : false);
+          const promise = tab.onclick($li, $div, e)?.then(activate => activate ? (activateTab(), true) : false);
 
           if (typeof callback === 'function') callback(promise);
         }

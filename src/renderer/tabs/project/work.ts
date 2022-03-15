@@ -72,7 +72,7 @@ export default class workTab implements tabPage
       this._workHours.appendItem([
         {
           text: `${hours.resource_first_name} ${hours.resource_name}`,
-          onclick: () => new Promise(resolve => resolve(false)),
+          onclick: () => null,
           classes: ['is-narrow'],
         },
         {

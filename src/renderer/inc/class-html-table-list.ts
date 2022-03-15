@@ -95,7 +95,7 @@ export default class TableList
           {
             e.preventDefault();
 
-            column.onclick($td, $tr, e).then(activate =>
+            column.onclick($td, $tr, e)?.then(activate =>
             {
               if (activate)
               {
