@@ -6,7 +6,7 @@ import { ConnectionConfig, Connection, Request as dbRequest, ColumnValue } from 
 export default class Database
 {
   /**
-   * The friendly name for this database connection.
+   * The configuration for this database connection.
    */
   public readonly _config: ConnectionConfig;
 

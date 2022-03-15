@@ -185,7 +185,7 @@ export const getProjectTree = async (entryProject: Project) =>
         currentProject =
         {
           project_id: null, // `null` indicates it doesn't exist.
-          project_number: prevProject.install_number, // prevChild
+          project_number: prevProject.install_number,
           project_description: prevProject.install_description,
           customer_id: prevProject.customer_id,
           customer_name: prevProject.customer_name,
