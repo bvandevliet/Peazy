@@ -18,7 +18,7 @@ npm install
 ```
 
 ### Clone Bulma fork into `assets`
-This fork allows for theme support (WIP), see PR: [#3490](https://github.com/jgthms/bulma/pull/3490).
+This fork allows for theme support (WIP), see pull request [#3490](https://github.com/jgthms/bulma/pull/3490).
 ```
 cd ./src/renderer/assets
 git clone https://github.com/bvandevliet/bulma.git
@@ -41,11 +41,15 @@ npm start
 ```
 
 ### Build
-Compile and build the Peazy installer.
+Compile and build the Peazy installer for your users.
 ```
 npm run build
 ```
 The idea is to let users make a shortcut to your `Peazy.exe` setup to ensure they always use the latest version.  
 But unfortunately `"artifactName": "${productName}.${ext}"` does not work properly, (see issue: [#6661](https://github.com/electron-userland/electron-builder/issues/6661)).  
 So you will need a launcher that finds and starts the setup named as default: `${productName}-${version}.${ext}`, and let users make a shortcut to the launcher instead.  
-An example of this launcher can be found in [this](https://github.com/bvandevliet/PeazyLauncher) repository.
+An example of this launcher can be found in [this repository](https://github.com/bvandevliet/PeazyLauncher).
+
+## Note
+Some tabs may be greyed-out and some links may be dead, they just indicate future development.  
+For a general todo list, please refer to this [kanban project](https://github.com/bvandevliet/Peazy/projects/1).
