@@ -163,7 +163,7 @@ export default class FilePreview
       default:
       {
         // Filter for custom file preview support.
-        this._content = () => window.api.hooks.applyFilters('file_preview_content', new Promise(resolve => resolve(null)) as Promise<JQuery<any>>, this._file, ext);
+        this._content = () => window.api.hooks.applyFilters('file_preview_content', null, this._file, ext);
       }
     }
 
