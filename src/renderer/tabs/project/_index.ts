@@ -316,7 +316,7 @@ export default class projectTab implements tabPage
           if (!$tr.hasClass('is-selected'))
           {
             const existingTab = main.activateTabIfExists(`project-${project.project_id}`);
-            if (existingTab.$li.length) return existingTab.promise.finally(() => html.loading(false)).then(() => null);
+            if (null !== existingTab) return existingTab.promise.finally(() => html.loading(false)).then(() => null);
           }
 
           // Length of next-level project rows.

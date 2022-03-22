@@ -170,9 +170,7 @@ export const activateTabIfExists = (id: string) =>
 {
   const existingTab = mainTabs.tryTrigger(id);
 
-  if (existingTab.$li.length) updateActiveStates(existingTab.$li);
-
-  return existingTab;
+  return existingTab.$li.length ? (updateActiveStates(existingTab.$li), existingTab) : null;
 };
 
 /**
@@ -184,11 +182,14 @@ export const activateTabIfExists = (id: string) =>
  */
 export const loadProject = async (args: ProjectId): Promise<boolean> =>
 {
+  // Do something like this when making generic `loadTab` function !!
+  // const existingTab = activateTabIfExists(`${type}-${id}`);
+
   // If an ID was passed, check if tab already exists, if so, activate it and bail.
   if (!window.api.core.isEmpty(args.project_id))
   {
     const existingTab = activateTabIfExists(`project-${args.project_id}`);
-    if (existingTab.$li.length) return existingTab.promise;
+    if (null !== existingTab) return existingTab.promise;
   }
   // If no ID and no project number was passed, bail anyway.
   else if (window.api.core.isEmpty(args.project_number)) return true;
@@ -201,7 +202,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
 
   // Check once again if tab already exists, if so, activate it and bail.
   const existingTab = activateTabIfExists(`project-${project.project_id}`);
-  if (existingTab.$li.length) return existingTab.promise;
+  if (null !== existingTab) return existingTab.promise;
 
   // Initiate project tab.
   let tabProject: projectTab;
