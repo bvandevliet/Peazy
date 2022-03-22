@@ -37,10 +37,10 @@ export default class workTab implements tabPage
     this.$li = $li;
 
     // Load the tab page template.
-    this.$div.append(html.getTemplateClone('tmpl-tab-page-project-workhours'));
+    this.$div.append(html.getTemplateClone('tmpl-tab-page-project-timesheets'));
 
     // Create a `TableList` wrapper for the table.
-    this._workHours = new TableList(this.$div.find('table.table-workhours') as JQuery<HTMLTableElement>);
+    this._workHours = new TableList(this.$div.find('table.table-timesheets') as JQuery<HTMLTableElement>);
 
     // Initiate the search handler.
     this._workSearch = new Search(this._workHours.$table, '>tbody>tr', tr =>
@@ -48,7 +48,7 @@ export default class workTab implements tabPage
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisClass = this;
-    (this.$div.find('input.search-workhours') as JQuery<HTMLInputElement>).on('input', function ()
+    (this.$div.find('input.search-timesheets') as JQuery<HTMLInputElement>).on('input', function ()
     {
       thisClass._workSearch.search(this.value);
     });
@@ -66,7 +66,7 @@ export default class workTab implements tabPage
 
     // Print.
     this._workHours.empty();
-    return window.api.project.getWorkHours(this._project, hours =>
+    return window.api.project.getTimesheets(this._project, hours =>
     {
       // FILTER, BUT THINK ABOUT THEAD TOO !!
       this._workHours.appendItem([
@@ -99,7 +99,7 @@ export default class workTab implements tabPage
       ]);
     })
       // Make sure search is up-to-date.
-      .finally(() => this.$div.find('input.search-workhours').trigger('input'));
+      .finally(() => this.$div.find('input.search-timesheets').trigger('input'));
   }
 
   init (project: Project)
@@ -107,7 +107,7 @@ export default class workTab implements tabPage
     // Load project.
     return this.loadProject(project)
       // Make sure search is focussed and return `true`.
-      .then(() => (setTimeout(() => this.$div.find('input.search-workhours').trigger('focus'), 5), true));
+      .then(() => (setTimeout(() => this.$div.find('input.search-timesheets').trigger('focus'), 5), true));
   }
 
   onactivate (project: Project): Promise<boolean>
@@ -117,7 +117,7 @@ export default class workTab implements tabPage
       // Load when needed.
       .then(load => load ? this.loadProject(project) : null)
       // Make sure search is focussed and return `true`.
-      .then(() => (setTimeout(() => this.$div.find('input.search-workhours').trigger('focus'), 5), true));
+      .then(() => (setTimeout(() => this.$div.find('input.search-timesheets').trigger('focus'), 5), true));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

@@ -79,7 +79,7 @@ export default class docsTab implements tabPage
     return window.api.project.getAttachedDocuments(this._project, doc =>
     {
       // Skip hidden docs.
-      if (!doc.is_visible) return;
+      if (doc.is_hidden) return;
 
       // FILTER, BUT THINK ABOUT THEAD TOO !!
       const $tr = this._docsTable.appendItem([

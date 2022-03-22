@@ -278,7 +278,7 @@ const projectRow = (project: Project) =>
     {
       template: 'tmpl-td-install-number',
       text: isChild ? install_number : null,
-      title: window.api.hooks.applyFilters('project_install_number_title', project.install_id ? `${project.install_description}  •  ${project.customer_name}` : null, project),
+      title: window.api.hooks.applyFilters('project_install_number_title', project.install_id ? `${project.install_description}  •  ${project.relation_name}` : null, project),
       onclick: () =>
       {
         html.loading();
@@ -299,7 +299,7 @@ const projectRow = (project: Project) =>
     {
       template: 'tmpl-td-project-number',
       text: project_number,
-      title: window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
+      title: window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.relation_name}`, project),
       onclick: () =>
       {
         html.loading();
@@ -320,13 +320,13 @@ const projectRow = (project: Project) =>
     {
       template: 'tmpl-td-project-description',
       text: window.api.hooks.applyFilters('project_project_description', project.project_description, project),
-      title: window.api.hooks.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),
+      title: window.api.hooks.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.relation_name}`, project),
       classes: ['is-narrow'], // not `is-narrow` by default but in this case not the last column, so set it here
     },
     {
       template: 'tmpl-td-project-customer',
-      text: window.api.hooks.applyFilters('project_customer_name', project.customer_name, project),
-      title: window.api.hooks.applyFilters('project_customer_name_title', `${project.customer_name}`, project),
+      text: window.api.hooks.applyFilters('project_relation_name', project.relation_name, project),
+      title: window.api.hooks.applyFilters('project_relation_name_title', `${project.relation_name}`, project),
       onclick: () => null,
     },
   ])
@@ -388,7 +388,7 @@ const deepsearch = (queryStr: string) =>
       Search.isMatch([
         window.api.hooks.applyFilters('project_project_number', project.project_number, project),
         window.api.hooks.applyFilters('project_project_description', project.project_description, project),
-        window.api.hooks.applyFilters('project_customer_name', project.customer_name, project),
+        window.api.hooks.applyFilters('project_relation_name', project.relation_name, project),
       ],
       searchedByApp))
     {

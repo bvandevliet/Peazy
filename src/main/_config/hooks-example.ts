@@ -290,7 +290,7 @@ const initHooks = () =>
   /**
    * SQL query to fetch resource hours worked on a project.
    */
-  hooks._addFilter('sql_get_work_hours', (query: string, project: Project) =>
+  hooks._addFilter('sql_get_timesheets', (query: string, project: Project) =>
   {
     return query;
   });

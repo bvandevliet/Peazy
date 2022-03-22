@@ -156,7 +156,7 @@ export default class projectTab implements tabPage
     this.$li
       .find('>a').first()
       .text(window.api.hooks.applyFilters('project_project_number', project.project_number, project))
-      .attr('title', window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project));
+      .attr('title', window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.relation_name}`, project));
 
     // Make sure rows are activated in the main window.
     main.updateActiveStates(this.$li);
@@ -188,7 +188,7 @@ export default class projectTab implements tabPage
           text: 'Customer (Country)',
         },
         {
-          text: `${project.customer_name} (${project.customer_country_name})`,
+          text: `${project.relation_name} (${project.relation_country_name})`,
           onclick: () => null,
         },
       ]],
@@ -305,7 +305,7 @@ export default class projectTab implements tabPage
       {
         template: 'tmpl-td-project-number',
         text: project_number,
-        title: window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.customer_name}`, project),
+        title: window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.relation_name}`, project),
 
         // IMPROVE FOR READABILITY !!
         onclick: (_$td, $tr) =>
@@ -372,7 +372,7 @@ export default class projectTab implements tabPage
       {
         template: 'tmpl-td-project-description',
         text: window.api.hooks.applyFilters('project_project_description', project.project_description, project),
-        title: window.api.hooks.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.customer_name}`, project),
+        title: window.api.hooks.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.relation_name}`, project),
       },
     ])
       // Add an ID to the project row to target it when updating active tab.

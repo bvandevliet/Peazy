@@ -187,8 +187,8 @@ export const getProjectTree = async (entryProject: Project) =>
           project_id: null, // `null` indicates it doesn't exist.
           project_number: prevProject.install_number,
           project_description: prevProject.install_description,
-          customer_id: prevProject.customer_id,
-          customer_name: prevProject.customer_name,
+          relation_id: prevProject.relation_id,
+          relation_name: prevProject.relation_name,
           status_id: '!EXISTS',
           status_name: 'This project doesn\'t exist',
         };
@@ -376,12 +376,12 @@ export const getAttachedDocuments = (args: ProjectId, onRow: (doc: AttachedDocum
  *
  * @param onRow Called on each returned row.
  */
-export const getWorkHours = (args: ProjectId, onRow: (hours: WorkHours) => void): Promise<number> =>
+export const getTimesheets = (args: ProjectId, onRow: (hours: Timesheet) => void): Promise<number> =>
 {
   /**
    * Filters the SQL query string for this request.
    */
-  const query = hooks.applyFilters('sql_get_work_hours', '' as string, args);
+  const query = hooks.applyFilters('sql_get_timesheets', '' as string, args);
 
-  return database.execSql(query, columns => onRow(core.mapObject(columns, column => column.value) as WorkHours));
+  return database.execSql(query, columns => onRow(core.mapObject(columns, column => column.value) as Timesheet));
 };

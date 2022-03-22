@@ -1,18 +1,19 @@
+/* eslint-disable camelcase */
+
 interface Project
 {
   [x: string]: any;
   children?: Project[];
-  /* eslint-disable camelcase */
   install_id?: any;
   install_number?: string;
   install_description?: string;
   project_id: any;
   project_number: string;
   project_description: string;
-  customer_id: any;
-  customer_name: string;
-  customer_country_id?: any;
-  customer_country_name?: string;
+  relation_id: any;
+  relation_name: string;
+  relation_country_id?: any;
+  relation_country_name?: string;
   status_id: any;
   status_name: string;
   price?: number;
@@ -27,10 +28,8 @@ interface Project
   project_engineer_name?: string;
 }
 
-// `Pick` didn't work as expected, but the below doesn't look like the best approach either !!
 type ProjectId = AtLeastOne<{project_id: Project['project_id'], project_number: Project['project_number']}>;
 
-// `Pick` didn't work as expected, but the below doesn't look like the best approach either !!
 type ProjectAndInstallNumber = {project_number: Project['project_number'], install_number?: Project['install_number']};
 
 interface getProjectArgs
@@ -77,12 +76,31 @@ interface getProjectArgs
   orderBy?: Order;
 }
 
+interface Relation
+{
+  [x: string]: any;
+  relation_id: any;
+  relation_type?: any; // customer | contactperson | ..
+  relation_first_name?: string; // contactperson
+  relation_name: string;
+  relation_address?: string;
+  relation_zip?: string;
+  relation_city_id?: any;
+  relation_city?: string;
+  relation_country_id?: any;
+  relation_country_name?: string;
+  relation_email_1?: string;
+  relation_email_2?: string;
+  relation_phone_1?: string;
+  relation_phone_2?: string;
+}
+
 interface PlanningTask
 {
   [x: string]: any;
-  /* eslint-disable camelcase */
   task_id: any;
   parent_id: any;
+  project_id?: any;
   project_number: string;
   task_description: string;
   date_start: string;
@@ -110,17 +128,27 @@ interface getPlanningArgs
 
 interface AttachedDocument
 {
+  project_id?: any;
   title: string;
   version: number;
-  is_visible?: boolean;
+  is_hidden?: boolean;
   path: string;
   size?: number;
   date_created?: string | Date;
   date_modified?: string | Date;
 }
 
-interface WorkHours
+interface Resource
 {
+  resource_id: any;
+  resource_first_name?: string;
+  resource_name: string;
+  is_inactive?: boolean;
+}
+
+interface Timesheet
+{
+  project_id?: any;
   resource_id: any;
   resource_first_name?: string;
   resource_name: string;
@@ -131,5 +159,5 @@ interface WorkHours
   date_end: string | Date;
   amount: number;
   rate_internal: number;
-  expense: number;
+  expense?: number;
 }
