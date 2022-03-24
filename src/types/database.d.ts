@@ -88,7 +88,7 @@ interface Relation
   relation_city_id?: any;
   relation_city?: string;
   relation_country_id?: any;
-  relation_country_name?: string;
+  relation_country_name: string;
   relation_email_1?: string;
   relation_email_2?: string;
   relation_phone_1?: string;
@@ -144,6 +144,10 @@ interface Resource
   resource_first_name?: string;
   resource_name: string;
   is_inactive?: boolean;
+  resource_email_1?: string;
+  resource_email_2?: string;
+  resource_phone_1?: string;
+  resource_phone_2?: string;
 }
 
 interface Timesheet
