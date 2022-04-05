@@ -227,10 +227,14 @@ export default class Tabs
           e.originalEvent.dataTransfer.effectAllowed = 'move';
 
           this._dragging = e.delegateTarget;
+
+          if (typeof tab.ondragstart === 'function') tab.ondragstart($li, $div, e);
         })
-        .on('dragend', () =>
+        .on('dragend', e =>
         {
           this._dragging = null;
+
+          if (typeof tab.ondragend === 'function') tab.ondragend($li, $div, e);
         })
         .on('dragover', e =>
         {

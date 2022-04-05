@@ -230,7 +230,33 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
         tabProject.project);
     },
     classes: ['li-project-tab'],
+    ondragend: () =>
+    {
+      // Get an array of currently opened tab ID's.
+      const tabsOpened = mainTabs.$ul.find('>li').map(function ()
+      {
+        return $(this).attr('tab-id');
+      })
+        .toArray();
+
+      // Sort opened rows equal to tab sort.
+      const $trOpened = projectsTable.tbody(0).find('>tr');
+      tabsOpened.forEach(tabOpened =>
+      {
+        $trOpened.filter(function ()
+        {
+          return tabOpened === $(this).attr('row-id');
+        })
+          .appendTo($trOpened.parent());
+      });
+    },
   });
+
+  // Append opened tab row.
+  // eslint-disable-next-line no-use-before-define
+  const $tr = projectRow(project)
+    .addClass(['ignore-sort', 'ignore-search']);
+  projectsTable.tbody(0).append($tr);
 
   // Configure the "close" button.
   $li.find('>a.close-btn').on('click', () =>
@@ -238,6 +264,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
     tabProject.dispose();
     tabProject = null;
 
+    $tr.remove();
     mainTabs.removeTab($li);
 
     // Collect garbage.
