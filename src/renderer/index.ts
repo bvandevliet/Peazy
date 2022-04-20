@@ -89,7 +89,7 @@ $('#main').append(mainTabs.$container);
 /**
  * The projects table list.
  */
-const projectsTable = new TableList($('#table-projects'));
+export const projectsTable = new TableList($('#table-projects'));
 
 /**
  * The projects table search handler.
@@ -254,9 +254,9 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
 
   // Append opened tab row.
   // eslint-disable-next-line no-use-before-define
-  const $tr = projectRow(project)
-    .addClass(['ignore-sort', 'ignore-search']);
-  projectsTable.tbody(0).append($tr);
+  projectRow(project)
+    .addClass(['ignore-sort', 'ignore-search'])
+    .appendTo(projectsTable.tbody(0));
 
   // Configure the "close" button.
   $li.find('>a.close-btn').on('click', () =>
@@ -264,7 +264,8 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
     tabProject.dispose();
     tabProject = null;
 
-    $tr.remove();
+    // Remove tab and open tab row, without cached reference to the tab row bacuse it may be replaced on a tab switch.
+    projectsTable.tbody(0).find('>tr').filter((_i, elem) => $(elem).attr('row-id') === $li.attr('tab-id')).remove();
     mainTabs.removeTab($li);
 
     // Collect garbage.
@@ -284,7 +285,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
  *
  * @param project The project.
  */
-const projectRow = (project: Project) =>
+export const projectRow = (project: Project) =>
 {
   const project_number = window.api.hooks.applyFilters('project_project_number', project.project_number, project);
   const install_number = window.api.hooks.applyFilters('project_install_number', project.install_number, project);

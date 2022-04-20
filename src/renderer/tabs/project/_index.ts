@@ -144,21 +144,30 @@ export default class projectTab implements tabPage
    */
   private loadProject (project: Project)
   {
+    // Replace opened tab with updated project.
+    // MOVE TO AN EVENT HANDLER INSTEAD (THEN TEST IF TAB IS NEW OR THIS IS A TAB SWITCH) !!
+    main.projectsTable.tbody(0).find('>tr').filter((_i, elem) => $(elem).attr('row-id') === `project-${this._project.project_id}`)
+      .replaceWith(main.projectRow(project)
+        .addClass(['ignore-sort', 'ignore-search']));
+
     // Set the current project for this tab.
     this._project = project;
 
     // Overwrite tab ID.
+    // MOVE TO AN EVENT HANDLER INSTEAD !!
     this.$li
       .add(this.$div)
       .attr('tab-id', `project-${project.project_id}`);
 
     // Overwrite tab text and title.
+    // MOVE TO AN EVENT HANDLER INSTEAD !!
     this.$li
       .find('>a').first()
       .text(window.api.hooks.applyFilters('project_project_number', project.project_number, project))
       .attr('title', window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.relation_name}`, project));
 
     // Make sure rows are activated in the main window.
+    // MOVE TO AN EVENT HANDLER INSTEAD !!
     main.updateActiveStates(this.$li);
 
     // Print project info.
