@@ -113,7 +113,7 @@ export const getProjectTree = async (entryProject: Project) =>
   /**
    * Start iteration from the project number so we also fetch these children instead of only building up the tree.
    * However since the first install number is an actual project number,
-   * it does not need to be filtered here, which also decreases the fail-chance of not finding the project.
+   * it does not need to be filtered, which also decreases the fail-chance of not finding the project.
    */
   let firstIteration = true;
   let install_project = entryProject.project_number;
@@ -126,9 +126,11 @@ export const getProjectTree = async (entryProject: Project) =>
   // The tree walker loop.
   while (!core.isEmpty(install_project))
   {
-    let currentProject: Project = null;
+    let givenProject: Project = null;
 
     const children: Project[] = [];
+
+    const const_install_project = hooks.applyFilters('project_project_number', install_project);
 
     const prev_project_number = hooks.applyFilters('project_project_number', prevProject.project_number);
 
@@ -136,14 +138,11 @@ export const getProjectTree = async (entryProject: Project) =>
     {
       const this_project_number = hooks.applyFilters('project_project_number', project.project_number);
 
-      // Make sure further tests are performed on filtered values.
-      if (firstIteration) { install_project = hooks.applyFilters('project_project_number', install_project); }
-
       // If given project passes by.
-      if (this_project_number === install_project)
+      if (this_project_number === const_install_project)
       {
         // Set current project.
-        currentProject = project;
+        givenProject = project;
 
         // Filter the next parent project number.
         const this_install_number = hooks.applyFilters('project_project_number', project.install_number);
@@ -154,35 +153,33 @@ export const getProjectTree = async (entryProject: Project) =>
         install_project = isChild ? this_install_number : null;
       }
 
-      // Don't define (entry) project as its own infinite child.
-      else if (install_project !== prev_project_number)
+      // Push the project as a child.
+      else if (project.project_id !== prevProject.project_id)
       {
-        if (project.project_id !== prevProject.project_id)
-        {
-          // Push child.
-          children.push(project);
-        }
-        else
-        {
-          // Push previous project as child to keep the tree intact.
-          children.push(prevProject);
-        }
+        children.push(project);
+      }
+
+      // Push previous project as a child to keep the tree intact,
+      // but don't define (entry) project as its own infinite child.
+      else if (const_install_project !== prev_project_number)
+      {
+        children.push(prevProject);
       }
     });
 
     // If parent project does not exist.
-    if (currentProject === null)
+    if (givenProject === null)
     {
       // If is first iteration, previous project is entry project, use it as is.
       if (firstIteration)
       {
-        currentProject = prevProject;
+        givenProject = prevProject;
       }
       else
       {
         // Fallback to the previous project's installation values.
         // And set top-most install project as "non-existing".
-        currentProject =
+        givenProject =
         {
           project_id: null, // `null` indicates it doesn't exist.
           project_number: prevProject.install_number,
@@ -199,10 +196,10 @@ export const getProjectTree = async (entryProject: Project) =>
     }
 
     // Set child projects.
-    currentProject.children = children;
+    givenProject.children = children;
 
     // Set previous project.
-    prevProject = currentProject;
+    prevProject = givenProject;
 
     // Not the first iteration anymore.
     firstIteration = false;
@@ -316,7 +313,7 @@ export const getProjectPaths = (number: ProjectAndInstallNumber, projectLocation
 
         if (
           !core.isEmpty(number.project_number) && fs.statSync(potentialPath).isDirectory() &&
-        hooks.applyFilters('project_path_is_match', false, potentialPath, validProjectPathBasenames)
+          hooks.applyFilters('project_path_is_match', false, potentialPath, validProjectPathBasenames)
         )
         {
           validPaths.projectPaths.push(potentialPath);
