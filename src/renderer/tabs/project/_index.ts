@@ -164,7 +164,15 @@ export default class projectTab implements tabPage
     this.$li
       .find('>a').first()
       .text(window.api.hooks.applyFilters('project_project_number', project.project_number, project))
-      .attr('title', window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.relation_name}`, project));
+      .attr('title', window.api.hooks.applyFilters(
+        'project_project_number_title',
+        `${window.api.hooks.applyFilters(
+          'project_project_description', project.project_description, project,
+        )}  •  ${window.api.hooks.applyFilters(
+          'project_relation_name', project.relation_name, project,
+        )}`,
+        project,
+      ));
 
     // Make sure rows are activated in the main window.
     // MOVE TO AN EVENT HANDLER INSTEAD !!
@@ -176,10 +184,19 @@ export default class projectTab implements tabPage
       [[
         {
           template: 'tmpl-th-narrow',
-          text: '[Install-] Project number',
+          text: 'Install number',
         },
         {
-          text: `[${project.install_number}] ${project.project_number}`,
+          text: project.install_number,
+        },
+      ],
+      [
+        {
+          template: 'tmpl-th-narrow',
+          text: 'Project number',
+        },
+        {
+          text: project.project_number,
         },
       ],
       [

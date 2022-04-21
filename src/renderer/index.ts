@@ -289,6 +289,8 @@ export const projectRow = (project: Project) =>
 {
   const project_number = window.api.hooks.applyFilters('project_project_number', project.project_number, project);
   const install_number = window.api.hooks.applyFilters('project_install_number', project.install_number, project);
+  const project_description = window.api.hooks.applyFilters('project_project_description', project.project_description, project);
+  const relation_name = window.api.hooks.applyFilters('project_relation_name', project.relation_name, project);
 
   const isChild = window.api.hooks.applyFilters('project_is_child', !window.api.core.isEmpty(install_number) && install_number !== project_number, project);
 
@@ -307,7 +309,7 @@ export const projectRow = (project: Project) =>
     {
       template: 'tmpl-td-install-number',
       text: isChild ? install_number : null,
-      title: window.api.hooks.applyFilters('project_install_number_title', project.install_id ? `${project.install_description}  •  ${project.relation_name}` : null, project),
+      title: window.api.hooks.applyFilters('project_install_number_title', project.install_id ? `${project.install_description}  •  ${relation_name}` : null, project),
       onclick: () =>
       {
         html.loading();
@@ -328,7 +330,7 @@ export const projectRow = (project: Project) =>
     {
       template: 'tmpl-td-project-number',
       text: project_number,
-      title: window.api.hooks.applyFilters('project_project_number_title', `${project.project_description}  •  ${project.relation_name}`, project),
+      title: window.api.hooks.applyFilters('project_project_number_title', `${project_description}  •  ${relation_name}`, project),
       onclick: () =>
       {
         html.loading();
@@ -348,14 +350,14 @@ export const projectRow = (project: Project) =>
     },
     {
       template: 'tmpl-td-project-description',
-      text: window.api.hooks.applyFilters('project_project_description', project.project_description, project),
-      title: window.api.hooks.applyFilters('project_project_description_title', `${project.project_description}  •  ${project.relation_name}`, project),
+      text: project_description,
+      title: window.api.hooks.applyFilters('project_project_description_title', `${project_description}  •  ${relation_name}`, project),
       classes: ['is-narrow'], // not `is-narrow` by default but in this case not the last column, so set it here
     },
     {
       template: 'tmpl-td-project-customer',
-      text: window.api.hooks.applyFilters('project_relation_name', project.relation_name, project),
-      title: window.api.hooks.applyFilters('project_relation_name_title', `${project.relation_name}`, project),
+      text: `${relation_name} (${project.relation_country_name})`,
+      title: window.api.hooks.applyFilters('project_relation_name_title', `${relation_name}`, project),
       onclick: () => null,
     },
   ])

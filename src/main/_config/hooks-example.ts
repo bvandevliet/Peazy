@@ -26,6 +26,11 @@ const initHooks = () =>
   hooks._addFilter('project_install_number', install_number => ((install_number ?? '') as string).trim());
   hooks._addFilter('project_project_number', project_number => ((project_number ?? '') as string).trim());
 
+  // Filter description and customer name.
+  hooks._addFilter('project_project_description', project_description => ((project_description ?? '') as string).trim());
+  hooks._addFilter('project_install_description', install_description => ((install_description ?? '') as string).trim());
+  hooks._addFilter('project_relation_name', relation_name => ((relation_name ?? '') as string).trim());
+
   /**
    * Return valid install path basenames for a given install number.
    */
