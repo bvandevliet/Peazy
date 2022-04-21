@@ -18,6 +18,38 @@ export default class DateTime
   }
 
   /**
+   * Sort an array of `Date` objects.
+   *
+   * @param dateList Array of `Date` objects to sort.
+   */
+  static sort (dateList: Date[], order: Order = 'ASC')
+  {
+    return order !== 'DESC'
+      ? dateList.sort((a, b) => a.getTime() - b.getTime())
+      : dateList.sort((b, a) => a.getTime() - b.getTime());
+  }
+
+  /**
+   * Get the earliest `Date` object in an array of `Date` objects.
+   *
+   * @param dateList Array of `Date` objects to sort.
+   */
+  static earliest (dateList: Date[])
+  {
+    return this.sort(dateList, 'ASC')[0];
+  }
+
+  /**
+   * Get the latest `Date` object in an array of `Date` objects.
+   *
+   * @param dateList Array of `Date` objects to sort.
+   */
+  static latest (dateList: Date[])
+  {
+    return this.sort(dateList, 'DESC')[0];
+  }
+
+  /**
    * Returns the year (4 digits for 4-digit years) according to local time.
    */
   getFullYear ()
