@@ -467,12 +467,13 @@ const exitDeepsearch = () =>
           {
             if (!found)
             {
-            // Perform a deepsearch.
+              // Perform a deepsearch.
               await deepsearch(this.value); return false;
             }
             else
             {
-            // Clear search and exit browsing state.
+              // Clear search and exit browsing state.
+              exitDeepsearch();
               this.value = ''; projectSearch.search('');
               stopBrowsing(); return true;
             }
