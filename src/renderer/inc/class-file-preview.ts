@@ -64,13 +64,9 @@ export default class FilePreview
     this._preview.$ul.removeClass('is-hidden')
       .find('>li>a').first().text(window.api.path.basename(this._file));
 
-    const $content = await this._content();
-
     if (window.api.fs.existsSync(this._file))
     {
-      // Get the file icon. // !!
-      // window.api.fs.getFileIcon(this._file)
-      //   .then(dataUrl => {});
+      const $content = await this._content(); // .catch(err => (console.error(err), null));
 
       if ($content !== null)
       {
