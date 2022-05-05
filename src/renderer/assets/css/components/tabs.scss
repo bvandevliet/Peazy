@@ -40,7 +40,7 @@ $tabs-link-active-color: var(--link) !default;
     &:hover {
       border-bottom-color: $tabs-link-hover-border-bottom-color;
 
-      a:first-child {
+      a:first-of-type {
         color: $tabs-link-hover-color;
       }
     }
@@ -48,7 +48,7 @@ $tabs-link-active-color: var(--link) !default;
     &.is-active {
       border-bottom-color: $tabs-link-active-border-bottom-color;
 
-      a:first-child {
+      a:first-of-type {
         color: $tabs-link-active-color;
       }
     }
@@ -62,7 +62,7 @@ $tabs-link-active-color: var(--link) !default;
       justify-content: center;
       padding: $tabs-link-padding;
 
-      &:not(:first-child) {
+      &:not(:first-of-type) {
         margin: $tabs-link-padding-vertical .25em;
         margin-left: -.15em;
         padding: 0 calc($tabs-link-padding-horizontal - .25em);
@@ -112,7 +112,7 @@ $tabs-link-active-color: var(--link) !default;
 
     &.main-tabs {
       li {
-        a:first-child {
+        a:first-of-type {
           font-weight: $weight-semibold;
 
           &::before {

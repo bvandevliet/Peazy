@@ -95,24 +95,6 @@ table,
       border-left: 1px solid var(--grey-light);
       padding: calc($table-cell-padding-vertical * 2) calc($table-cell-padding-horizontal / 2) $table-cell-padding-vertical;
     }
-
-    &.is-file-icon {
-      @extend .is-narrow;
-
-      padding-right: 0;
-
-      padding-top: calc($table-cell-padding-vertical + .15em);
-      padding-bottom: calc($table-cell-padding-vertical - .15em);
-
-      img {
-        max-width: unset;
-      }
-
-      &,
-      * {
-        width: 16px !important;
-      }
-    }
   }
 
   th {

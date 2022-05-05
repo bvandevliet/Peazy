@@ -36,3 +36,21 @@ td {
     cursor: default !important;
   }
 }
+
+.is-file-icon {
+  @extend .is-narrow;
+
+  padding-right: 0;
+
+  padding-top: calc($control-padding-vertical + .15em) !important;
+  padding-bottom: calc($control-padding-vertical - .15em) !important;
+
+  img {
+    max-width: unset;
+  }
+
+  &,
+  * {
+    width: 16px !important;
+  }
+}

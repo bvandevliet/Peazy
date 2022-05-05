@@ -59,13 +59,26 @@ export default class FilePreview
    */
   async refresh (): Promise<boolean>
   {
+    // Assume failure.
+    let result = false;
+
     this.empty();
 
-    this._preview.$ul.removeClass('is-hidden')
-      .find('>li>a').first().text(window.api.path.basename(this._file));
+    const $a = this._preview.$ul.removeClass('is-hidden').find('>li>a').first();
+
+    $a.text(window.api.path.basename(this._file));
+
+    // <div class="is-file-icon"><img draggable="false" /></div>
 
     if (window.api.fs.existsSync(this._file))
     {
+      const $fileIcon = $('<img draggable="false" />');
+      $a.prepend($('<div class="is-file-icon"/>').append($fileIcon));
+
+      // Get the file icon.
+      window.api.fs.getFileIcon(this._file)
+        .then(dataUrl => $fileIcon.attr('src', dataUrl));
+
       const $content = await this._content(); // .catch(err => (console.error(err), null));
 
       if ($content !== null)
@@ -74,11 +87,13 @@ export default class FilePreview
           ? this._$previewContent.html($content)
           : this._$previewContent.append($content);
 
-        return true;
+        result = true;
       }
-
-      this._$previewContent
-        .html('<div class="content"><p>Preview not available.</p></div>');
+      else
+      {
+        this._$previewContent
+          .html('<div class="content"><p>Preview not available.</p></div>');
+      }
     }
     else
     {
@@ -86,7 +101,7 @@ export default class FilePreview
         .html('<div class="content"><p>File does not exist.</p></div>');
     }
 
-    return false;
+    return result;
   }
 
   /**
