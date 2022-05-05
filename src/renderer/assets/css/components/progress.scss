@@ -1,4 +1,4 @@
-div.progress-line {
+div.progress-indicator {
   z-index: 1 !important;
   position: absolute !important;
   bottom: 0;
@@ -11,7 +11,7 @@ div.progress-line {
 }
 
 tr.is-selected {
-  div.progress-line {
+  div.progress-indicator {
     background-color: #fff;
     opacity: .4;
   }

@@ -393,21 +393,9 @@ export default class projectTab implements tabPage
       $td_project_number.prepend('<span class="indent" />');
     }
 
-    // Set the overall progress indicator (DRY!!).
+    // Set the overall progress indicator.
     $td_project_number
-      .prepend($(document.createElement('div')).addClass('progress-line')
-        .css('width', (() =>
-        {
-          const
-            timeStart = (new Date(project.date_start)).getTime(),
-            timeFinish = (new Date(project.date_finish)).getTime();
-
-          const
-            timelineSpan = Math.max(0, timeFinish - timeStart),
-            progress = timelineSpan !== 0 ? Math.max(0, Date.now() - timeStart) / timelineSpan * 100 : 0;
-
-          return `${Math.min(100, progress)}%`;
-        })()));
+      .prepend(html.getProgressIndicator(new Date(project.date_start), new Date(project.date_finish)));
 
     return $tr;
   }

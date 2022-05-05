@@ -404,22 +404,10 @@ const projectRow = (project: Project) =>
     // If is a child of an install number, then add class attribute for selective styling.
     .addClass(isChild ? 'has-install' : null);
 
-  // Set the overall progress indicator (DRY!!).
+  // Set the overall progress indicator.
   $tr
     .find('>th.project-number')
-    .prepend($(document.createElement('div')).addClass('progress-line')
-      .css('width', (() =>
-      {
-        const
-          timeStart = (new Date(project.date_start)).getTime(),
-          timeFinish = (new Date(project.date_finish)).getTime();
-
-        const
-          timelineSpan = Math.max(0, timeFinish - timeStart),
-          progress = timelineSpan !== 0 ? Math.max(0, Date.now() - timeStart) / timelineSpan * 100 : 0;
-
-        return `${Math.min(100, progress)}%`;
-      })()));
+    .prepend(html.getProgressIndicator(new Date(project.date_start), new Date(project.date_finish)));
 
   return $tr;
 };

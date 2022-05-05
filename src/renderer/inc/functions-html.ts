@@ -41,6 +41,27 @@ export const getTemplateClone = (id: string) =>
 };
 
 /**
+ * Get an element that represents the progress in time using a relative width.
+ *
+ * @param dateStart The starting date of the event.
+ * @param dateEnd   The ending date of the event.
+ */
+export const getProgressIndicator = (dateStart: Date, dateEnd: Date) =>
+{
+  const
+    timeStart = dateStart.getTime(),
+    timeFinish = dateEnd.getTime();
+
+  const
+    timelineSpan = Math.max(0, timeFinish - timeStart),
+    progress = timelineSpan !== 0 ? Math.max(0, Date.now() - timeStart) / timelineSpan * 100 : 0;
+
+  return $(document.createElement('div'))
+    .addClass('progress-indicator')
+    .css('width', `${Math.min(100, progress)}%`);
+};
+
+/**
  * Sort elements alphabetically and numerically.
  *
  * @param elemSet The set of elements to sort.
