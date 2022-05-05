@@ -150,7 +150,8 @@ export default class Tabs
       .attr('draggable', `${this.sortable}`);
 
     // Create a new tab page element ..
-    $div = $(html.getTemplateClone('tmpl-tab-page') as HTMLDivElement).attr('tab-id', tab.id);
+    $div = $(html.getTemplateClone('tmpl-tab-page') as HTMLDivElement)
+      .attr('tab-id', tab.id);
 
     // .. and render its content.
     tab.callback($div, $li);

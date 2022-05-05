@@ -89,7 +89,7 @@ $('#main').append(mainTabs.$container);
 /**
  * The projects table list.
  */
-export const projectsTable = new TableList($('#table-projects'));
+const projectsTable = new TableList($('#table-projects'));
 
 /**
  * The projects table search handler.
@@ -109,7 +109,7 @@ html.makeTableSortable($('table'));
  *
  * @return The current active `li`.
  */
-export const updateActiveStates = ($li?: JQuery<HTMLLIElement>) =>
+const updateActiveStates = ($li?: JQuery<HTMLLIElement>) =>
 {
   // First, deactivate all rows.
   const $trAll = projectsTable.$table.find('>tbody>tr')
@@ -209,15 +209,53 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
 
   // Create new tab.
   const { $li } = mainTabs.addTab({
-    id: null, // the projectTab instance will set the ID, text and title for this tab
+    id: null, // the projectTab `onLoad` callback will set the ID, text and title for this tab
     template: 'tmpl-li-main-tab',
-    callback: ($div, $li) => tabProject = new projectTab($div, $li, project),
+    callback: ($div, $li) =>
+    {
+      tabProject = new projectTab($div, $li, project);
+
+      /**
+       * Triggered on tab init and change.
+       */
+      tabProject.onLoad = (oldProject: Project, newProject: Project) =>
+      {
+        // Replace opened tab with updated project.
+        projectsTable.tbody(0).find('>tr').filter((_i, elem) => $(elem).attr('row-id') === `project-${oldProject.project_id}`)
+          // eslint-disable-next-line no-use-before-define
+          .replaceWith(projectRow(newProject)
+            .addClass(['ignore-sort', 'ignore-search']));
+
+        // Set tab ID.
+        $li
+          .add($div)
+          .attr('tab-id', `project-${newProject.project_id}`);
+
+        // Set tab text and title.
+        $li
+          .find('>a').first()
+          .text(window.api.hooks.applyFilters('project_project_number', newProject.project_number, newProject))
+          .attr('title', window.api.hooks.applyFilters(
+            'project_project_number_title',
+            `${window.api.hooks.applyFilters(
+              'project_project_description', newProject.project_description, newProject,
+            )}  •  ${window.api.hooks.applyFilters(
+              'project_relation_name', newProject.relation_name, newProject,
+            )}`,
+            newProject,
+          ));
+
+        // Make sure rows are activated in the main window.
+        updateActiveStates($li);
+      };
+    },
     onclick: $li =>
     {
       html.loading();
-      return ($li.hasClass('is-active') ? tabProject.init() : tabProject.onactivate())
-        // Project tabs are hierarchical so the tab itself will trigger to update active states.
-        .finally(() => (/* updateActiveStates($li), */html.loading(false)));
+      return ($li.hasClass('is-active')
+        ? tabProject.init() // --> `onLoad` --> `updateActiveStates`
+        : tabProject.onactivate().finally(() => updateActiveStates($li)))
+        .finally(() => html.loading(false));
     },
     onmiddleclick: $li => $li.find('>a.close-btn').first().trigger('click'),
     oncontextmenu: () =>
@@ -285,7 +323,7 @@ export const loadProject = async (args: ProjectId): Promise<boolean> =>
  *
  * @param project The project.
  */
-export const projectRow = (project: Project) =>
+const projectRow = (project: Project) =>
 {
   const project_number = window.api.hooks.applyFilters('project_project_number', project.project_number, project);
   const install_number = window.api.hooks.applyFilters('project_install_number', project.install_number, project);

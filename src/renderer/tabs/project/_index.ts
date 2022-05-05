@@ -17,6 +17,13 @@ export default class projectTab implements tabPage
   readonly $div;
   readonly $li;
 
+  /**
+   * Callback function triggered on tab init and change.
+   *
+   * @param oldProject The current/previous project.
+   * @param newProject The project being loaded.
+   */
+  public onLoad: (oldProject: Project, newProject: Project) => void = () => null;
   private _project;
 
   private _projectInfo = new TableList(html.getTemplateClone('tmpl-table-info') as HTMLTableElement);
@@ -144,39 +151,11 @@ export default class projectTab implements tabPage
    */
   private loadProject (project: Project)
   {
-    // Replace opened tab with updated project.
-    // MOVE TO AN EVENT HANDLER INSTEAD (THEN TEST IF TAB IS NEW OR THIS IS A TAB SWITCH) !!
-    main.projectsTable.tbody(0).find('>tr').filter((_i, elem) => $(elem).attr('row-id') === `project-${this._project.project_id}`)
-      .replaceWith(main.projectRow(project)
-        .addClass(['ignore-sort', 'ignore-search']));
+    // Trigger onload callback to allow for tab id and title updates, etc.
+    this.onLoad(this._project, project);
 
     // Set the current project for this tab.
     this._project = project;
-
-    // Overwrite tab ID.
-    // MOVE TO AN EVENT HANDLER INSTEAD !!
-    this.$li
-      .add(this.$div)
-      .attr('tab-id', `project-${project.project_id}`);
-
-    // Overwrite tab text and title.
-    // MOVE TO AN EVENT HANDLER INSTEAD !!
-    this.$li
-      .find('>a').first()
-      .text(window.api.hooks.applyFilters('project_project_number', project.project_number, project))
-      .attr('title', window.api.hooks.applyFilters(
-        'project_project_number_title',
-        `${window.api.hooks.applyFilters(
-          'project_project_description', project.project_description, project,
-        )}  •  ${window.api.hooks.applyFilters(
-          'project_relation_name', project.relation_name, project,
-        )}`,
-        project,
-      ));
-
-    // Make sure rows are activated in the main window.
-    // MOVE TO AN EVENT HANDLER INSTEAD !!
-    main.updateActiveStates(this.$li);
 
     // Print project info.
     this._projectInfo.empty();
@@ -494,9 +473,6 @@ export default class projectTab implements tabPage
 
   onactivate (): Promise<boolean>
   {
-    // Make sure rows are activated in the main window.
-    main.updateActiveStates(this.$li);
-
     // Find the active sub tab.
     const activeTab = Object.values(this._tabs).find(tab => tab.$li.hasClass('is-active'));
 
