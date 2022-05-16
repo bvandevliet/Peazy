@@ -9,9 +9,11 @@ import { exec, execSync } from 'child_process';
 import
 {
   app, BrowserWindow, ipcMain,
-  Tray, Menu, dialog,
+  Tray, Menu, dialog, shell,
 }
   from 'electron';
+
+import * as packageJson from '../../package.json';
 
 // Force locale since external tools may reference it.
 app.commandLine.appendSwitch('lang', 'en-US');
@@ -152,12 +154,18 @@ const applicationMenu = Menu.buildFromTemplate([
         title: `About ${app.name}`,
         message: 'Made by Bob Vandevliet' +
           '\n' +
-          `\nPeazy  v${app.getVersion()}` +
+          `\n${packageJson.productName}  v${app.getVersion()}` +
           `\nElectron.js  v${process.versions.electron}` +
           `\nNode.js  v${process.versions.node}` +
-          `\nChromium  v${process.versions.chrome}`,
+          `\nChromium  v${process.versions.chrome}` +
+          '\n' +
+          `\nRepository: ${packageJson.repository}`,
       });
     },
+  },
+  {
+    label: 'GitHub',
+    click: () => shell.openExternal(packageJson.repository),
   },
 ]);
 
