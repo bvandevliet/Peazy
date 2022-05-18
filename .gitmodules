@@ -1,0 +1,3 @@
+[submodule "src/renderer/assets/bulma"]
+	path = src/renderer/assets/bulma
+	url = https://github.com/bvandevliet/bulma.git

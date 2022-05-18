@@ -7,22 +7,16 @@ This project originated at work where we use an unpleasant ERP system. Many time
 # Get started
 
 ### Clone this repository
+Clone this repository recursively as it includes a fork of the Bulma Sass library to inject theme support.  
+For more information, refer to pull request [#3490](https://github.com/jgthms/bulma/pull/3490).
 ```
-git clone https://github.com/bvandevliet/peazy.git
+git clone --recurse-submodules https://github.com/bvandevliet/peazy.git
 cd ./peazy
 ```
 
 ### Install dependencies
 ```
 npm install
-```
-
-### Clone Bulma fork into `assets`
-This fork allows for theme support (WIP), see pull request [#3490](https://github.com/jgthms/bulma/pull/3490).
-```
-cd ./src/renderer/assets
-git clone https://github.com/bvandevliet/bulma.git
-cd ../../../
 ```
 
 ### Configure to your needs
