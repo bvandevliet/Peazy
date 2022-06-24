@@ -7,7 +7,7 @@ interface tableCellItem
   /**
    * Callback function intended for rendering additional content to the table cell.
    */
-  callback?: ($td: JQuery<HTMLTableCellElement>) => void;
+  callback? ($td: JQuery<HTMLTableCellElement>): void;
   /**
    * Text to display in the cell.
    */
@@ -23,23 +23,23 @@ interface tableCellItem
   /**
    * Called on click. If set an <a/> element is created.
    */
-  onclick?: ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => Promise<boolean>;
+  onclick? ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>): Promise<boolean>;
   /**
    * Called on double click.
    */
-  ondblclick?: ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.DoubleClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  ondblclick? ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.DoubleClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>): void;
   /**
    * Called on contextmenu.
    */
-  oncontextmenu?: ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => Partial<Electron.MenuItem>[];
+  oncontextmenu? ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>): Partial<Electron.MenuItem>[];
   /**
    * Called on middleclick.
    */
-  onmiddleclick?: ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.MouseDownEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  onmiddleclick? ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.MouseDownEvent<HTMLElement, undefined, HTMLElement, HTMLElement>): void;
   /**
    * Called on dragstart.
    */
-  ondragstart?: ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.DragStartEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  ondragstart? ($td?: JQuery<HTMLTableCellElement>, $tr?: JQuery<HTMLTableRowElement>, e?: JQuery.DragStartEvent<HTMLElement, undefined, HTMLElement, HTMLElement>): void;
   /**
    * Additional classes.
    */
@@ -59,7 +59,7 @@ interface tabItem
   /**
    * Callback function intended for rendering the page content before it is visible.
    */
-  callback: ($div: JQuery<HTMLDivElement>, $li?: JQuery<HTMLLIElement>) => void;
+  callback ($div: JQuery<HTMLDivElement>, $li?: JQuery<HTMLLIElement>): void;
   /**
    * Text to display in the tab.
    */
@@ -75,27 +75,27 @@ interface tabItem
   /**
    * Called on click. If set an <a/> element is created.
    */
-  onclick?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>) => Promise<boolean>;
+  onclick? ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.ClickEvent<HTMLAnchorElement, undefined, HTMLAnchorElement, HTMLAnchorElement>): Promise<boolean>;
   /**
    * Called on double click.
    */
-  ondblclick?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.DoubleClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  ondblclick? ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.DoubleClickEvent<HTMLElement, undefined, HTMLElement, HTMLElement>): void;
   /**
    * Called on contextmenu.
    */
-  oncontextmenu?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => Partial<Electron.MenuItem>[];
+  oncontextmenu? ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.ContextMenuEvent<HTMLElement, undefined, HTMLElement, HTMLElement>): Partial<Electron.MenuItem>[];
   /**
    * Called on middleclick.
    */
-  onmiddleclick?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.MouseDownEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  onmiddleclick? ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.MouseDownEvent<HTMLElement, undefined, HTMLElement, HTMLElement>): void;
   /**
    * Called on dragstart.
    */
-  ondragstart?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.DragStartEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  ondragstart? ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.DragStartEvent<HTMLElement, undefined, HTMLElement, HTMLElement>): void;
   /**
    * Called on dragend.
    */
-  ondragend?: ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.DragEndEvent<HTMLElement, undefined, HTMLElement, HTMLElement>) => void;
+  ondragend? ($li?: JQuery<HTMLLIElement>, $div?: JQuery<HTMLDivElement>, e?: JQuery.DragEndEvent<HTMLElement, undefined, HTMLElement, HTMLElement>): void;
   /**
    * Additional classes for the tab.
    */
@@ -110,13 +110,13 @@ interface tabPage
   /**
    * Triggered to initialize the tab.
    */
-  init: (...args: any) => ReturnType<tabItem['onclick']>;
+  init (...args: any): ReturnType<tabItem['onclick']>;
   /**
    * Triggered on activating the tab.
    */
-  onactivate: (...args: any) => ReturnType<tabItem['onclick']>;
+  onactivate (...args: any): ReturnType<tabItem['onclick']>;
   /**
    * Triggered when the tab is closing.
    */
-  dispose: () => void;
+  dispose (): void;
 }
